@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import CursorTrail from "./components/CursorTrail";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -12,7 +13,8 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: "Revamp 180° – Digital Agency",
-  description: "Website revamping, web & app design, branding, social media management, and video editing.",
+  description:
+    "Website revamping, web & app design, branding, social media management, and video editing.",
 };
 
 export default function RootLayout({
@@ -23,10 +25,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${poppins.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col font-[family-name:var(--font-poppins)]">
+        <CursorTrail />
         <Navbar />
-        <main className="flex-1 pt-20">
-          {children}
-        </main>
+        <main className="flex-1 pt-20">{children}</main>
         <Footer />
       </body>
     </html>
