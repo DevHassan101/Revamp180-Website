@@ -31,7 +31,7 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png"></link>
         <link rel="manifest" href="/favicon_io/site.webmanifest"></link>
       </head>
-      <body className="min-h-full flex flex-col font-[family-name:var(--font-poppins)]">
+      <body className="suppressHydrationWarning min-h-full flex flex-col font-[family-name:var(--font-poppins)]">
         <Navbar />
         <CursorTrail />
         <main className="flex-1">

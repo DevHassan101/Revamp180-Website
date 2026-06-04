@@ -106,12 +106,12 @@ export default function Navbar() {
         }`}
       >
         <nav
-          className={`flex items-center justify-between transition-all duration-500 ease-in-out ${scrolled ? "px-6 py-1.5" : "py-0"}`}
+          className={`grid grid-cols-[1fr_auto_1fr] items-center transition-all duration-500 ease-in-out ${scrolled ? "px-2 py-1.5" : "py-0"}`}
         >
           {/* ── Logo ── */}
           <Link
             href="/"
-            className={`flex items-center gap-3 shrink-0 z-50 transition-all duration-500 ${scrolled ? "mt-0" : "mt-5 md:mt-2"}`}
+            className={`col-start-1 flex items-center gap-3 shrink-0 z-50 transition-all duration-500 ${scrolled ? "mt-0" : "mt-5 md:mt-2"}`}
           >
             <motion.div
               whileHover={{ scale: 1.06 }}
@@ -139,7 +139,7 @@ export default function Navbar() {
           </Link>
 
           {/* ── Desktop Nav — White Pill (ByteCloude design) ── */}
-          <div className={`hidden lg:flex items-center justify-center relative ml-12 h-[68px] self-start transition-all duration-700 ease-in-out ${scrolled ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
+          <div className={`col-start-2 hidden lg:flex items-center justify-center relative h-[68px] self-start transition-all duration-700 ease-in-out ${scrolled ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
             {/* White pill shape — only visible when not scrolled */}
             <div
               className={`absolute inset-0 bg-white transition-opacity duration-700 ease-in-out ${styles.maskShape} ${scrolled ? "invisible" : "visible"}`}
@@ -324,62 +324,57 @@ export default function Navbar() {
             </ul>
           </div>
 
-          {/* ── Desktop CTA Buttons ── */}
-          <div className={`hidden lg:flex items-center gap-3 z-50 transition-all duration-500 ${scrolled ? "mt-0" : "mt-2"}`}>
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
-              <Link
-                href="/contact"
-                className="flex items-center gap-2 px-5 py-2.5 rounded-full border-2 border-white/20 text-sm font-semibold text-white/80 hover:border-white/50 hover:text-white transition-all duration-200 whitespace-nowrap"
-              >
-                <Icon icon="tabler:message-circle" className="w-4 h-4 flex-shrink-0" />
-                Free Consultation
-              </Link>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
-              <Link
-                href="/contact"
-                className="flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-[#1800C8] text-white text-sm font-semibold hover:bg-[#3520DC] transition-colors duration-200 whitespace-nowrap"
-                style={{ boxShadow: "0 0 16px rgba(24,0,200,0.4)" }}
-              >
-                <Icon icon="tabler:bolt" className="w-3.5 h-3.5 flex-shrink-0" />
-                Get a Quote →
-              </Link>
-            </motion.div>
-          </div>
-
-          {/* ── Mobile Hamburger (Revamp animated lines) ── */}
-          <motion.button
-            className={`lg:hidden z-50 p-2 transition-all duration-500 ${scrolled ? "mt-0" : "mt-5"}`}
-            onClick={() => setMobileOpen((o) => !o)}
-            whileTap={{ scale: 0.88 }}
-            aria-label="Toggle navigation"
-          >
-            <div className="flex flex-col gap-[5px] w-5 justify-center">
-              <motion.span
-                animate={
-                  mobileOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }
-                }
-                transition={{ duration: 0.28, ease: "easeInOut" }}
-                className="block h-[2px] w-full bg-white rounded-full origin-center"
-              />
-              <motion.span
-                animate={
-                  mobileOpen
-                    ? { opacity: 0, scaleX: 0 }
-                    : { opacity: 1, scaleX: 1 }
-                }
-                transition={{ duration: 0.2 }}
-                className="block h-[2px] w-full bg-white rounded-full"
-              />
-              <motion.span
-                animate={
-                  mobileOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }
-                }
-                transition={{ duration: 0.28, ease: "easeInOut" }}
-                className="block h-[2px] w-full bg-white rounded-full origin-center"
-              />
+          {/* ── Right col: CTA + Hamburger ── */}
+          <div className="col-start-3 flex items-center justify-end">
+            {/* Desktop CTA Buttons */}
+            <div className={`hidden lg:flex items-center gap-3 z-50 transition-all duration-500 ${scrolled ? "mt-0" : "mt-2"}`}>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
+                <Link
+                  href="/contact"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-full border-2 border-white/20 text-sm font-semibold text-white/80 hover:border-white/50 hover:text-white transition-all duration-200 whitespace-nowrap"
+                >
+                  <Icon icon="tabler:message-circle" className="w-4 h-4 flex-shrink-0" />
+                  Free Consultation
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
+                <Link
+                  href="/contact"
+                  className="flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-[#1800C8] text-white text-sm font-semibold hover:bg-[#3520DC] transition-colors duration-200 whitespace-nowrap"
+                  style={{ boxShadow: "0 0 16px rgba(24,0,200,0.4)" }}
+                >
+                  <Icon icon="tabler:bolt" className="w-3.5 h-3.5 flex-shrink-0" />
+                  Get a Quote →
+                </Link>
+              </motion.div>
             </div>
-          </motion.button>
+
+            {/* Mobile Hamburger */}
+            <motion.button
+              className={`lg:hidden z-50 p-2 transition-all duration-500 ${scrolled ? "mt-0" : "mt-5"}`}
+              onClick={() => setMobileOpen((o) => !o)}
+              whileTap={{ scale: 0.88 }}
+              aria-label="Toggle navigation"
+            >
+              <div className="flex flex-col gap-[5px] w-5 justify-center">
+                <motion.span
+                  animate={mobileOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
+                  transition={{ duration: 0.28, ease: "easeInOut" }}
+                  className="block h-[2px] w-full bg-white rounded-full origin-center"
+                />
+                <motion.span
+                  animate={mobileOpen ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
+                  transition={{ duration: 0.2 }}
+                  className="block h-[2px] w-full bg-white rounded-full"
+                />
+                <motion.span
+                  animate={mobileOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
+                  transition={{ duration: 0.28, ease: "easeInOut" }}
+                  className="block h-[2px] w-full bg-white rounded-full origin-center"
+                />
+              </div>
+            </motion.button>
+          </div>
         </nav>
       </header>
 
