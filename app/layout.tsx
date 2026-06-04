@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CursorTrail from "./components/CursorTrail";
+import BackToTop from "./components/BackToTop";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -29,6 +30,7 @@ export default function RootLayout({
         <Navbar />
         <main className="flex-1 pt-20">{children}</main>
         <Footer />
+        <BackToTop />
       </body>
     </html>
   );
