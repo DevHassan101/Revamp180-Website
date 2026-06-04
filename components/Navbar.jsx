@@ -106,7 +106,7 @@ export default function Navbar() {
         }`}
       >
         <nav
-          className={`flex items-center justify-between transition-all duration-500 ease-in-out ${scrolled ? "px-10 py-1.5" : "py-0"}`}
+          className={`flex items-center justify-between transition-all duration-500 ease-in-out ${scrolled ? "px-6 py-1.5" : "py-0"}`}
         >
           {/* ── Logo ── */}
           <Link
