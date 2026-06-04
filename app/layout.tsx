@@ -22,9 +22,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${poppins.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col font-[family-name:var(--font-poppins)]">
+      <body suppressHydrationWarning className="min-h-full flex flex-col font-[family-name:var(--font-poppins)]">
         <Navbar />
-        <main className="flex-1 pt-20">
+        <main className="flex-1">
           {children}
         </main>
         <Footer />

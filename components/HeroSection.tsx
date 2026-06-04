@@ -74,7 +74,7 @@ export default function HeroSection() {
 
   return (
     <div
-      className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center px-4 py-20"
+      className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center px-4 pt-35 pb-30"
       style={{
         background:
           "radial-gradient(ellipse 80% 60% at 50% 0%, #0A009A 0%, #01004C 55%, #000018 100%)",
@@ -227,7 +227,7 @@ export default function HeroSection() {
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <motion.div
-            whileHover={{ scale: 1.05, boxShadow: "0 0 44px rgba(53,32,220,0.7)" }}
+            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.97 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
             style={{ minWidth: "210px" }}

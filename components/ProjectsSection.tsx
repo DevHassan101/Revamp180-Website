@@ -6,6 +6,8 @@ import { Icon } from "@iconify/react";
 import Link from "next/link";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
+// Material "decelerate" curve — starts at full speed, coasts gently to rest
+const FAN_EASE = [0, 0, 0.2, 1] as const;
 
 const projects = [
   {
@@ -78,9 +80,9 @@ const projects = [
 // col 0 (left)   → starts stacked behind middle (x: +350), slides left to its column
 // col 2 (right)  → starts stacked behind middle (x: -350), slides right to its column
 function getCardInitial(colIndex: number) {
-  if (colIndex === 0) return { opacity: 0, x: 350, y: 0, scale: 0.85 };
-  if (colIndex === 2) return { opacity: 0, x: -350, y: 0, scale: 0.85 };
-  return { opacity: 0, x: 0, y: -50, scale: 0.92 };
+  if (colIndex === 0) return { opacity: 0, x: 320, y: 0, scale: 0.82 };
+  if (colIndex === 2) return { opacity: 0, x: -320, y: 0, scale: 0.82 };
+  return { opacity: 0, x: 0, y: -58, scale: 0.88 };
 }
 
 function ProjectCard({
@@ -100,10 +102,9 @@ function ProjectCard({
       whileInView={{ opacity: 1, x: 0, y: 0, scale: 1 }}
       viewport={{ once: true, amount: 0.15 }}
       transition={{
-        duration: colIndex === 1 ? 0.65 : 0.75,
-        ease: EASE,
-        // middle drops first, then sides emerge from behind it
-        delay: colIndex === 1 ? 0 : 0.18,
+        duration: colIndex === 1 ? 0.9 : 1.1,
+        ease: FAN_EASE,
+        delay: colIndex === 1 ? 0 : 0.24,
       }}
       className="group/card flex flex-col gap-3"
     >
@@ -150,15 +151,14 @@ function ProjectCard({
             : undefined
         }
       >
-        <motion.div
-          whileHover={{ y: -7, transition: { type: "spring", stiffness: 300, damping: 22 } }}
-          className="group relative rounded-2xl overflow-hidden cursor-pointer"
+        <div
+          className="group relative rounded-2xl overflow-hidden cursor-pointer hover:-translate-y-1.5"
           style={{
             height: tall ? "308px" : "232px",
             border: tall
               ? "1px solid rgba(139,128,255,0.30)"
               : "1px solid rgba(139,128,255,0.13)",
-            transition: "border-color 0.35s, box-shadow 0.35s",
+            transition: "transform 0.65s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s, box-shadow 0.5s",
           }}
           onMouseEnter={(e) => {
             const el = e.currentTarget as HTMLDivElement;
@@ -174,13 +174,11 @@ function ProjectCard({
             el.style.boxShadow = "none";
           }}
         >
-          {/* ── Image — CSS group-hover scale (no ref callback) ── */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={project.image}
             alt={project.title}
-            className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.08]"
-            style={{ transition: "transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94)" }}
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.07]"
           />
 
           {/* Brand colour multiply */}
@@ -273,7 +271,7 @@ function ProjectCard({
               ))}
             </div>
           )}
-        </motion.div>
+        </div>
       </div>
 
       {/* ── Tags ── */}
