@@ -2,4 +2,37 @@
 
 body {
   background-color: #01004C;
+  cursor: none !important;
+}
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #05053d; /* dark background */
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+        180deg,
+        #5b4bff,
+        #2d1fff
+    );
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(
+        180deg,
+        #7568ff,
+        #4332ff
+    );
+}
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #4f46e5 #05053d;
 }
