@@ -152,14 +152,14 @@ export default function Navbar() {
 
           {/* ── Desktop Nav — White Pill (ByteCloude design) ── */}
           <div
-            className={`col-start-2 hidden lg:flex items-center justify-center relative h-[68px] self-start transition-all duration-700 ease-in-out ${scrolled ? "opacity-0 pointer-events-none" : "opacity-100"}`}
+            className={`col-start-2 hidden lg:flex items-center justify-center relative h-[64px] xl:h-[68px] self-start transition-all duration-700 ease-in-out ${scrolled ? "opacity-0 pointer-events-none" : "opacity-100"}`}
           >
             {/* White pill shape — only visible when not scrolled */}
             <div
               className={`absolute inset-0 bg-white transition-opacity duration-700 ease-in-out ${styles.maskShape} ${scrolled ? "invisible" : "visible"}`}
             />
 
-            <ul className="relative flex items-center gap-8 xl:gap-10 px-20 h-full z-10">
+            <ul className="relative flex items-center gap-2! xl:gap-5 px-15! lg:px-20 h-full z-10">
               {[
                 { name: "Home", href: "/" },
                 { name: "About Us", href: "/about" },
@@ -167,7 +167,7 @@ export default function Navbar() {
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className={`text-[15px] tracking-wider font-medium transition-all duration-500 uppercase ${
+                    className={`text-[12px]! lg:text-[15px]! tracking-wider font-medium transition-all duration-500 uppercase ${
                       scrolled
                         ? isActive(item.href)
                           ? "text-[#8B80FF]"
@@ -196,7 +196,7 @@ export default function Navbar() {
                   onMouseLeave={() => setServicesOpen(false)}
                 >
                   <button
-                    className={`flex items-center gap-1 text-[15px] tracking-wider font-medium transition-all duration-500 uppercase cursor-pointer ${
+                    className={`flex items-center gap-1 text-[12px]! lg:text-[15px] tracking-wider font-medium transition-all duration-500 uppercase cursor-pointer ${
                       scrolled
                         ? isServicesActive
                           ? "text-[#8B80FF]"
@@ -314,7 +314,7 @@ export default function Navbar() {
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className={`text-[15px] tracking-wider font-medium transition-all duration-500 uppercase ${
+                    className={`text-[12px]! lg:text-[15px]! tracking-wider font-medium transition-all duration-500 uppercase ${
                       scrolled
                         ? isActive(item.href)
                           ? "text-[#8B80FF]"
@@ -344,37 +344,6 @@ export default function Navbar() {
             <div
               className={`hidden lg:flex items-center gap-3 z-50 transition-all duration-500 ${scrolled ? "mt-0" : "mt-2"}`}
             >
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                <Link
-                  href="/contact"
-                  onMouseEnter={() => setConsultHovered(true)}
-                  onMouseLeave={() => setConsultHovered(false)}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white transition-all duration-300 whitespace-nowrap"
-                  style={
-                    consultHovered
-                      ? {
-                          background:
-                            "linear-gradient(135deg, #080B78 0%, #1C20C0 100%)",
-                          border: "1.5px solid transparent",
-                          boxShadow: "0 0 20px rgba(8,11,120,0.45)",
-                        }
-                      : {
-                          background: "rgba(255,255,255,0.05)",
-                          border: "1.5px solid rgba(255,255,255,0.2)",
-                          backdropFilter: "blur(10px)",
-                        }
-                  }
-                >
-                  <Icon
-                    icon="tabler:message-circle"
-                    className="w-4 h-4 flex-shrink-0"
-                  />
-                  Free Consultation
-                </Link>
-              </motion.div>
 
               <motion.div
                 whileHover={{ scale: 1.02 }}
