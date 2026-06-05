@@ -1,72 +1,113 @@
-
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
+/* easing helpers */
+const easeInOutCubic = (t: number) =>
+  t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+const clamp01 = (v: number) => Math.min(Math.max(v, 0), 1);
+const range = (v: number, a: number, b: number) => clamp01((v - a) / (b - a));
 
 export default function AboutPage() {
-  const containerRef = useRef(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const orangeFillRef = useRef<HTMLDivElement>(null);
+  const checkerRef = useRef<HTMLDivElement>(null);
+  const beamRef = useRef<SVGPolygonElement>(null);
+  const globeRef = useRef<HTMLDivElement>(null);
+  const head1Ref = useRef<HTMLDivElement>(null);
+  const head2Ref = useRef<HTMLDivElement>(null);
+  const hintRef = useRef<HTMLDivElement>(null);
+
+  // raw scroll target vs. smoothed (lerped) value — this is what gives inertia
+  const target = useRef(0);
+  const smooth = useRef(0);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const container = containerRef.current;
-      if (!container) return;
-      const { top, height } = container.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      const totalScroll = height - windowHeight;
-      const scrolled = -top;
-      const progress = Math.min(Math.max(scrolled / totalScroll, 0), 1);
-      setScrollProgress(progress);
+    let raf = 0;
+
+    const readTarget = () => {
+      const el = containerRef.current;
+      if (!el) return;
+      const { top, height } = el.getBoundingClientRect();
+      const total = height - window.innerHeight;
+      target.current = clamp01(-top / total);
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    const render = () => {
+      // ease the smoothed value toward the target every frame (the "follow" feel)
+      smooth.current += (target.current - smooth.current) * 0.09;
+      const p = smooth.current;
+
+      // ---- Globe: center → left edge (stays big), then slides off & vanishes ----
+      const move = easeInOutCubic(range(p, 0.12, 0.4));
+      const vanish = easeInOutCubic(range(p, 0.86, 1));
+      const leftPct = 50 - move * 46 - vanish * 24; // 50% → 4% → -20%
+      const scale = 1 + move * 0.05;
+      if (globeRef.current) {
+        globeRef.current.style.left = `${leftPct}%`;
+        globeRef.current.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        globeRef.current.style.opacity = `${1 - vanish}`;
+      }
+
+      // ---- Orange beam: apex anchored at globe's right edge, widening rightward ----
+      const beamP = easeInOutCubic(range(p, 0.3, 0.55));
+      if (beamRef.current) {
+        const apexX = leftPct * 15.36 + 150; // % → SVG units (viewBox 1536 wide) + radius
+        const rightH = 30 + beamP * 520; // right edge grows tall
+        beamRef.current.setAttribute(
+          "points",
+          `${apexX},372 ${apexX},396 1700,${420 + rightH} 1700,${420 - rightH}`
+        );
+        beamRef.current.style.opacity = `${beamP}`;
+      }
+
+      // ---- Background floods orange (after headline 1) ----
+      const fillP = easeInOutCubic(range(p, 0.58, 0.74));
+      if (orangeFillRef.current) orangeFillRef.current.style.opacity = `${fillP}`;
+
+      // ---- Decorative checker squares (top-right) ----
+      const checkP = range(p, 0.6, 0.8);
+      if (checkerRef.current) checkerRef.current.style.opacity = `${checkP * 0.4}`;
+
+      // ---- Headline 1: fades in inside the wedge, then fades back out ----
+      const h1In = easeInOutCubic(range(p, 0.42, 0.54));
+      const h1Out = easeInOutCubic(range(p, 0.62, 0.7));
+      const h1 = h1In * (1 - h1Out);
+      if (head1Ref.current) {
+        head1Ref.current.style.opacity = `${h1}`;
+        head1Ref.current.style.transform = `translateY(calc(-50% + ${(1 - h1In) * 30 - h1Out * 24}px))`;
+      }
+
+      // ---- Headline 2: the "About Crowd" block on the orange flood ----
+      const h2 = easeInOutCubic(range(p, 0.7, 0.9));
+      if (head2Ref.current) {
+        head2Ref.current.style.opacity = `${h2}`;
+        head2Ref.current.style.transform = `translateY(calc(-50% + ${(1 - h2) * 34}px))`;
+      }
+
+      // ---- Scroll hint fades out as soon as you move ----
+      if (hintRef.current) hintRef.current.style.opacity = `${1 - range(p, 0, 0.05)}`;
+
+      raf = requestAnimationFrame(render);
+    };
+
+    readTarget();
+    smooth.current = target.current;
+    window.addEventListener("scroll", readTarget, { passive: true });
+    window.addEventListener("resize", readTarget);
+    raf = requestAnimationFrame(render);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", readTarget);
+      window.removeEventListener("resize", readTarget);
+    };
   }, []);
 
-
-  const p = scrollProgress;
-
-  // Globe X: starts at 50% (center), moves to ~10% (left)
-  const globeLeftPercent =
-    p < 0.3
-      ? 50
-      : p < 0.7
-        ? 50 - ((p - 0.3) / 0.4) * 40
-        : 10;
-
-  // Globe scale: starts big, shrinks as it moves left
-  const globeScale =
-    p < 0.3
-      ? 1
-      : p < 0.7
-        ? 1 - ((p - 0.3) / 0.4) * 0.45
-        : 0.55;
-
-  // Orange beam cone: appears after p=0.4
-  const beamOpacity = p < 0.4 ? 0 : Math.min((p - 0.4) / 0.3, 1);
-  // Cone width angle: from thin line to full spread
-  const coneSpread = p < 0.4 ? 0 : Math.min((p - 0.4) / 0.3, 1);
-
-  // Text opacity: fades in after p=0.65
-  const textOpacity = p < 0.65 ? 0 : Math.min((p - 0.65) / 0.2, 1);
-  const textTranslateY = p < 0.65 ? 30 : 30 - ((p - 0.65) / 0.2) * 30;
-
-  // Orange fill background: spreads from right
-  const orangeFillOpacity = p < 0.6 ? 0 : Math.min((p - 0.6) / 0.25, 1);
-
-  // Checkerboard pattern opacity (top-right decorative squares)
-  const checkerOpacity = p < 0.65 ? 0 : Math.min((p - 0.65) / 0.2, 1);
-
-  // Section label opacity
-  const labelOpacity = textOpacity;
-
+  const fontStack = "'Helvetica Neue', Helvetica, Arial, sans-serif";
 
   return (
-    <main className="p-6 mt-20">
-      <div
-        ref={containerRef}
-        style={{ height: "500vh", position: "relative" }}
-      >
+    <main>
+      <div ref={containerRef} style={{ height: "600vh", position: "relative" }}>
         {/* Sticky viewport */}
         <div
           style={{
@@ -74,220 +115,210 @@ export default function AboutPage() {
             top: 0,
             height: "100vh",
             overflow: "hidden",
+            backgroundColor: "#05053d",
           }}
         >
-          {/* Orange fill background layer */}
+          {/* Orange flood background */}
           <div
+            ref={orangeFillRef}
             style={{
               position: "absolute",
               inset: 0,
-              backgroundColor: "#f26419",
-              opacity: orangeFillOpacity,
+              backgroundColor: "#4f46e5",
+              opacity: 0,
               zIndex: 1,
-              transition: "opacity 0.05s linear",
+              willChange: "opacity",
             }}
           />
 
-          {/* Decorative checkerboard squares (top right) */}
-          {orangeFillOpacity > 0 && (
-            <div
-              style={{
-                position: "absolute",
-                top: 0,
-                right: 0,
-                width: 220,
-                height: 220,
-                opacity: checkerOpacity * 0.45,
-                zIndex: 3,
-                display: "grid",
-                gridTemplateColumns: "repeat(3, 1fr)",
-                gridTemplateRows: "repeat(3, 1fr)",
-                gap: 4,
-              }}
-            >
-              {[...Array(9)].map((_, i) => (
-                <div
-                  key={i}
-                  style={{
-                    backgroundColor: "#c94e0a",
-                    borderRadius: 2,
-                    visibility:
-                      i === 0 || i === 2 || i === 4 || i === 6 || i === 8
-                        ? "hidden"
-                        : "visible",
-                  }}
-                />
-              ))}
-            </div>
-          )}
+          {/* Decorative checker squares (top right) */}
+          <div
+            ref={checkerRef}
+            style={{
+              position: "absolute",
+              top: 0,
+              right: 0,
+              width: 240,
+              height: 240,
+              opacity: 0,
+              zIndex: 3,
+              display: "grid",
+              gridTemplateColumns: "repeat(3, 1fr)",
+              gridTemplateRows: "repeat(3, 1fr)",
+              gap: 6,
+              willChange: "opacity",
+            }}
+          >
+            {[...Array(9)].map((_, i) => (
+              <div
+                key={i}
+                style={{
+                  backgroundColor: "#05053d",
+                  visibility: i % 2 === 0 ? "hidden" : "visible",
+                }}
+              />
+            ))}
+          </div>
 
           {/* Orange beam / cone */}
-          {beamOpacity > 0 && (
-            <svg
-              style={{
-                position: "absolute",
-                inset: 0,
-                width: "100%",
-                height: "100%",
-                zIndex: 2,
-                opacity: beamOpacity,
-              }}
-              viewBox="0 0 1536 768"
-              preserveAspectRatio="xMidYMid slice"
-            >
-              <polygon
-                points={`
-                ${globeLeftPercent * 15.36}, ${384 - coneSpread * 230}
-                ${globeLeftPercent * 15.36}, ${384 + coneSpread * 230}
-                1700, 900
-                1700, -100
-              `}
-                fill="#f26419"
-              />
-            </svg>
-          )}
+          <svg
+            style={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              zIndex: 2,
+            }}
+            viewBox="0 0 1536 768"
+            preserveAspectRatio="xMidYMid slice"
+          >
+            <polygon
+              ref={beamRef}
+              points="918,372 918,396 1700,450 1700,390"
+              fill="#4f46e5"
+              style={{ opacity: 0, willChange: "opacity" }}
+            />
+          </svg>
 
           {/* Globe */}
           <div
+            ref={globeRef}
             style={{
               position: "absolute",
               top: "50%",
-              left: `${globeLeftPercent}%`,
-              transform: `translate(-50%, -50%) scale(${globeScale})`,
-              width: 520,
-              height: 520,
+              left: "50%",
+              transform: "translate(-50%, -50%) scale(1)",
+              width: 540,
+              height: 540,
               zIndex: 4,
-              transition: "transform 0.05s linear, left 0.05s linear",
+              willChange: "transform, left, opacity",
             }}
           >
             <Globe />
           </div>
 
-          {/* Text overlay */}
-          {textOpacity > 0 && (
-            <div
+          {/* Headline 1 — appears in the wedge, then fades out */}
+          <div
+            ref={head1Ref}
+            style={{
+              position: "absolute",
+              left: "34%",
+              top: "50%",
+              transform: "translateY(-50%)",
+              zIndex: 5,
+              opacity: 0,
+              maxWidth: 720,
+              paddingRight: "2rem",
+              willChange: "opacity, transform",
+            }}
+          >
+            <h1
               style={{
-                position: "absolute",
-                left: "28%",
-                top: "50%",
-                transform: `translateY(calc(-50% + ${textTranslateY}px))`,
-                zIndex: 5,
-                opacity: textOpacity,
-                maxWidth: 760,
-                paddingRight: "2rem",
+                color: "#ffffff",
+                fontSize: "clamp(2rem, 4vw, 3.4rem)",
+                fontFamily: fontStack,
+                fontWeight: 300,
+                lineHeight: 1.15,
+                margin: 0,
+                letterSpacing: "-0.01em",
               }}
             >
-              <p
-                style={{
-                  color: "rgba(255,255,255,0.75)",
-                  fontSize: 13,
-                  letterSpacing: "0.12em",
-                  textTransform: "uppercase",
-                  fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
-                  fontWeight: 400,
-                  marginBottom: 24,
-                }}
-              >
-                — About Crowd
-              </p>
-              <h1
-                style={{
-                  color: "#ffffff",
-                  fontSize: "clamp(2.2rem, 4.5vw, 4rem)",
-                  fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
-                  fontWeight: 300,
-                  lineHeight: 1.15,
-                  margin: 0,
-                  letterSpacing: "-0.01em",
-                }}
-              >
-                Huge ambition doesn&apos;t mean
-                <br />
-                employing a huge global agency
-              </h1>
-            </div>
-          )}
-          
+              Huge ambition doesn&apos;t mean
+              <br />
+              employing a huge global agency
+            </h1>
+          </div>
+
+          {/* Headline 2 — the About Crowd block on the orange flood */}
+          <div
+            ref={head2Ref}
+            style={{
+              position: "absolute",
+              left: "23%",
+              top: "50%",
+              transform: "translateY(-50%)",
+              zIndex: 5,
+              opacity: 0,
+              maxWidth: 720,
+              paddingRight: "2rem",
+              willChange: "opacity, transform",
+            }}
+          >
+            <p
+              style={{
+                color: "rgba(255,255,255,0.9)",
+                fontSize: 13,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                fontFamily: fontStack,
+                fontWeight: 500,
+                marginBottom: 22,
+              }}
+            >
+              — About Crowd
+            </p>
+            <h2
+              style={{
+                color: "#ffffff",
+                fontSize: "clamp(1.8rem, 3.4vw, 3rem)",
+                fontFamily: fontStack,
+                fontWeight: 300,
+                lineHeight: 1.2,
+                margin: 0,
+                letterSpacing: "-0.01em",
+              }}
+            >
+              Crowd is an international marketing agency that combines global
+              reach with local knowledge and merges human expertise with
+              cutting-edge technology.
+            </h2>
+            <p
+              style={{
+                color: "rgba(255,255,255,0.92)",
+                fontSize: 15,
+                fontFamily: fontStack,
+                fontWeight: 400,
+                marginTop: 28,
+              }}
+            >
+              We craft innovative communications with impactful results.
+            </p>
+          </div>
 
           {/* Scroll hint */}
-          {p < 0.05 && (
-            <div
-              style={{
-                position: "absolute",
-                bottom: 90,
-                left: "50%",
-                transform: "translateX(-50%)",
-                zIndex: 10,
-                color: "rgba(255,255,255,0.4)",
-                fontSize: 12,
-                letterSpacing: "0.1em",
-                fontFamily: "'Helvetica Neue', Arial, sans-serif",
-                textTransform: "uppercase",
-                animation: "fadeUpDown 2s ease-in-out infinite",
-              }}
-            >
-              scroll ↓
-            </div>
-          )}
+          <div
+            ref={hintRef}
+            style={{
+              position: "absolute",
+              bottom: 90,
+              left: "50%",
+              transform: "translateX(-50%)",
+              zIndex: 10,
+              color: "rgba(255,255,255,0.4)",
+              fontSize: 12,
+              letterSpacing: "0.1em",
+              fontFamily: fontStack,
+              textTransform: "uppercase",
+              animation: "crowdHint 2s ease-in-out infinite",
+            }}
+          >
+            scroll ↓
+          </div>
         </div>
 
         <style>{`
-        @keyframes fadeUpDown {
-          0%, 100% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
-          50% { opacity: 0.8; transform: translateX(-50%) translateY(-6px); }
-        }
-      `}</style>
+          @keyframes crowdHint {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-6px); }
+          }
+        `}</style>
       </div>
     </main>
   );
+}
 
-
-
-  function Globe() {
-    return (
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          borderRadius: "50%",
-          background:
-            "radial-gradient(circle at 35% 35%, #5580ff 0%, #1a2fd4 40%, #0a0f6b 100%)",
-          boxShadow:
-            "inset -30px -20px 60px rgba(0,0,100,0.6), inset 20px 20px 40px rgba(100,150,255,0.3), 0 0 80px rgba(30,50,200,0.15)",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        {/* Cloud layer simulation */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            borderRadius: "50%",
-            background: `
-            radial-gradient(ellipse 60% 30% at 30% 70%, rgba(255,255,255,0.25) 0%, transparent 70%),
-            radial-gradient(ellipse 40% 20% at 70% 40%, rgba(255,255,255,0.2) 0%, transparent 60%),
-            radial-gradient(ellipse 50% 25% at 50% 20%, rgba(255,255,255,0.15) 0%, transparent 60%)
-          `,
-          }}
-        />
-        {/* Continent hints */}
-        <svg
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            opacity: 0.3,
-          }}
-          viewBox="0 0 520 520"
-        >
-          <ellipse cx="230" cy="180" rx="80" ry="55" fill="#3355cc" />
-          <ellipse cx="290" cy="260" rx="60" ry="70" fill="#2244bb" />
-          <ellipse cx="170" cy="300" rx="50" ry="40" fill="#3355cc" />
-          <ellipse cx="350" cy="200" rx="35" ry="25" fill="#2244bb" />
-        </svg>
-      </div>
-    );
-  }
+function Globe() {
+  return (
+    <img src="/images/globe.png" alt="Globe" style={{ width: "100%", height: "100%" }} />
+  );
 }
