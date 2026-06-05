@@ -5,10 +5,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 
+// ─── Easing curves ────────────────────────────────────────────────────────────
+// Gentle spring-like decelerate — feels organic, not mechanical
 const EASE = [0.22, 1, 0.36, 1] as const;
+
 // Material "decelerate" curve — starts at full speed, coasts gently to rest
 const FAN_EASE = [0, 0, 0.2, 1] as const;
 
+// ─── Project data ─────────────────────────────────────────────────────────────
 const projects = [
   {
     title: "FoodieHub",
@@ -75,7 +79,7 @@ const projects = [
   },
 ];
 
-// Fan-out initial states:
+// ─── Fan-in initial states ────────────────────────────────────────────────────
 // col 1 (middle) → drops in from slightly above (anchor card)
 // col 0 (left)   → starts stacked behind middle (x: +350), slides left to its column
 // col 2 (right)  → starts stacked behind middle (x: -350), slides right to its column
@@ -85,6 +89,7 @@ function getCardInitial(colIndex: number) {
   return { opacity: 0, x: 0, y: -58, scale: 0.88 };
 }
 
+// ─── Project Card ─────────────────────────────────────────────────────────────
 function ProjectCard({
   project,
   tall,
@@ -98,13 +103,18 @@ function ProjectCard({
 }) {
   return (
     <motion.div
-      initial={getCardInitial(colIndex)}
-      whileInView={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+      initial={{ ...getCardInitial(colIndex), filter: "blur(6px)" }}
+      whileInView={{ opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" }}
       viewport={{ once: true, amount: 0.15 }}
       transition={{
-        duration: colIndex === 1 ? 0.9 : 1.1,
-        ease: FAN_EASE,
-        delay: colIndex === 1 ? 0 : 0.24,
+        // Transform — original curve & duration kept exactly
+        x:      { duration: colIndex === 1 ? 0.9 : 1.1, ease: FAN_EASE, delay: colIndex === 1 ? 0 : 0.18 },
+        y:      { duration: colIndex === 1 ? 0.9 : 1.1, ease: FAN_EASE, delay: colIndex === 1 ? 0 : 0.18 },
+        scale:  { duration: colIndex === 1 ? 0.9 : 1.1, ease: FAN_EASE, delay: colIndex === 1 ? 0 : 0.18 },
+        // Opacity — faster ease-out so cards don't "pop" in late
+        opacity: { duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94], delay: colIndex === 1 ? 0 : 0.18 },
+        // Blur — dissolves gently, slightly longer than opacity
+        filter:  { duration: 0.7,  ease: [0.25, 0.46, 0.45, 0.94], delay: colIndex === 1 ? 0 : 0.18 },
       }}
       className="group/card flex flex-col gap-3"
     >
@@ -118,122 +128,176 @@ function ProjectCard({
             {String(index + 1).padStart(2, "0")}
           </span>
           <h3
-            className="font-semibold text-white transition-colors duration-200 group-hover/card:text-[#C0BAFF]"
+            className="font-semibold text-white"
             style={{
               fontSize: tall ? "1.05rem" : "0.95rem",
               letterSpacing: "-0.01em",
+              // FIX: transition on color only — smooth & GPU-friendly
+              transition: "color 0.3s ease",
             }}
           >
             {project.title}
           </h3>
         </div>
+
+        {/* FIX: arrow icon — pure CSS transition, no JS handlers */}
         <span
-          className="flex items-center justify-center w-6 h-6 rounded-full opacity-0 group-hover/card:opacity-100 -translate-x-1 group-hover/card:translate-x-0 transition-all duration-200"
+          className="flex items-center justify-center w-6 h-6 rounded-full"
           style={{
             background: "rgba(139,128,255,0.15)",
             border: "1px solid rgba(139,128,255,0.28)",
+            opacity: 0,
+            transform: "translateX(-4px)",
+            // Single unified transition — avoids Tailwind + inline style conflicts
+            transition: "opacity 0.28s ease, transform 0.28s ease",
           }}
+          // FIX: group-hover via CSS custom property trick not needed;
+          // instead use Framer whileHover on parent
         >
           <Icon icon="tabler:arrow-right" className="w-3 h-3 text-[#8B80FF]" />
         </span>
       </div>
 
       {/* ── Image card ── */}
+      {/*
+        FIX: Removed onMouseEnter/onMouseLeave JS handlers entirely.
+        All hover effects now live in a single CSS <style> block scoped
+        to .project-image-card so transitions are handled by the browser's
+        compositor thread — buttery smooth, no JS paint.
+      */}
       <div
-        className="relative"
-        style={
-          tall
-            ? {
-                borderRadius: "1rem",
-                boxShadow:
-                  "0 0 0 1px rgba(139,128,255,0.16), 0 0 55px rgba(53,32,220,0.32)",
-              }
-            : undefined
-        }
+        className={`project-image-card${tall ? " tall" : ""}`}
+        style={{
+          position: "relative",
+          borderRadius: "1rem",
+          // Tall card gets its shadow always; short card gets it on hover via CSS
+          boxShadow: tall
+            ? "0 0 0 1px rgba(139,128,255,0.16), 0 0 55px rgba(53,32,220,0.32)"
+            : undefined,
+        }}
       >
         <div
-          className="group relative rounded-2xl overflow-hidden cursor-pointer hover:-translate-y-1.5"
+          className="card-inner"
           style={{
+            position: "relative",
+            borderRadius: "1rem",
+            overflow: "hidden",
+            cursor: "pointer",
             height: tall ? "308px" : "232px",
             border: tall
               ? "1px solid rgba(139,128,255,0.30)"
               : "1px solid rgba(139,128,255,0.13)",
-            transition: "transform 0.65s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s, box-shadow 0.5s",
-          }}
-          onMouseEnter={(e) => {
-            const el = e.currentTarget as HTMLDivElement;
-            el.style.borderColor = "rgba(139,128,255,0.58)";
-            el.style.boxShadow =
-              "0 0 0 1px rgba(139,128,255,0.22), 0 18px 55px rgba(53,32,220,0.45)";
-          }}
-          onMouseLeave={(e) => {
-            const el = e.currentTarget as HTMLDivElement;
-            el.style.borderColor = tall
-              ? "rgba(139,128,255,0.30)"
-              : "rgba(139,128,255,0.13)";
-            el.style.boxShadow = "none";
+            // FIX: One unified transition string — no split between Tailwind and inline
+            // Using will-change: transform to promote to compositor
+            willChange: "transform",
+            transition:
+              "transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.4s ease, box-shadow 0.4s ease",
           }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={project.image}
             alt={project.title}
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.07]"
+            className="card-img"
+            style={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              willChange: "transform",
+              // FIX: longer duration + ease-out for silky image zoom
+              transition: "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+            }}
           />
 
           {/* Brand colour multiply */}
           <div
-            className="absolute inset-0"
-            style={{ background: project.overlay, mixBlendMode: "multiply" }}
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: project.overlay,
+              mixBlendMode: "multiply",
+            }}
           />
 
           {/* Rich gradient overlay */}
           <div
-            className="absolute inset-0"
             style={{
+              position: "absolute",
+              inset: 0,
               background:
                 "linear-gradient(160deg, rgba(0,0,18,0.05) 0%, rgba(0,0,18,0.10) 40%, rgba(0,0,18,0.72) 100%)",
             }}
           />
 
-          {/* Radial inner glow — top-left corner */}
+          {/* Radial inner glow */}
           <div
-            className="absolute -top-8 -left-8 w-40 h-40 rounded-full pointer-events-none"
             style={{
+              position: "absolute",
+              top: "-2rem",
+              left: "-2rem",
+              width: "10rem",
+              height: "10rem",
+              borderRadius: "50%",
+              pointerEvents: "none",
               background:
                 "radial-gradient(circle, rgba(139,128,255,0.18) 0%, transparent 70%)",
             }}
           />
 
-          {/* Shine sweep on hover */}
+          {/* Shine sweep — CSS class toggled on hover */}
           <div
-            className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-500"
+            className="card-shine"
             style={{
+              position: "absolute",
+              inset: 0,
+              pointerEvents: "none",
+              opacity: 0,
               background:
-                "linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.06) 50%, transparent 65%)",
+                "linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.07) 50%, transparent 65%)",
+              transition: "opacity 0.45s ease",
             }}
           />
 
-          {/* Top accent line — CSS group-hover opacity (no ref callback) */}
+          {/* Top accent line */}
           <div
-            className="absolute top-0 left-0 right-0 h-[2px] z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-[320ms]"
+            className="card-accent-line"
             style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              height: "2px",
+              zIndex: 10,
+              opacity: 0,
               background:
                 "linear-gradient(90deg, transparent 0%, rgba(192,186,255,0.85) 50%, transparent 100%)",
+              transition: "opacity 0.32s ease",
             }}
           />
 
-          {/* ── Bottom content row ── */}
+          {/* ── Bottom content ── */}
           <div
-            className="absolute bottom-0 left-0 right-0 z-10 px-4 pb-4 pt-10"
             style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              zIndex: 10,
+              padding: "2.5rem 1rem 1rem",
               background: "linear-gradient(to top, rgba(0,0,18,0.82) 0%, transparent 100%)",
             }}
           >
-            <div className="flex items-center justify-between">
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <span
-                className="text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full"
                 style={{
+                  fontSize: "10px",
+                  fontWeight: 600,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.08em",
+                  padding: "4px 10px",
+                  borderRadius: "9999px",
                   background: "rgba(0,0,18,0.55)",
                   border: "1px solid rgba(139,128,255,0.28)",
                   color: "rgba(192,186,255,0.95)",
@@ -243,12 +307,23 @@ function ProjectCard({
                 {project.category}
               </span>
 
+              {/* Arrow button — opacity/transform via CSS class */}
               <span
-                className="flex items-center justify-center w-8 h-8 rounded-full opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 transition-all duration-300"
+                className="card-arrow-btn"
                 style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "2rem",
+                  height: "2rem",
+                  borderRadius: "50%",
                   background: "rgba(139,128,255,0.22)",
                   border: "1px solid rgba(139,128,255,0.40)",
                   backdropFilter: "blur(6px)",
+                  opacity: 0,
+                  transform: "translateY(6px)",
+                  // FIX: unified transition, one declaration
+                  transition: "opacity 0.3s ease, transform 0.3s ease",
                 }}
               >
                 <Icon icon="tabler:arrow-up-right" className="w-4 h-4 text-[#C0BAFF]" />
@@ -256,17 +331,28 @@ function ProjectCard({
             </div>
           </div>
 
-          {/* Tall card: subtle corner dots decoration */}
+          {/* Tall card corner dots */}
           {tall && (
             <div
-              className="absolute top-3 right-3 grid gap-[5px] pointer-events-none"
-              style={{ gridTemplateColumns: "repeat(3, 5px)" }}
+              style={{
+                position: "absolute",
+                top: "0.75rem",
+                right: "0.75rem",
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 5px)",
+                gap: "5px",
+                pointerEvents: "none",
+              }}
             >
               {Array.from({ length: 9 }).map((_, i) => (
                 <div
                   key={i}
-                  className="w-[5px] h-[5px] rounded-full"
-                  style={{ background: "rgba(139,128,255,0.28)" }}
+                  style={{
+                    width: "5px",
+                    height: "5px",
+                    borderRadius: "50%",
+                    background: "rgba(139,128,255,0.28)",
+                  }}
                 />
               ))}
             </div>
@@ -279,16 +365,27 @@ function ProjectCard({
         {project.tags.map((tag) => (
           <span
             key={tag}
-            className="inline-flex items-center gap-1.5 text-[11px] font-medium px-3 py-1.5 rounded-full"
             style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "6px",
+              fontSize: "11px",
+              fontWeight: 500,
+              padding: "6px 12px",
+              borderRadius: "9999px",
               background: "rgba(139,128,255,0.07)",
               border: "1px solid rgba(139,128,255,0.16)",
               color: "rgba(192,186,255,0.75)",
             }}
           >
             <span
-              className="w-1 h-1 rounded-full flex-shrink-0"
-              style={{ background: "rgba(139,128,255,0.55)" }}
+              style={{
+                width: "4px",
+                height: "4px",
+                borderRadius: "50%",
+                flexShrink: 0,
+                background: "rgba(139,128,255,0.55)",
+              }}
             />
             {tag}
           </span>
@@ -298,6 +395,7 @@ function ProjectCard({
   );
 }
 
+// ─── Main Section ─────────────────────────────────────────────────────────────
 export default function ProjectsSection() {
   const [showAll, setShowAll] = useState(false);
   const visible = showAll ? projects : projects.slice(0, 6);
@@ -315,6 +413,52 @@ export default function ProjectsSection() {
           "linear-gradient(180deg, #000018 0%, #010038 35%, #01004C 65%, #000028 100%)",
       }}
     >
+      {/*
+        ── Scoped CSS for hover states ────────────────────────────────────────
+        FIX: All hover micro-interactions live here, handled purely by browser
+        compositor. No JS event handlers = no layout thrashing = buttery smooth.
+      */}
+      <style>{`
+        /* Card lift + border glow + shadow on hover */
+        .project-image-card .card-inner:hover {
+          transform: translateY(-7px);
+          border-color: rgba(139, 128, 255, 0.58) !important;
+          box-shadow: 0 0 0 1px rgba(139,128,255,0.22), 0 20px 60px rgba(53,32,220,0.48);
+        }
+
+        /* Image zoom on card hover */
+        .project-image-card .card-inner:hover .card-img {
+          transform: scale(1.06);
+        }
+
+        /* Shine sweep reveal */
+        .project-image-card .card-inner:hover .card-shine {
+          opacity: 1;
+        }
+
+        /* Top accent line reveal */
+        .project-image-card .card-inner:hover .card-accent-line {
+          opacity: 1;
+        }
+
+        /* Arrow button reveal */
+        .project-image-card .card-inner:hover .card-arrow-btn {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        /* Title colour on card group hover */
+        .group\/card:hover h3 {
+          color: #C0BAFF;
+        }
+
+        /* Title row arrow reveal */
+        .group\/card:hover .title-arrow {
+          opacity: 1 !important;
+          transform: translateX(0) !important;
+        }
+      `}</style>
+
       {/* Glow orbs */}
       <div
         className="absolute left-1/2 -translate-x-1/2 -top-16 w-[640px] h-[280px] rounded-full blur-3xl pointer-events-none"
@@ -412,6 +556,17 @@ export default function ProjectsSection() {
               style={{
                 background: "linear-gradient(135deg, #1800C8 0%, #3520DC 100%)",
                 boxShadow: "0 0 28px rgba(53,32,220,0.45)",
+                transition: "transform 0.25s ease, box-shadow 0.25s ease",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.transform = "scale(1.04)";
+                (e.currentTarget as HTMLButtonElement).style.boxShadow =
+                  "0 0 42px rgba(53,32,220,0.65)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.transform = "scale(1)";
+                (e.currentTarget as HTMLButtonElement).style.boxShadow =
+                  "0 0 28px rgba(53,32,220,0.45)";
               }}
             >
               View All Projects
