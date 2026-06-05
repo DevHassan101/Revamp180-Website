@@ -54,6 +54,8 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [quoteHovered, setQuoteHovered] = useState(false);
+  const [consultHovered, setConsultHovered] = useState(false);
   const dropdownRef = useRef(null);
   const pathname = usePathname();
 
@@ -100,9 +102,7 @@ export default function Navbar() {
     <>
       <header
         className={`w-full fixed top-0 left-0 z-50 px-6 lg:px-10 transition-all duration-500 ${
-          scrolled
-            ? "bg-[#01004C]/88 shadow-md shadow-[#8B80FF]/30 backdrop-blur-md"
-            : "bg-transparent"
+          scrolled ? "bg-white/0" : "bg-transparent"
         }`}
       >
         <nav
@@ -113,33 +113,47 @@ export default function Navbar() {
             href="/"
             className={`col-start-1 flex items-center gap-3 shrink-0 z-50 transition-all duration-500 ${scrolled ? "mt-0" : "mt-5 md:mt-2"}`}
           >
-            <motion.div
-              whileHover={{ scale: 1.06 }}
-              whileTap={{ scale: 0.96 }}
-              transition={{ type: "spring", stiffness: 400, damping: 20 }}
-              className="w-11 h-11 rounded-xl overflow-hidden"
-            >
-              <Image
-                src="/images/logo2.jpeg"
-                alt="Revamp 180 logo"
-                width={44}
-                height={44}
-                className="w-full h-full object-cover"
-                priority
-              />
-            </motion.div>
-            <div className={`leading-tight select-none transition-all duration-500 ease-in-out ${scrolled ? "opacity-0 -translate-y-1 pointer-events-none" : "opacity-100 translate-y-0"}`}>
-              <p className="text-[15px] font-extrabold tracking-wide text-white whitespace-nowrap">
-                REVAMP <span className="text-[#8B80FF]">180°</span>
-              </p>
-              <p className="text-[9px] font-medium tracking-[0.22em] text-white/40 uppercase whitespace-nowrap">
-                Digital Agency
-              </p>
+            <div className="relative w-32 h-11 flex items-center">
+              {/* Text */}
+              <div
+                className={`absolute inset-0 flex items-center transition-all duration-500 ${
+                  scrolled
+                    ? "opacity-0 scale-90 pointer-events-none"
+                    : "opacity-100 scale-100"
+                }`}
+              >
+                <p className="text-[22px] font-extrabold tracking-wide text-white whitespace-nowrap">
+                  REVAMP 180°
+                </p>
+              </div>
+
+              {/* Logo */}
+              <motion.div
+                whileHover={{ scale: 1.06 }}
+                whileTap={{ scale: 0.96 }}
+                transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                className={`absolute inset-0 flex items-center transition-all duration-500 ${
+                  scrolled
+                    ? "opacity-100 scale-100"
+                    : "opacity-0 scale-75 pointer-events-none"
+                }`}
+              >
+                <Image
+                  src="/images/revamp-transparent.png"
+                  alt="Revamp 180 logo"
+                  width={54}
+                  height={54}
+                  className="rounded-xl object-cover"
+                  priority
+                />
+              </motion.div>
             </div>
           </Link>
 
           {/* ── Desktop Nav — White Pill (ByteCloude design) ── */}
-          <div className={`col-start-2 hidden lg:flex items-center justify-center relative h-[68px] self-start transition-all duration-700 ease-in-out ${scrolled ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
+          <div
+            className={`col-start-2 hidden lg:flex items-center justify-center relative h-[68px] self-start transition-all duration-700 ease-in-out ${scrolled ? "opacity-0 pointer-events-none" : "opacity-100"}`}
+          >
             {/* White pill shape — only visible when not scrolled */}
             <div
               className={`absolute inset-0 bg-white transition-opacity duration-700 ease-in-out ${styles.maskShape} ${scrolled ? "invisible" : "visible"}`}
@@ -327,28 +341,73 @@ export default function Navbar() {
           {/* ── Right col: CTA + Hamburger ── */}
           <div className="col-start-3 flex items-center justify-end">
             {/* Desktop CTA Buttons */}
-            <div className={`hidden lg:flex items-center gap-3 z-50 transition-all duration-500 ${scrolled ? "mt-0" : "mt-2"}`}>
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
+            <div
+              className={`hidden lg:flex items-center gap-3 z-50 transition-all duration-500 ${scrolled ? "mt-0" : "mt-2"}`}
+            >
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
+              >
                 <Link
                   href="/contact"
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-full border-2 border-white/20 text-sm font-semibold text-white/80 hover:border-white/50 hover:text-white transition-all duration-200 whitespace-nowrap"
+                  onMouseEnter={() => setConsultHovered(true)}
+                  onMouseLeave={() => setConsultHovered(false)}
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white transition-all duration-300 whitespace-nowrap"
+                  style={
+                    consultHovered
+                      ? {
+                          background:
+                            "linear-gradient(135deg, #080B78 0%, #1C20C0 100%)",
+                          border: "1.5px solid transparent",
+                          boxShadow: "0 0 20px rgba(8,11,120,0.45)",
+                        }
+                      : {
+                          background: "rgba(255,255,255,0.05)",
+                          border: "1.5px solid rgba(255,255,255,0.2)",
+                          backdropFilter: "blur(10px)",
+                        }
+                  }
                 >
-                  <Icon icon="tabler:message-circle" className="w-4 h-4 flex-shrink-0" />
+                  <Icon
+                    icon="tabler:message-circle"
+                    className="w-4 h-4 flex-shrink-0"
+                  />
                   Free Consultation
                 </Link>
               </motion.div>
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
+
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
+              >
                 <Link
                   href="/contact"
-                  className="flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-[#1800C8] text-white text-sm font-semibold hover:bg-[#3520DC] transition-colors duration-200 whitespace-nowrap"
-                  style={{ boxShadow: "0 0 16px rgba(24,0,200,0.4)" }}
+                  onMouseEnter={() => setQuoteHovered(true)}
+                  onMouseLeave={() => setQuoteHovered(false)}
+                  className="flex items-center gap-1.5 px-5 py-2.5 rounded-full text-white text-sm font-semibold transition-all duration-300 whitespace-nowrap"
+                  style={
+                    quoteHovered
+                      ? {
+                          background: "rgba(255,255,255,0.05)",
+                          border: "1.5px solid rgba(139,128,255,0.35)",
+                          backdropFilter: "blur(10px)",
+                          boxShadow: "none",
+                        }
+                      : {
+                          background: "linear-gradient(135deg, #080B78 0%, #1C20C0 100%)",
+                          border: "1.5px solid transparent",
+                          boxShadow: "0 0 16px rgba(8,11,120,0.55)",
+                        }
+                  }
                 >
-                  <Icon icon="tabler:bolt" className="w-3.5 h-3.5 flex-shrink-0" />
+                  <Icon
+                    icon="tabler:bolt"
+                    className="w-3.5 h-3.5 flex-shrink-0"
+                  />
                   Get a Quote →
                 </Link>
               </motion.div>
             </div>
-
             {/* Mobile Hamburger */}
             <motion.button
               className={`lg:hidden z-50 p-2 transition-all duration-500 ${scrolled ? "mt-0" : "mt-5"}`}
@@ -358,17 +417,25 @@ export default function Navbar() {
             >
               <div className="flex flex-col gap-[5px] w-5 justify-center">
                 <motion.span
-                  animate={mobileOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
+                  animate={
+                    mobileOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }
+                  }
                   transition={{ duration: 0.28, ease: "easeInOut" }}
                   className="block h-[2px] w-full bg-white rounded-full origin-center"
                 />
                 <motion.span
-                  animate={mobileOpen ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
+                  animate={
+                    mobileOpen
+                      ? { opacity: 0, scaleX: 0 }
+                      : { opacity: 1, scaleX: 1 }
+                  }
                   transition={{ duration: 0.2 }}
                   className="block h-[2px] w-full bg-white rounded-full"
                 />
                 <motion.span
-                  animate={mobileOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
+                  animate={
+                    mobileOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }
+                  }
                   transition={{ duration: 0.28, ease: "easeInOut" }}
                   className="block h-[2px] w-full bg-white rounded-full origin-center"
                 />

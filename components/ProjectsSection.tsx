@@ -17,63 +17,72 @@ const projects = [
   {
     title: "FoodieHub",
     category: "Web Development",
-    image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&q=80",
     overlay: "rgba(24,0,200,0.52)",
     tags: ["Next.js", "Node.js"],
   },
   {
     title: "StyleKart",
     category: "E-commerce",
-    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80",
     overlay: "rgba(53,32,220,0.48)",
     tags: ["Shopify", "Branding"],
   },
   {
     title: "FitApp",
     category: "App Design",
-    image: "https://images.unsplash.com/photo-1534258936925-c58bed479fcb?w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1534258936925-c58bed479fcb?w=800&q=80",
     overlay: "rgba(107,33,168,0.50)",
     tags: ["React Native", "Flutter"],
   },
   {
     title: "Nova Brand",
     category: "Branding & UI/UX",
-    image: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=800&q=80",
     overlay: "rgba(45,27,105,0.52)",
     tags: ["Branding", "Figma"],
   },
   {
     title: "SocialPulse",
     category: "Social Media",
-    image: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&q=80",
     overlay: "rgba(124,58,237,0.50)",
     tags: ["Instagram", "Video"],
   },
   {
     title: "TechVault",
     category: "Website Revamping",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
     overlay: "rgba(12,0,64,0.55)",
     tags: ["Revamp", "SEO"],
   },
   {
     title: "MediCare",
     category: "Web Design",
-    image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80",
     overlay: "rgba(0,80,160,0.52)",
     tags: ["Next.js", "UI/UX"],
   },
   {
     title: "EduLearn",
     category: "App Development",
-    image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=800&q=80",
     overlay: "rgba(30,0,180,0.50)",
     tags: ["React", "Firebase"],
   },
   {
     title: "FinTrack",
     category: "Web App",
-    image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
     overlay: "rgba(20,0,100,0.54)",
     tags: ["Dashboard", "Node.js"],
   },
@@ -108,13 +117,33 @@ function ProjectCard({
       viewport={{ once: true, amount: 0.15 }}
       transition={{
         // Transform — original curve & duration kept exactly
-        x:      { duration: colIndex === 1 ? 0.9 : 1.1, ease: FAN_EASE, delay: colIndex === 1 ? 0 : 0.18 },
-        y:      { duration: colIndex === 1 ? 0.9 : 1.1, ease: FAN_EASE, delay: colIndex === 1 ? 0 : 0.18 },
-        scale:  { duration: colIndex === 1 ? 0.9 : 1.1, ease: FAN_EASE, delay: colIndex === 1 ? 0 : 0.18 },
+        x: {
+          duration: colIndex === 1 ? 0.9 : 1.1,
+          ease: FAN_EASE,
+          delay: colIndex === 1 ? 0 : 0.18,
+        },
+        y: {
+          duration: colIndex === 1 ? 0.9 : 1.1,
+          ease: FAN_EASE,
+          delay: colIndex === 1 ? 0 : 0.18,
+        },
+        scale: {
+          duration: colIndex === 1 ? 0.9 : 1.1,
+          ease: FAN_EASE,
+          delay: colIndex === 1 ? 0 : 0.18,
+        },
         // Opacity — faster ease-out so cards don't "pop" in late
-        opacity: { duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94], delay: colIndex === 1 ? 0 : 0.18 },
+        opacity: {
+          duration: 0.55,
+          ease: [0.25, 0.46, 0.45, 0.94],
+          delay: colIndex === 1 ? 0 : 0.18,
+        },
         // Blur — dissolves gently, slightly longer than opacity
-        filter:  { duration: 0.7,  ease: [0.25, 0.46, 0.45, 0.94], delay: colIndex === 1 ? 0 : 0.18 },
+        filter: {
+          duration: 0.7,
+          ease: [0.25, 0.46, 0.45, 0.94],
+          delay: colIndex === 1 ? 0 : 0.18,
+        },
       }}
       className="group/card flex flex-col gap-3"
     >
@@ -286,10 +315,17 @@ function ProjectCard({
               right: 0,
               zIndex: 10,
               padding: "2.5rem 1rem 1rem",
-              background: "linear-gradient(to top, rgba(0,0,18,0.82) 0%, transparent 100%)",
+              background:
+                "linear-gradient(to top, rgba(0,0,18,0.82) 0%, transparent 100%)",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
               <span
                 style={{
                   fontSize: "10px",
@@ -326,7 +362,10 @@ function ProjectCard({
                   transition: "opacity 0.3s ease, transform 0.3s ease",
                 }}
               >
-                <Icon icon="tabler:arrow-up-right" className="w-4 h-4 text-[#C0BAFF]" />
+                <Icon
+                  icon="tabler:arrow-up-right"
+                  className="w-4 h-4 text-[#C0BAFF]"
+                />
               </span>
             </div>
           </div>
@@ -398,6 +437,7 @@ function ProjectCard({
 // ─── Main Section ─────────────────────────────────────────────────────────────
 export default function ProjectsSection() {
   const [showAll, setShowAll] = useState(false);
+  const [viewAllHovered, setViewAllHovered] = useState(false);
   const visible = showAll ? projects : projects.slice(0, 6);
 
   const rows: (typeof projects)[] = [];
@@ -408,10 +448,6 @@ export default function ProjectsSection() {
   return (
     <section
       className="relative w-full py-28 px-4 overflow-hidden"
-      style={{
-        background:
-          "linear-gradient(180deg, #000018 0%, #010038 35%, #01004C 65%, #000028 100%)",
-      }}
     >
       {/*
         ── Scoped CSS for hover states ────────────────────────────────────────
@@ -460,17 +496,23 @@ export default function ProjectsSection() {
       `}</style>
 
       {/* Glow orbs */}
-      <div
+      {/* <div
         className="absolute left-1/2 -translate-x-1/2 -top-16 w-[640px] h-[280px] rounded-full blur-3xl pointer-events-none"
-        style={{ background: "radial-gradient(circle, #1800C8 0%, transparent 70%)", opacity: 0.16 }}
+        style={{
+          background: "radial-gradient(circle, #1800C8 0%, transparent 70%)",
+          opacity: 0.16,
+        }}
       />
+
       <div
         className="absolute right-[-80px] bottom-0 w-[360px] h-[360px] rounded-full blur-3xl pointer-events-none"
-        style={{ background: "radial-gradient(circle, #3520DC 0%, transparent 70%)", opacity: 0.12 }}
-      />
+        style={{
+          background: "radial-gradient(circle, #3520DC 0%, transparent 70%)",
+          opacity: 0.12,
+        }}
+      /> */}
 
       <div className="relative z-10 max-w-6xl mx-auto">
-
         {/* ── Header ── */}
         <div className="text-center mb-16">
           <motion.div
@@ -486,7 +528,9 @@ export default function ProjectsSection() {
             }}
           >
             <span className="w-1.5 h-1.5 rounded-full bg-[#8B80FF] animate-pulse" />
-            <span className="text-[#C0BAFF] text-sm font-medium tracking-wide">Our Projects</span>
+            <span className="text-[#C0BAFF] text-sm font-medium tracking-wide">
+              Our Projects
+            </span>
           </motion.div>
 
           <motion.h2
@@ -495,12 +539,18 @@ export default function ProjectsSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: EASE, delay: 0.08 }}
             className="font-extrabold text-white mb-4"
-            style={{ fontSize: "clamp(2rem, 4.5vw, 3rem)", letterSpacing: "-0.02em" }}
+            style={{
+              fontSize: "clamp(2rem, 4.5vw, 3rem)",
+              letterSpacing: "-0.02em",
+            }}
           >
             Work That{" "}
             <span
               className="bg-clip-text text-transparent"
-              style={{ backgroundImage: "linear-gradient(90deg, #8B80FF, #C0BAFF, #8B80FF)" }}
+              style={{
+                backgroundImage:
+                  "linear-gradient(90deg, #8B80FF, #C0BAFF, #8B80FF)",
+              }}
             >
               Speaks for Itself
             </span>
@@ -552,22 +602,25 @@ export default function ProjectsSection() {
           {!showAll ? (
             <button
               onClick={() => setShowAll(true)}
-              className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-white font-semibold text-[15px] cursor-pointer"
-              style={{
-                background: "linear-gradient(135deg, #1800C8 0%, #3520DC 100%)",
-                boxShadow: "0 0 28px rgba(53,32,220,0.45)",
-                transition: "transform 0.25s ease, box-shadow 0.25s ease",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLButtonElement).style.transform = "scale(1.04)";
-                (e.currentTarget as HTMLButtonElement).style.boxShadow =
-                  "0 0 42px rgba(53,32,220,0.65)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLButtonElement).style.transform = "scale(1)";
-                (e.currentTarget as HTMLButtonElement).style.boxShadow =
-                  "0 0 28px rgba(53,32,220,0.45)";
-              }}
+              onMouseEnter={() => setViewAllHovered(true)}
+              onMouseLeave={() => setViewAllHovered(false)}
+              className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-white font-semibold text-[15px] cursor-pointer transition-all duration-300"
+              style={
+                viewAllHovered
+                  ? {
+                      background: "rgba(255,255,255,0.05)",
+                      border: "1.5px solid rgba(139,128,255,0.35)",
+                      backdropFilter: "blur(10px)",
+                      boxShadow: "none",
+                      transform: "scale(1.04)",
+                    }
+                  : {
+                      background: "linear-gradient(135deg, #080B78 0%, #1C20C0 100%)",
+                      border: "1.5px solid transparent",
+                      boxShadow: "0 0 28px rgba(8,11,120,0.55)",
+                      transform: "scale(1)",
+                    }
+              }
             >
               View All Projects
               <Icon icon="tabler:arrow-down" className="w-5 h-5" />
@@ -587,7 +640,6 @@ export default function ProjectsSection() {
             </Link>
           )}
         </motion.div>
-
       </div>
     </section>
   );

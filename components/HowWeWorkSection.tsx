@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
@@ -41,25 +42,20 @@ const steps = [
 ];
 
 export default function HowWeWorkSection() {
+  const [bookHovered, setBookHovered] = useState(false);
   return (
-    <section
-      className="relative w-full py-24 px-4 overflow-hidden"
-      style={{
-        background:
-          "linear-gradient(180deg, #000028 0%, #010045 35%, #01004C 65%, #000028 100%)",
-      }}
-    >
+    <section className="relative w-full py-24 px-4 overflow-hidden">
       {/* Top separator */}
-      <div
+      {/* <div
         className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[1px] pointer-events-none"
         style={{
           background:
             "linear-gradient(90deg, transparent, rgba(139,128,255,0.22), transparent)",
         }}
-      />
+      /> */}
 
       {/* Ambient glows */}
-      <div
+      {/* <div
         className="absolute left-[-80px] top-1/2 -translate-y-1/2 w-[350px] h-[350px] rounded-full blur-3xl pointer-events-none"
         style={{
           background: "radial-gradient(circle, #1800C8 0%, transparent 70%)",
@@ -72,11 +68,10 @@ export default function HowWeWorkSection() {
           background: "radial-gradient(circle, #3520DC 0%, transparent 70%)",
           opacity: 0.09,
         }}
-      />
+      /> */}
 
       <div className="relative z-10 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-6 items-center">
-
           {/* ── Left: Section content ── */}
           <div className="lg:pr-8">
             <motion.div
@@ -139,7 +134,11 @@ export default function HowWeWorkSection() {
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.55, ease: EASE, delay: 0.2 + i * 0.1 }}
+                  transition={{
+                    duration: 0.55,
+                    ease: EASE,
+                    delay: 0.2 + i * 0.1,
+                  }}
                   className="flex items-start gap-4"
                 >
                   <div
@@ -176,12 +175,23 @@ export default function HowWeWorkSection() {
             >
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full text-white font-semibold text-[15px] transition-all duration-200 hover:brightness-110"
-                style={{
-                  background:
-                    "linear-gradient(135deg, #1800C8 0%, #3520DC 100%)",
-                  boxShadow: "0 0 26px rgba(53,32,220,0.42)",
-                }}
+                onMouseEnter={() => setBookHovered(true)}
+                onMouseLeave={() => setBookHovered(false)}
+                className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full text-white font-semibold text-[15px] transition-all duration-300"
+                style={
+                  bookHovered
+                    ? {
+                        background: "rgba(255,255,255,0.05)",
+                        border: "1.5px solid rgba(139,128,255,0.35)",
+                        backdropFilter: "blur(10px)",
+                        boxShadow: "none",
+                      }
+                    : {
+                        background: "linear-gradient(135deg, #080B78 0%, #1C20C0 100%)",
+                        border: "1.5px solid transparent",
+                        boxShadow: "0 0 26px rgba(8,11,120,0.55)",
+                      }
+                }
               >
                 Book Free Consultation
                 <Icon icon="tabler:arrow-right" className="w-4 h-4" />
@@ -191,8 +201,6 @@ export default function HowWeWorkSection() {
 
           {/* ── Right: Wave visualization ── */}
           <div className="relative h-[480px]">
-
-
             {/* SVG wave path — preserveAspectRatio none so % coords match HTML */}
             <svg
               className="absolute inset-0 w-full h-full"
@@ -202,8 +210,8 @@ export default function HowWeWorkSection() {
             >
               <defs>
                 <linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%"   stopColor="#3520DC" stopOpacity="0.5" />
-                  <stop offset="50%"  stopColor="#5B4FF0" stopOpacity="0.75" />
+                  <stop offset="0%" stopColor="#3520DC" stopOpacity="0.5" />
+                  <stop offset="50%" stopColor="#5B4FF0" stopOpacity="0.75" />
                   <stop offset="100%" stopColor="#8B80FF" stopOpacity="0.9" />
                 </linearGradient>
               </defs>
@@ -277,7 +285,6 @@ export default function HowWeWorkSection() {
               <StepContent step={steps[2]} align="right" />
             </motion.div>
           </div>
-
         </div>
       </div>
     </section>
@@ -410,7 +417,11 @@ function StepContent({
       {/* Title */}
       <h3
         className={`relative text-white font-bold text-[0.9rem] mb-1.5 leading-snug ${
-          align === "right" ? "text-right" : align === "center" ? "text-center" : ""
+          align === "right"
+            ? "text-right"
+            : align === "center"
+              ? "text-center"
+              : ""
         }`}
       >
         {step.title}
@@ -419,7 +430,11 @@ function StepContent({
       {/* Description */}
       <p
         className={`relative text-white/42 text-[11.5px] leading-relaxed ${
-          align === "right" ? "text-right" : align === "center" ? "text-center" : ""
+          align === "right"
+            ? "text-right"
+            : align === "center"
+              ? "text-center"
+              : ""
         }`}
       >
         {step.description}

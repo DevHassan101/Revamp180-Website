@@ -50,7 +50,7 @@ const cardVariants = {
   show: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.62, ease: EASE, delay: i * 0.09 },
+    transition: { duration: 0.85, ease: EASE, delay: i * 0.09 },
   }),
 };
 
@@ -58,27 +58,23 @@ export default function ServicesSection() {
   return (
     <section
       className="relative w-full py-28 px-4 overflow-hidden"
-      style={{
-        background:
-          "linear-gradient(180deg, #000018 0%, #010038 35%, #01004C 65%, #000028 100%)",
-      }}
     >
       {/* Glow orb — top center */}
-      <div
+      {/* <div
         className="absolute left-1/2 -top-16 -translate-x-1/2 w-[640px] h-[280px] rounded-full blur-3xl pointer-events-none"
         style={{
           background: "radial-gradient(circle, #1800C8 0%, transparent 70%)",
           opacity: 0.18,
         }}
-      />
+      /> */}
       {/* Glow orb — bottom right */}
-      <div
+      {/* <div
         className="absolute right-[-80px] bottom-0 w-[360px] h-[360px] rounded-full blur-3xl pointer-events-none"
         style={{
           background: "radial-gradient(circle, #3520DC 0%, transparent 70%)",
           opacity: 0.12,
         }}
-      />
+      /> */}
 
       <div className="relative z-10 max-w-6xl mx-auto">
 
@@ -212,30 +208,6 @@ function ServiceCard({
             "linear-gradient(180deg, rgba(139,128,255,0.07) 0%, transparent 100%)",
         }}
       />
-
-      {/* Faded background number */}
-      <span
-        className="absolute bottom-4 right-5 font-black select-none leading-none pointer-events-none"
-        style={{
-          fontSize: "5.5rem",
-          color: "rgba(139,128,255,0.06)",
-          transition: "color 0.35s",
-        }}
-        ref={(el) => {
-          if (!el) return;
-          const parent = el.closest(".group");
-          parent?.addEventListener(
-            "mouseenter",
-            () => (el.style.color = "rgba(139,128,255,0.10)")
-          );
-          parent?.addEventListener(
-            "mouseleave",
-            () => (el.style.color = "rgba(139,128,255,0.06)")
-          );
-        }}
-      >
-        {String(index + 1).padStart(2, "0")}
-      </span>
 
       <div className="relative z-10 p-7 flex flex-col h-full">
         {/* Icon + badge row */}

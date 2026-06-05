@@ -10,12 +10,12 @@ import ParticlesCanvas from "./ParticlesCanvas";
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 const services = [
-  { label: "Website Revamping",        icon: "tabler:refresh"         },
-  { label: "Web Design & Development", icon: "tabler:code"            },
-  { label: "App Design & Development", icon: "tabler:device-mobile"   },
-  { label: "Branding & UI/UX Design",  icon: "tabler:brush"           },
-  { label: "Social Media Management",  icon: "tabler:brand-instagram" },
-  { label: "Video Editing",            icon: "tabler:video"           },
+  { label: "Website Revamping", icon: "tabler:refresh" },
+  { label: "Web Design & Development", icon: "tabler:code" },
+  { label: "App Design & Development", icon: "tabler:device-mobile" },
+  { label: "Branding & UI/UX Design", icon: "tabler:brush" },
+  { label: "Social Media Management", icon: "tabler:brand-instagram" },
+  { label: "Video Editing", icon: "tabler:video" },
 ];
 
 function AnimatedHeadline({
@@ -44,13 +44,21 @@ function AnimatedHeadline({
       {words.map((word, i) => (
         <span
           key={i}
-          style={{ display: "inline-block", overflow: "hidden", lineHeight: 1.25 }}
+          style={{
+            display: "inline-block",
+            overflow: "hidden",
+            lineHeight: 1.25,
+          }}
         >
           <motion.span
             style={{ display: "inline-block" }}
             variants={{
               hidden: { y: "100%", opacity: 0 },
-              show: { y: "0%", opacity: 1, transition: { duration: 0.75, ease: EASE } },
+              show: {
+                y: "0%",
+                opacity: 1,
+                transition: { duration: 0.75, ease: EASE },
+              },
             }}
           >
             {word}
@@ -64,6 +72,8 @@ function AnimatedHeadline({
 
 export default function HeroSection() {
   const [activeService, setActiveService] = useState(0);
+  const [btn1Hovered, setBtn1Hovered] = useState(false);
+  const [btn2Hovered, setBtn2Hovered] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -77,7 +87,7 @@ export default function HeroSection() {
       className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center px-4 pt-35 pb-30"
       style={{
         background:
-          "radial-gradient(ellipse 80% 60% at 50% 0%, #0A009A 0%, #01004C 55%, #000018 100%)",
+          "radial-gradient(circle, rgba(8, 11, 120, 1) 0%,rgba(0, 0, 0, 1) 100%)",
       }}
     >
       <ParticlesCanvas />
@@ -85,20 +95,28 @@ export default function HeroSection() {
       {/* Glow orbs */}
       <motion.div
         className="absolute top-[-120px] left-1/2 -translate-x-1/2 w-[700px] h-[340px] rounded-full blur-3xl pointer-events-none"
-        style={{ background: "radial-gradient(circle, #1800C8 0%, transparent 70%)" }}
+        style={{
+          background: "radial-gradient(circle, #1800C8 0%, transparent 70%)",
+        }}
         animate={{ y: [0, -22, 0], opacity: [0.2, 0.3, 0.2] }}
         transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         className="absolute bottom-0 right-[-60px] w-[380px] h-[380px] rounded-full blur-3xl pointer-events-none"
-        style={{ background: "radial-gradient(circle, #3520DC 0%, transparent 70%)" }}
+        style={{
+          background: "radial-gradient(circle, #3520DC 0%, transparent 70%)",
+        }}
         animate={{ y: [0, 22, 0], opacity: [0.1, 0.18, 0.1] }}
-        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        transition={{
+          duration: 9,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 2,
+        }}
       />
 
       {/* Main content */}
       <div className="relative z-10 text-center max-w-4xl mx-auto">
-
         {/* Badge — blur-fade, no spring bounce */}
         <motion.div
           initial={{ opacity: 0, y: 16, filter: "blur(8px)" }}
@@ -111,9 +129,9 @@ export default function HeroSection() {
             backdropFilter: "blur(8px)",
           }}
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-[#8B80FF] animate-pulse" />
-          <span className="text-[#C0BAFF] text-sm font-medium tracking-wide">
-            Award-Winning Digital Agency
+          <span className="w-1.5 h-1.5 rounded-full bg-white/90 animate-pulse" />
+          <span className="text-white text-sm font-medium tracking-wide">
+            Refresh, Redesign, Relaunch
           </span>
         </motion.div>
 
@@ -122,7 +140,10 @@ export default function HeroSection() {
           text="We Build Software That"
           delay={0.42}
           className="font-extrabold text-white tracking-tight mb-0 block"
-          style={{ fontSize: "clamp(2.6rem, 6vw, 3.8rem)", letterSpacing: "-0.02em" }}
+          style={{
+            fontSize: "clamp(2.6rem, 6vw, 3.8rem)",
+            letterSpacing: "-0.02em",
+          }}
         />
         <AnimatedHeadline
           text="Grows Your Business"
@@ -131,7 +152,8 @@ export default function HeroSection() {
           style={{
             fontSize: "clamp(2.6rem, 6vw, 3.8rem)",
             letterSpacing: "-0.02em",
-            backgroundImage: "linear-gradient(90deg, #8B80FF, #C0BAFF, #8B80FF)",
+            backgroundImage:
+              "linear-gradient(90deg, #8B80FF, #C0BAFF, #8B80FF)",
           }}
         />
 
@@ -162,8 +184,8 @@ export default function HeroSection() {
           >
             445+ projects
           </span>
-          &nbsp;
-          We help businesses build powerful digital experiences on time and on budget.
+          &nbsp; We help businesses build powerful digital experiences on time
+          and on budget.
         </motion.p>
 
         {/* Service chips — layoutId sliding background */}
@@ -194,10 +216,12 @@ export default function HeroSection() {
               className="relative flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium cursor-pointer overflow-hidden"
               style={{
                 background: "rgba(255,255,255,0.06)",
-                border: activeService === i
-                  ? "1px solid rgba(139,128,255,0.55)"
-                  : "1px solid rgba(255,255,255,0.12)",
-                color: activeService === i ? "#C0BAFF" : "rgba(255,255,255,0.65)",
+                border:
+                  activeService === i
+                    ? "1px solid rgba(139,128,255,0.55)"
+                    : "1px solid rgba(255,255,255,0.12)",
+                color:
+                  activeService === i ? "#C0BAFF" : "rgba(255,255,255,0.65)",
                 backdropFilter: "blur(8px)",
                 transition: "border-color 0.3s, color 0.3s",
               }}
@@ -234,11 +258,24 @@ export default function HeroSection() {
           >
             <Link
               href="/contact"
-              className="flex items-center gap-3 px-8 py-4 rounded-full text-white font-semibold text-[15px] w-full"
-              style={{
-                background: "linear-gradient(135deg, #1800C8 0%, #3520DC 100%)",
-                boxShadow: "0 0 28px rgba(53,32,220,0.45)",
-              }}
+              className="flex items-center gap-3 px-8 py-4 rounded-full text-white font-semibold text-[15px] w-full transition-all duration-300"
+              onMouseEnter={() => setBtn1Hovered(true)}
+              onMouseLeave={() => setBtn1Hovered(false)}
+              style={
+                btn1Hovered
+                  ? {
+                      background: "rgba(255,255,255,0.05)",
+                      border: "1.5px solid rgba(139,128,255,0.35)",
+                      backdropFilter: "blur(10px)",
+                      boxShadow: "none",
+                    }
+                  : {
+                      background:
+                        "linear-gradient(135deg, #080B78 0%, #1C20C0 100%)",
+                      border: "1.5px solid transparent",
+                      boxShadow: "0 0 28px rgba(8,11,120,0.55)",
+                    }
+              }
             >
               Request a Quote
               <motion.svg
@@ -248,9 +285,18 @@ export default function HeroSection() {
                 strokeWidth={2.5}
                 viewBox="0 0 24 24"
                 animate={{ x: [0, 5, 0] }}
-                transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut", delay: 2.6 }}
+                transition={{
+                  duration: 1.8,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 2.6,
+                }}
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
               </motion.svg>
             </Link>
           </motion.div>
@@ -263,15 +309,37 @@ export default function HeroSection() {
           >
             <Link
               href="/contact"
-              className="flex items-center gap-3 px-8 py-4 rounded-full text-white font-semibold text-[15px] w-full"
-              style={{
-                background: "rgba(255,255,255,0.05)",
-                border: "1.5px solid rgba(139,128,255,0.35)",
-                backdropFilter: "blur(10px)",
-              }}
+              className="flex items-center gap-3 px-8 py-4 rounded-full text-white font-semibold text-[15px] w-full transition-all duration-300"
+              onMouseEnter={() => setBtn2Hovered(true)}
+              onMouseLeave={() => setBtn2Hovered(false)}
+              style={
+                btn2Hovered
+                  ? {
+                      background:
+                        "linear-gradient(135deg, #080B78 0%, #1C20C0 100%)",
+                      border: "1.5px solid transparent",
+                      boxShadow: "0 0 28px rgba(8,11,120,0.45)",
+                      backdropFilter: "none",
+                    }
+                  : {
+                      background: "rgba(255,255,255,0.05)",
+                      border: "1.5px solid rgba(139,128,255,0.35)",
+                      backdropFilter: "blur(10px)",
+                    }
+              }
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
               </svg>
               Book Free Consultation
             </Link>
