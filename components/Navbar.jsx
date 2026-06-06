@@ -122,7 +122,7 @@ export default function Navbar() {
                     : "opacity-100 scale-100"
                 }`}
               >
-                <p className="text-[22px] font-extrabold tracking-wide text-white whitespace-nowrap">
+                <p className="text-[18px] xl:text-[22px] font-extrabold tracking-wide text-white whitespace-nowrap">
                   REVAMP 180°
                 </p>
               </div>
@@ -152,14 +152,14 @@ export default function Navbar() {
 
           {/* ── Desktop Nav — White Pill (ByteCloude design) ── */}
           <div
-            className={`col-start-2 hidden lg:flex items-center justify-center relative h-[64px] xl:h-[68px] self-start transition-all duration-700 ease-in-out ${scrolled ? "opacity-0 pointer-events-none" : "opacity-100"}`}
+            className={`col-start-2 hidden lg:flex items-center justify-center relative h-[65px] xl:h-[68px] self-start transition-all duration-700 ease-in-out ${scrolled ? "opacity-0 pointer-events-none" : "opacity-100"}`}
           >
             {/* White pill shape — only visible when not scrolled */}
             <div
               className={`absolute inset-0 bg-white transition-opacity duration-700 ease-in-out ${styles.maskShape} ${scrolled ? "invisible" : "visible"}`}
             />
 
-            <ul className="relative flex items-center gap-2! xl:gap-5 px-15! lg:px-20 h-full z-10">
+            <ul className="relative flex items-center gap-3 xl:gap-8 px-13 xl:px-20 h-full z-10">
               {[
                 { name: "Home", href: "/" },
                 { name: "About Us", href: "/about" },
@@ -167,7 +167,7 @@ export default function Navbar() {
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className={`text-[12px]! lg:text-[15px]! tracking-wider font-medium transition-all duration-500 uppercase ${
+                    className={`text-[12px] xl:text-[15px] tracking-wide xl:tracking-wider font-medium transition-all duration-500 uppercase ${
                       scrolled
                         ? isActive(item.href)
                           ? "text-[#8B80FF]"
@@ -196,7 +196,7 @@ export default function Navbar() {
                   onMouseLeave={() => setServicesOpen(false)}
                 >
                   <button
-                    className={`flex items-center gap-1 text-[12px]! lg:text-[15px] tracking-wider font-medium transition-all duration-500 uppercase cursor-pointer ${
+                    className={`flex items-center gap-1 text-[12px] xl:text-[15px] tracking-wide xl:tracking-wider font-medium transition-all duration-500 uppercase cursor-pointer ${
                       scrolled
                         ? isServicesActive
                           ? "text-[#8B80FF]"
@@ -208,7 +208,7 @@ export default function Navbar() {
                     aria-expanded={servicesOpen}
                   >
                     <span
-                      className={`px-2 py-[3px] transition-all duration-300 ${
+                      className={`px-2 transition-all duration-300 ${
                         !scrolled && isServicesActive
                           ? "border border-[#01004C]/70"
                           : ""
@@ -221,7 +221,7 @@ export default function Navbar() {
                       transition={{ duration: 0.2, ease: "easeOut" }}
                       className="flex items-center"
                     >
-                      <ChevronDown size={16} />
+                      <ChevronDown className="w-3 h-3 xl:w-4 xl:h-4" />
                     </motion.span>
                   </button>
 
@@ -314,7 +314,7 @@ export default function Navbar() {
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className={`text-[12px]! lg:text-[15px]! tracking-wider font-medium transition-all duration-500 uppercase ${
+                    className={`text-[12px] xl:text-[15px] tracking-wide xl:tracking-wider font-medium transition-all duration-500 uppercase ${
                       scrolled
                         ? isActive(item.href)
                           ? "text-[#8B80FF]"
@@ -341,10 +341,7 @@ export default function Navbar() {
           {/* ── Right col: CTA + Hamburger ── */}
           <div className="col-start-3 flex items-center justify-end">
             {/* Desktop CTA Buttons */}
-            <div
-              className={`hidden lg:flex items-center gap-3 z-50 transition-all duration-500 ${scrolled ? "mt-0" : "mt-2"}`}
-            >
-
+            <div className={`hidden lg:flex items-center gap-3 z-50 transition-all duration-500 ${scrolled ? "mt-0" : "mt-2"}`}>
               <motion.div
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.97 }}
@@ -353,7 +350,7 @@ export default function Navbar() {
                   href="/contact"
                   onMouseEnter={() => setQuoteHovered(true)}
                   onMouseLeave={() => setQuoteHovered(false)}
-                  className="flex items-center gap-1.5 px-5 py-2.5 rounded-full text-white text-sm font-semibold transition-all duration-300 whitespace-nowrap"
+                  className="flex items-center gap-1 xl:gap-1.5 px-4 xl:px-5 py-2 xl:py-2.5 rounded-full text-white text-xs xl:text-sm font-semibold transition-all duration-300 whitespace-nowrap"
                   style={
                     quoteHovered
                       ? {
