@@ -87,7 +87,7 @@ export default function HeroSection() {
       className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center px-4 pt-35 pb-30"
       style={{
         background:
-          "radial-gradient(circle, rgba(8, 11, 120, 1) 0%,rgba(0, 0, 0, 1) 100%)",
+          "radial-gradient(circle, #00004D 0%,rgba(0, 0, 0, 1) 100%)",
       }}
     >
       <ParticlesCanvas />
