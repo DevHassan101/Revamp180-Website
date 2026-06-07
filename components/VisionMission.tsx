@@ -112,8 +112,6 @@ export default function AboutPage() {
             top: 0,
             height: "100vh",
             overflow: "hidden",
-            background:
-              "radial-gradient(circle, #00004D 0%,rgba(0, 0, 0, 1) 100%)",
           }}
         >
           {/* Star field — pure CSS */}

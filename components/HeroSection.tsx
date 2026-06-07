@@ -85,23 +85,20 @@ export default function HeroSection() {
   return (
     <div
       className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center px-4 pt-35 pb-30"
-      style={{
-        background:
-          "radial-gradient(circle, #00004D 0%,rgba(0, 0, 0, 1) 100%)",
-      }}
+      
     >
       <ParticlesCanvas />
 
       {/* Glow orbs */}
-      <motion.div
+      {/* <motion.div
         className="absolute top-[-120px] left-1/2 -translate-x-1/2 w-[700px] h-[340px] rounded-full blur-3xl pointer-events-none"
         style={{
           background: "radial-gradient(circle, #1800C8 0%, transparent 70%)",
         }}
         animate={{ y: [0, -22, 0], opacity: [0.2, 0.3, 0.2] }}
         transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
+      /> */}
+      {/* <motion.div
         className="absolute bottom-0 right-[-60px] w-[380px] h-[380px] rounded-full blur-3xl pointer-events-none"
         style={{
           background: "radial-gradient(circle, #3520DC 0%, transparent 70%)",
@@ -113,7 +110,7 @@ export default function HeroSection() {
           ease: "easeInOut",
           delay: 2,
         }}
-      />
+      /> */}
 
       {/* Main content */}
       <div className="relative z-10 text-center max-w-4xl mx-auto">
