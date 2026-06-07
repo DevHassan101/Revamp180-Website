@@ -57,7 +57,7 @@ const cardVariants = {
 export default function ServicesSection() {
   return (
     <section
-      className="relative w-full py-28 px-4 overflow-hidden"
+      className="relative w-full pt-24 pb-20 px-4 overflow-hidden"
     >
       {/* Glow orb — top center */}
       {/* <div

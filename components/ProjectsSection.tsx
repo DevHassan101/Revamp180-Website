@@ -522,7 +522,7 @@ export default function ProjectsSection() {
               letterSpacing: "-0.02em",
             }}
           >
-            Work That
+            Work That&nbsp;
             <span
               className="bg-clip-text text-transparent"
               style={{

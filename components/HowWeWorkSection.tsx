@@ -54,7 +54,7 @@ export default function HowWeWorkSection() {
   const [bookHovered, setBookHovered] = useState(false);
 
   return (
-    <section className="relative w-full min-h-250 overflow-x-hidden">
+    <section className="relative max-w-360 mx-auto min-h-250">
       {/* ── Left heading — absolute top-left ── */}
       <div className="absolute top-16 left-8 sm:left-12 lg:left-20 max-w-137.5 z-20">
         <motion.div
