@@ -148,18 +148,12 @@ function ProjectCard({
       className="group/card flex flex-col gap-3"
     >
       {/* ── Title row ── */}
-      <div className="flex items-center justify-between pr-1">
-        <div className="flex items-center gap-2.5">
-          <span
-            className="text-[11px] font-bold tabular-nums"
-            style={{ color: "rgba(139,128,255,0.55)" }}
-          >
-            {String(index + 1).padStart(2, "0")}
-          </span>
+      <div className="flex items-center justify-between">
+        <div className="flex justify-center items-center w-full">
           <h3
             className="font-semibold text-white"
             style={{
-              fontSize: tall ? "1.05rem" : "0.95rem",
+              fontSize: tall ? "1.20rem" : "1.20rem",
               letterSpacing: "-0.01em",
               // FIX: transition on color only — smooth & GPU-friendly
               transition: "color 0.3s ease",
@@ -170,7 +164,7 @@ function ProjectCard({
         </div>
 
         {/* FIX: arrow icon — pure CSS transition, no JS handlers */}
-        <span
+        {/* <span
           className="flex items-center justify-center w-6 h-6 rounded-full"
           style={{
             background: "rgba(139,128,255,0.15)",
@@ -184,7 +178,7 @@ function ProjectCard({
           // instead use Framer whileHover on parent
         >
           <Icon icon="tabler:arrow-right" className="w-3 h-3 text-[#8B80FF]" />
-        </span>
+        </span> */}
       </div>
 
       {/* ── Image card ── */}
@@ -400,7 +394,7 @@ function ProjectCard({
       </div>
 
       {/* ── Tags ── */}
-      <div className="flex flex-wrap gap-1.5">
+      <div className="flex flex-wrap justify-center items-center gap-2">
         {project.tags.map((tag) => (
           <span
             key={tag}
@@ -495,22 +489,6 @@ export default function ProjectsSection() {
         }
       `}</style>
 
-      {/* Glow orbs */}
-      {/* <div
-        className="absolute left-1/2 -translate-x-1/2 -top-16 w-[640px] h-[280px] rounded-full blur-3xl pointer-events-none"
-        style={{
-          background: "radial-gradient(circle, #1800C8 0%, transparent 70%)",
-          opacity: 0.16,
-        }}
-      />
-
-      <div
-        className="absolute right-[-80px] bottom-0 w-[360px] h-[360px] rounded-full blur-3xl pointer-events-none"
-        style={{
-          background: "radial-gradient(circle, #3520DC 0%, transparent 70%)",
-          opacity: 0.12,
-        }}
-      /> */}
 
       <div className="relative z-10 max-w-6xl mx-auto">
         {/* ── Header ── */}
@@ -544,7 +522,7 @@ export default function ProjectsSection() {
               letterSpacing: "-0.02em",
             }}
           >
-            Work That{" "}
+            Work That
             <span
               className="bg-clip-text text-transparent"
               style={{

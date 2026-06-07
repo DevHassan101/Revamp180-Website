@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Icon } from "@iconify/react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, MoveUpRight } from "lucide-react";
 import styles from "./navbar.module.css";
 
 const services = [
@@ -54,12 +54,13 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
-  const [quoteHovered, setQuoteHovered] = useState(false);
-  const [consultHovered, setConsultHovered] = useState(false);
+  const [ctaHovered, setCtaHovered] = useState(false);
+  const [mobileCtaHovered, setMobileCtaHovered] = useState(false);
   const dropdownRef = useRef(null);
   const pathname = usePathname();
 
   useEffect(() => {
+    setScrolled(window.scrollY > 20);
     let ticking = false;
     const handleScroll = () => {
       if (!ticking) {
@@ -102,7 +103,7 @@ export default function Navbar() {
     <>
       <header
         className={`w-full fixed top-0 left-0 z-50 px-6 lg:px-10 transition-all duration-500 ${
-          scrolled ? "bg-white/0" : "bg-transparent"
+          scrolled ? "bg-transparent" : "bg-transparent"
         }`}
       >
         <nav
@@ -116,7 +117,7 @@ export default function Navbar() {
             <div className="relative w-32 h-11 flex items-center">
               {/* Text */}
               <div
-                className={`absolute inset-0 flex items-center transition-all duration-500 ${
+                className={`absolute inset-0 flex items-center transition-all duration-200 ${
                   scrolled
                     ? "opacity-0 scale-90 pointer-events-none"
                     : "opacity-100 scale-100"
@@ -132,10 +133,10 @@ export default function Navbar() {
                 whileHover={{ scale: 1.06 }}
                 whileTap={{ scale: 0.96 }}
                 transition={{ type: "spring", stiffness: 400, damping: 20 }}
-                className={`absolute inset-0 flex items-center transition-all duration-500 ${
+                className={`absolute inset-0 flex items-center transition-all duration-300 ${
                   scrolled
-                    ? "opacity-100 scale-100"
-                    : "opacity-0 scale-75 pointer-events-none"
+                    ? "opacity-100 scale-100 delay-150"
+                    : "opacity-0 scale-75 pointer-events-none delay-0"
                 }`}
               >
                 <Image
@@ -152,7 +153,7 @@ export default function Navbar() {
 
           {/* ── Desktop Nav — White Pill (ByteCloude design) ── */}
           <div
-            className={`col-start-2 hidden lg:flex items-center justify-center relative h-[65px] xl:h-[68px] self-start transition-all duration-700 ease-in-out ${scrolled ? "opacity-0 pointer-events-none" : "opacity-100"}`}
+            className={`col-start-2 hidden lg:flex items-center justify-center relative h-[65px] xl:h-[68px] self-start transition-opacity duration-150 ${scrolled ? "opacity-0 pointer-events-none" : "opacity-100"}`}
           >
             {/* White pill shape — only visible when not scrolled */}
             <div
@@ -177,7 +178,7 @@ export default function Navbar() {
                     style={!scrolled ? { color: "#01004C" } : {}}
                   >
                     <span
-                      className={`px-2 py-[3px] transition-all duration-300 ${
+                      className={`px-2 py-[3px] inline-block transition-all duration-200 hover:text-[14px] xl:hover:text-[16px] hover:[text-shadow:0_0_14px_rgba(139,128,255,0.85)] ${
                         !scrolled && isActive(item.href) ? "" : ""
                       }`}
                     >
@@ -208,7 +209,7 @@ export default function Navbar() {
                     aria-expanded={servicesOpen}
                   >
                     <span
-                      className={`px-2 transition-all duration-300 ${
+                      className={`px-2 inline-block transition-all duration-200 hover:text-[14px] xl:hover:text-[16px] hover:[text-shadow:0_0_14px_rgba(139,128,255,0.85)] ${
                         !scrolled && isServicesActive
                           ? "border border-[#01004C]/70"
                           : ""
@@ -308,7 +309,7 @@ export default function Navbar() {
               </li>
 
               {[
-                { name: "Portfolio", href: "/projects" },
+                { name: "Projects", href: "/projects" },
                 { name: "Contact Us", href: "/contact" },
               ].map((item) => (
                 <li key={item.name}>
@@ -324,7 +325,7 @@ export default function Navbar() {
                     style={!scrolled ? { color: "#01004C" } : {}}
                   >
                     <span
-                      className={`px-2 py-[3px] transition-all duration-300 ${
+                      className={`px-2 py-[3px] inline-block transition-all duration-200 hover:text-[14px] xl:hover:text-[16px] hover:[text-shadow:0_0_14px_rgba(139,128,255,0.85)] ${
                         !scrolled && isActive(item.href)
                           ? "border border-[#01004C]/70"
                           : ""
@@ -341,38 +342,55 @@ export default function Navbar() {
           {/* ── Right col: CTA + Hamburger ── */}
           <div className="col-start-3 flex items-center justify-end">
             {/* Desktop CTA Buttons */}
-            <div className={`hidden lg:flex items-center gap-3 z-50 transition-all duration-500 ${scrolled ? "mt-0" : "mt-2"}`}>
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.97 }}
+            <div
+              className={`hidden lg:flex items-center gap-1 z-50 group ${scrolled ? "mt-0" : "mt-2"}`}
+              onMouseEnter={() => setCtaHovered(true)}
+              onMouseLeave={() => setCtaHovered(false)}
+            >
+              <Link
+                href="/contact"
+                aria-label="linkToContactUs"
+                className="relative px-8 py-3 rounded-full text-white text-sm font-semibold tracking-wide overflow-hidden transition-all duration-500"
+                style={
+                  ctaHovered
+                    ? {
+                        background: "rgba(255,255,255,0.05)",
+                        border: "1.5px solid rgba(139,128,255,0.35)",
+                        backdropFilter: "blur(10px)",
+                        boxShadow: "none",
+                      }
+                    : {
+                        background: "linear-gradient(135deg, #080B78 0%, #00004D 100%)",
+                        border: "1.5px solid transparent",
+                        boxShadow: "0 0 28px rgba(8,11,120,0.55)",
+                      }
+                }
               >
-                <Link
-                  href="/contact"
-                  onMouseEnter={() => setQuoteHovered(true)}
-                  onMouseLeave={() => setQuoteHovered(false)}
-                  className="flex items-center gap-1 xl:gap-1.5 px-4 xl:px-5 py-2 xl:py-2.5 rounded-full text-white text-xs xl:text-sm font-semibold transition-all duration-300 whitespace-nowrap"
-                  style={
-                    quoteHovered
-                      ? {
-                          background: "rgba(255,255,255,0.05)",
-                          border: "1.5px solid rgba(139,128,255,0.35)",
-                          backdropFilter: "blur(10px)",
-                          boxShadow: "none",
-                        }
-                      : {
-                          background: "linear-gradient(135deg, #080B78 0%, #1C20C0 100%)",
-                          border: "1.5px solid transparent",
-                          boxShadow: "0 0 16px rgba(8,11,120,0.55)",
-                        }
-                  }
-                >
-                  <Icon
-                    icon="tabler:bolt"
-                    className="w-3.5 h-3.5 flex-shrink-0"
-                  />
-                  Get a Quote →
-                </Link>
-              </motion.div>
+                <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/25 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
+                <span className="relative z-10 transition-all duration-500 group-hover:tracking-wider">
+                  Get A Quote
+                </span>
+              </Link>
+              <button
+                aria-label="rightToContactUs"
+                className="relative w-11 h-11 rounded-full flex items-center justify-center overflow-hidden transition-all duration-500 group-hover:rotate-45"
+                style={
+                  ctaHovered
+                    ? {
+                        background: "rgba(255,255,255,0.05)",
+                        border: "1.5px solid rgba(139,128,255,0.35)",
+                        backdropFilter: "blur(10px)",
+                        boxShadow: "none",
+                      }
+                    : {
+                        background: "linear-gradient(135deg, #080B78 0%, #00004D 100%)",
+                        border: "1.5px solid transparent",
+                        boxShadow: "0 0 28px rgba(8,11,120,0.55)",
+                      }
+                }
+              >
+                <MoveUpRight size={18} className="text-white relative z-10" strokeWidth={2.5} />
+              </button>
             </div>
             {/* Mobile Hamburger */}
             <motion.button
@@ -582,8 +600,23 @@ export default function Navbar() {
             <Link
               href="/contact"
               onClick={() => setMobileOpen(false)}
-              className="flex items-center justify-center gap-1.5 w-full px-5 py-3 rounded-full bg-[#1800C8] text-white text-sm font-semibold hover:bg-[#3520DC] transition-all duration-300"
-              style={{ boxShadow: "0 0 16px rgba(24,0,200,0.4)" }}
+              onMouseEnter={() => setMobileCtaHovered(true)}
+              onMouseLeave={() => setMobileCtaHovered(false)}
+              className="flex items-center justify-center gap-1.5 w-full px-5 py-3 rounded-full text-white text-sm font-semibold transition-all duration-500"
+              style={
+                mobileCtaHovered
+                  ? {
+                      background: "rgba(255,255,255,0.05)",
+                      border: "1.5px solid rgba(139,128,255,0.35)",
+                      backdropFilter: "blur(10px)",
+                      boxShadow: "none",
+                    }
+                  : {
+                      background: "linear-gradient(135deg, #080B78 0%, #00004D 100%)",
+                      border: "1.5px solid transparent",
+                      boxShadow: "0 0 28px rgba(8,11,120,0.55)",
+                    }
+              }
             >
               <Icon icon="tabler:bolt" className="w-3.5 h-3.5" />
               Get a Quote →

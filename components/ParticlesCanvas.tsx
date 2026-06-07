@@ -22,11 +22,11 @@ export default function ParticlesCanvas() {
 
     let animId: number;
     let particles: Particle[] = [];
-    const COUNT = 180;
-    const MAX_DIST = 170;
-    const MOUSE_DIST = 200;
+    const COUNT = 120;
+    const MAX_DIST = 120;
+    const MOUSE_DIST = 180;
     const REPEL_RADIUS = 110;
-    const BASE_SPEED = 0.45;
+    const BASE_SPEED = 0.40;
 
     const resize = () => {
       canvas.width = canvas.offsetWidth;
@@ -39,7 +39,7 @@ export default function ParticlesCanvas() {
         y: Math.random() * canvas.height,
         vx: (Math.random() - 0.5) * BASE_SPEED * 2,
         vy: (Math.random() - 0.5) * BASE_SPEED * 2,
-        radius: Math.random() * 2 + 1.2,
+        radius: Math.random() * 1.4 + 1,
       }));
     };
 
@@ -83,7 +83,7 @@ export default function ParticlesCanvas() {
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(139,128,255,0.92)";
+        ctx.fillStyle = "rgba(160,152,255,0.60)";
         ctx.fill();
       }
 
@@ -93,12 +93,12 @@ export default function ParticlesCanvas() {
           const dy = particles[i].y - particles[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < MAX_DIST) {
-            const opacity = (1 - dist / MAX_DIST) * 0.5;
+            const opacity = (1 - dist / MAX_DIST) * 0.22;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(139,128,255,${opacity})`;
-            ctx.lineWidth = 0.9;
+            ctx.strokeStyle = `rgba(160,152,255,${opacity})`;
+            ctx.lineWidth = 0.7;
             ctx.stroke();
           }
         }
@@ -110,12 +110,12 @@ export default function ParticlesCanvas() {
           const dy = p.y - mouse.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < MOUSE_DIST) {
-            const opacity = (1 - dist / MOUSE_DIST) * 0.75;
+            const opacity = (1 - dist / MOUSE_DIST) * 0.45;
             ctx.beginPath();
             ctx.moveTo(mouse.x, mouse.y);
             ctx.lineTo(p.x, p.y);
             ctx.strokeStyle = `rgba(192,186,255,${opacity})`;
-            ctx.lineWidth = 0.9;
+            ctx.lineWidth = 0.6;
             ctx.stroke();
           }
         }
