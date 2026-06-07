@@ -7,7 +7,7 @@ import HowWeWorkSection from "@/components/HowWeWorkSection";
 export default function Home() {
   return (
     <div>
-      <HeroSection />
+      {/* <HeroSection /> */}
       {/* <AboutSection /> */}
       {/* <ServicesSection /> */}
       <HowWeWorkSection />
