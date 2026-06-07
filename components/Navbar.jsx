@@ -178,7 +178,7 @@ export default function Navbar() {
                     style={!scrolled ? { color: "#01004C" } : {}}
                   >
                     <span
-                      className={`px-2 py-[3px] inline-block transition-all duration-200 hover:text-[14px] xl:hover:text-[16px] hover:[text-shadow:0_0_14px_rgba(139,128,255,0.85)] ${
+                      className={`px-2 py-[3px] inline-block relative transition-all duration-200 before:content-[''] before:absolute before:bottom-0 before:left-1/2 before:-translate-x-1/2 before:h-[3px] before:rounded-full before:bg-gradient-to-r before:from-[#8B80FF] before:via-[#3520DC] before:to-[#00004D] before:w-0 hover:before:w-[70%] before:transition-all before:duration-300 hover:[text-shadow:0_0_12px_rgba(139,128,255,0.75)] ${
                         !scrolled && isActive(item.href) ? "" : ""
                       }`}
                     >
@@ -209,7 +209,7 @@ export default function Navbar() {
                     aria-expanded={servicesOpen}
                   >
                     <span
-                      className={`px-2 inline-block transition-all duration-200 hover:text-[14px] xl:hover:text-[16px] hover:[text-shadow:0_0_14px_rgba(139,128,255,0.85)] ${
+                      className={`px-2 inline-block relative transition-all duration-200 before:content-[''] before:absolute before:bottom-0 before:left-1/2 before:-translate-x-1/2 before:h-[3px] before:rounded-full before:bg-gradient-to-r before:from-[#8B80FF] before:via-[#3520DC] before:to-[#00004D] before:w-0 hover:before:w-[70%] before:transition-all before:duration-300 hover:[text-shadow:0_0_12px_rgba(139,128,255,0.75)] ${
                         !scrolled && isServicesActive
                           ? "border border-[#01004C]/70"
                           : ""
@@ -325,7 +325,7 @@ export default function Navbar() {
                     style={!scrolled ? { color: "#01004C" } : {}}
                   >
                     <span
-                      className={`px-2 py-[3px] inline-block transition-all duration-200 hover:text-[14px] xl:hover:text-[16px] hover:[text-shadow:0_0_14px_rgba(139,128,255,0.85)] ${
+                      className={`px-2 py-[3px] inline-block relative transition-all duration-200 before:content-[''] before:absolute before:bottom-0 before:left-1/2 before:-translate-x-1/2 before:h-[3px] before:rounded-full before:bg-gradient-to-r before:from-[#8B80FF] before:via-[#3520DC] before:to-[#00004D] before:w-0 hover:before:w-[70%] before:transition-all before:duration-300 hover:[text-shadow:0_0_12px_rgba(139,128,255,0.75)] ${
                         !scrolled && isActive(item.href)
                           ? "border border-[#01004C]/70"
                           : ""
@@ -354,10 +354,9 @@ export default function Navbar() {
                 style={
                   ctaHovered
                     ? {
-                        background: "rgba(255,255,255,0.05)",
-                        border: "1.5px solid rgba(139,128,255,0.35)",
-                        backdropFilter: "blur(10px)",
-                        boxShadow: "none",
+                        background: "linear-gradient(135deg, #080B78 0%, #00004D 100%)",
+                        border: "1.5px solid rgba(139,128,255,0.5)",
+                        boxShadow: "0 0 32px rgba(8,11,120,0.85), 0 0 60px rgba(80,70,255,0.35)",
                       }
                     : {
                         background: "linear-gradient(135deg, #080B78 0%, #00004D 100%)",
@@ -377,10 +376,9 @@ export default function Navbar() {
                 style={
                   ctaHovered
                     ? {
-                        background: "rgba(255,255,255,0.05)",
-                        border: "1.5px solid rgba(139,128,255,0.35)",
-                        backdropFilter: "blur(10px)",
-                        boxShadow: "none",
+                        background: "linear-gradient(135deg, #080B78 0%, #00004D 100%)",
+                        border: "1.5px solid rgba(139,128,255,0.5)",
+                        boxShadow: "0 0 32px rgba(8,11,120,0.85), 0 0 60px rgba(80,70,255,0.35)",
                       }
                     : {
                         background: "linear-gradient(135deg, #080B78 0%, #00004D 100%)",

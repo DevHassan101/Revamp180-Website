@@ -170,13 +170,13 @@ export default function ReviewsSection() {
       loop: true,                    // ← seamless infinite loop, Swiper handles it natively
       speed: 650,
       grabCursor: true,
-      spaceBetween: 20,
+      spaceBetween: 50,
       slidesPerView: 1,
       breakpoints: {
         640: { slidesPerView: 3, spaceBetween: 20 },
       },
       autoplay: {
-        delay: 3200,
+        delay: 20,
         disableOnInteraction: false, // resumes after manual swipe/click
         pauseOnMouseEnter: true,
       },
@@ -264,19 +264,21 @@ export default function ReviewsSection() {
               {/* Prev */}
               <button
                 ref={prevBtnRef}
-                className="w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95"
-                style={{ background: "rgba(139,128,255,0.09)", border: "1px solid rgba(139,128,255,0.26)" }}
+                className="w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 active:scale-95"
+                style={{
+                  background: "linear-gradient(135deg, #080B78 0%, #00004D 100%)",
+                  border: "1.5px solid transparent",
+                  boxShadow: "0 0 14px rgba(8,11,120,0.55)",
+                }}
                 onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLButtonElement).style.background = "rgba(139,128,255,0.20)";
-                  (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(139,128,255,0.50)";
+                  e.currentTarget.style.boxShadow = "0 0 28px rgba(8,11,120,0.85), 0 0 50px rgba(80,70,255,0.35)";
                 }}
                 onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLButtonElement).style.background = "rgba(139,128,255,0.09)";
-                  (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(139,128,255,0.26)";
+                  e.currentTarget.style.boxShadow = "0 0 14px rgba(8,11,120,0.55)";
                 }}
                 aria-label="Previous"
               >
-                <svg viewBox="0 0 24 24" fill="none" stroke="rgba(192,186,255,0.85)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+                <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
                   <polyline points="15 18 9 12 15 6" />
                 </svg>
               </button>
@@ -284,15 +286,17 @@ export default function ReviewsSection() {
               {/* Next */}
               <button
                 ref={nextBtnRef}
-                className="w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95"
-                style={{ background: "rgba(139,128,255,0.09)", border: "1px solid rgba(139,128,255,0.26)" }}
+                className="w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 active:scale-95"
+                style={{
+                  background: "linear-gradient(135deg, #080B78 0%, #00004D 100%)",
+                  border: "1.5px solid transparent",
+                  boxShadow: "0 0 14px rgba(8,11,120,0.55)",
+                }}
                 onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLButtonElement).style.background = "rgba(139,128,255,0.20)";
-                  (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(139,128,255,0.50)";
+                  e.currentTarget.style.boxShadow = "0 0 28px rgba(8,11,120,0.85), 0 0 50px rgba(80,70,255,0.35)";
                 }}
                 onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLButtonElement).style.background = "rgba(139,128,255,0.09)";
-                  (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(139,128,255,0.26)";
+                  e.currentTarget.style.boxShadow = "0 0 14px rgba(8,11,120,0.55)";
                 }}
                 aria-label="Next"
               >

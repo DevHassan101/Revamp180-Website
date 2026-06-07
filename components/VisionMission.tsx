@@ -213,7 +213,7 @@ export default function AboutPage() {
                 inset: -40,
                 borderRadius: "50%",
                 background:
-                  "radial-gradient(circle, #00004D 0%, #00004D 45%, transparent 70%)",
+                  "radial-gradient(circle, #00004D 0%,rgba(0, 0, 0, 1) 100%)",
                 filter: "blur(24px)",
                 zIndex: 0,
               }}

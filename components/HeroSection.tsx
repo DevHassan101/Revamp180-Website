@@ -72,7 +72,6 @@ function AnimatedHeadline({
 
 export default function HeroSection() {
   const [activeService, setActiveService] = useState(0);
-  const [btn1Hovered, setBtn1Hovered] = useState(false);
   const [btn2Hovered, setBtn2Hovered] = useState(false);
 
   useEffect(() => {
@@ -83,10 +82,7 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <div
-      className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center px-4 pt-35 pb-30"
-      
-    >
+    <div className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center px-4 pt-35 pb-30">
       <ParticlesCanvas />
 
       {/* Glow orbs */}
@@ -247,56 +243,26 @@ export default function HeroSection() {
           transition={{ duration: 0.8, ease: EASE, delay: 1.75 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.97 }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            style={{ minWidth: "210px" }}
+          <Link
+            href="/contact"
+            className="group/btn relative inline-flex items-center gap-4 bg-[linear-gradient(135deg,#080B78,#00004D)] pl-1.5 pr-8 md:pr-10 py-1.5 rounded-full transition-all duration-700 shadow-[0_10px_20px_rgba(8,11,120,0.15)] hover:shadow-[0_0_32px_rgba(8,11,120,0.85),0_0_60px_rgba(80,70,255,0.35)] cursor-pointer overflow-hidden"
           >
-            <Link
-              href="/contact"
-              className="flex items-center gap-3 px-8 py-4 rounded-full text-white font-semibold text-[15px] w-full transition-all duration-300"
-              onMouseEnter={() => setBtn1Hovered(true)}
-              onMouseLeave={() => setBtn1Hovered(false)}
-              style={
-                btn1Hovered
-                  ? {
-                      background: "rgba(255,255,255,0.05)",
-                      border: "1.5px solid rgba(139,128,255,0.35)",
-                      backdropFilter: "blur(10px)",
-                      boxShadow: "none",
-                    }
-                  : {
-                      background:
-                        "linear-gradient(135deg, #080B78 0%, #00004D 100%)",
-                      border: "1.5px solid transparent",
-                      boxShadow: "0 0 28px rgba(8,11,120,0.55)",
-                    }
-              }
-            >
-              Request a Quote
-              <motion.svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2.5}
-                viewBox="0 0 24 24"
-                animate={{ x: [0, 5, 0] }}
-                transition={{
-                  duration: 1.8,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: 2.6,
-                }}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"
-                />
-              </motion.svg>
-            </Link>
-          </motion.div>
+            <div className="relative z-10 flex items-center transition-all duration-700 group-hover/btn:gap-4 gap-3">
+              <div className="bg-white w-10 h-10 md:w-12 md:h-12 rounded-full flex justify-center items-center transition-all duration-700 ease-out shadow-lg -rotate-40 group-hover/btn:rotate-0">
+                <svg
+                  viewBox="0 0 24 24"
+                  className="w-5 h-5 md:w-5.5 md:h-5.5 fill-[#080B78] transition-all duration-700"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
+                </svg>
+              </div>
+              <span className="text-white font-semibold tracking-wide text-sm md:text-[17px] whitespace-nowrap transition-all duration-700 drop-shadow-sm group-hover/btn:tracking-wider">
+                Request a Quote
+              </span>
+            </div>
+            <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 group-hover/btn:translate-x-full"></span>
+          </Link>
 
           <motion.div
             whileHover={{ scale: 1.05 }}
@@ -306,39 +272,29 @@ export default function HeroSection() {
           >
             <Link
               href="/contact"
-              className="flex items-center gap-3 px-8 py-4 rounded-full text-white font-semibold text-[15px] w-full transition-all duration-300"
-              onMouseEnter={() => setBtn2Hovered(true)}
-              onMouseLeave={() => setBtn2Hovered(false)}
-              style={
-                btn2Hovered
-                  ? {
-                      background:
-                        "linear-gradient(135deg, #080B78 0%, #1C20C0 100%)",
-                      border: "1.5px solid transparent",
-                      boxShadow: "0 0 28px rgba(8,11,120,0.45)",
-                      backdropFilter: "none",
-                    }
-                  : {
-                      background: "rgba(255,255,255,0.05)",
-                      border: "1.5px solid rgba(139,128,255,0.35)",
-                      backdropFilter: "blur(10px)",
-                    }
-              }
+              className="group/btn2 relative inline-flex items-center gap-4 bg-[linear-gradient(135deg,#080B78,#00004D)] pl-1.5 pr-8 md:pr-10 py-1.5 rounded-full transition-all duration-700 shadow-[0_10px_20px_rgba(8,11,120,0.15)] hover:shadow-[0_0_32px_rgba(8,11,120,0.85),0_0_60px_rgba(80,70,255,0.35)] cursor-pointer overflow-hidden"
             >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                />
-              </svg>
-              Book Free Consultation
+              <div className="relative z-10 flex items-center transition-all duration-700 group-hover/btn2:gap-4 gap-3">
+                <div className="bg-white w-10 h-10 md:w-12 md:h-12 rounded-full flex justify-center items-center transition-all duration-700 ease-out shadow-lg">
+                  <svg
+                    className="w-5 h-5 md:w-5.5 md:h-5.5"
+                    fill="none"
+                    stroke="#080B78"
+                    strokeWidth={2}
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                  </svg>
+                </div>
+                <span className="text-white font-semibold tracking-wide text-sm md:text-[17px] whitespace-nowrap transition-all duration-700 drop-shadow-sm group-hover/btn2:tracking-wider">
+                 Book Free Consultation
+                </span>
+              </div>
+              <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 group-hover/btn2:translate-x-full"></span>
             </Link>
           </motion.div>
         </motion.div>

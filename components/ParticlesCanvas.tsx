@@ -22,7 +22,7 @@ export default function ParticlesCanvas() {
 
     let animId: number;
     let particles: Particle[] = [];
-    const COUNT = 120;
+    const COUNT = 250;
     const MAX_DIST = 120;
     const MOUSE_DIST = 180;
     const REPEL_RADIUS = 110;
@@ -83,7 +83,7 @@ export default function ParticlesCanvas() {
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(160,152,255,0.60)";
+        ctx.fillStyle = "rgba(160,152,255,0.85)";
         ctx.fill();
       }
 
@@ -93,7 +93,7 @@ export default function ParticlesCanvas() {
           const dy = particles[i].y - particles[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < MAX_DIST) {
-            const opacity = (1 - dist / MAX_DIST) * 0.22;
+            const opacity = (1 - dist / MAX_DIST) * 0.38;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);

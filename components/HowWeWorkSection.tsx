@@ -17,8 +17,8 @@ const steps = [
     svgX: 18,
     svgY: 62,
     dotDelay: 0.55,
-    cardLeft: "9%",
-    cardTop: "67%",
+    cardLeft: "7.5%",
+    cardTop: "64%",
   },
   {
     number: "2",
@@ -26,11 +26,11 @@ const steps = [
     description:
       "Pixel-perfect UI crafted and developed with regular milestone check-ins.",
     icon: "tabler:code",
-    svgX: 50,
+    svgX: 51,
     svgY: 38,
     dotDelay: 1.2,
-    cardLeft: "41%",
-    cardTop: "43%",
+    cardLeft: "40.5%",
+    cardTop: "40%",
   },
   {
     number: "3",
@@ -41,8 +41,8 @@ const steps = [
     svgX: 84,
     svgY: 12.5,
     dotDelay: 1.85,
-    cardLeft: "75%",
-    cardTop: "18%",
+    cardLeft: "73.5%",
+    cardTop: "15%",
   },
 ];
 
@@ -51,7 +51,6 @@ const WAVE =
   "M 3 68 C 9 70, 13 68, 18 65 C 32 52, 38 40, 50 40 C 62 40, 74 13, 94 12";
 
 export default function HowWeWorkSection() {
-  const [bookHovered, setBookHovered] = useState(false);
 
   return (
     <section className="relative max-w-360 mx-auto min-h-250">
@@ -158,27 +157,19 @@ export default function HowWeWorkSection() {
         >
           <Link
             href="/contact"
-            onMouseEnter={() => setBookHovered(true)}
-            onMouseLeave={() => setBookHovered(false)}
-            className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full text-white font-semibold text-[15px] transition-all duration-300"
-            style={
-              bookHovered
-                ? {
-                    background: "rgba(255,255,255,0.05)",
-                    border: "1.5px solid rgba(139,128,255,0.35)",
-                    backdropFilter: "blur(10px)",
-                    boxShadow: "none",
-                  }
-                : {
-                    background:
-                      "linear-gradient(135deg, #080B78 0%, #00004D 100%)",
-                    border: "1.5px solid transparent",
-                    boxShadow: "0 0 28px rgba(8,11,120,0.55)",
-                  }
-            }
+            className="group/btn relative inline-flex items-center gap-4 bg-[linear-gradient(135deg,#080B78,#00004D)] pl-1.5 pr-8 md:pr-10 py-1.5 rounded-full transition-all duration-700 shadow-[0_10px_20px_rgba(8,11,120,0.45)] hover:shadow-[0_0_32px_rgba(8,11,120,0.85),0_0_60px_rgba(80,70,255,0.35)] cursor-pointer overflow-hidden"
           >
-            Book Free Consultation
-            <Icon icon="tabler:arrow-right" className="w-4 h-4" />
+            <div className="relative z-10 flex items-center transition-all duration-700 group-hover/btn:gap-4 gap-3">
+              <div className="bg-white w-10 h-10 md:w-12 md:h-12 rounded-full flex justify-center items-center transition-all duration-700 ease-out shadow-lg -rotate-40 group-hover/btn:rotate-0">
+                <svg viewBox="0 0 24 24" className="w-5 h-5 md:w-5.5 md:h-5.5 fill-[#080B78] transition-all duration-700" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z" />
+                </svg>
+              </div>
+              <span className="text-white font-semibold tracking-wide text-sm md:text-[17px] whitespace-nowrap transition-all duration-700 drop-shadow-sm group-hover/btn:tracking-wider">
+                Free Consultation
+              </span>
+            </div>
+            <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 group-hover/btn:translate-x-full"></span>
           </Link>
         </motion.div>
       </div>

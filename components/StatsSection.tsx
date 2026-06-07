@@ -81,17 +81,15 @@ export default function StatsSection() {
           transition={{ duration: 0.85, ease: EASE }}
           className="relative rounded-2xl overflow-hidden"
           style={{
-            background:
-              "linear-gradient(135deg, rgba(139,128,255,0.05) 0%, rgba(53,32,220,0.09) 100%)",
-            border: "1px solid rgba(139,128,255,0.18)",
+            border: "1px solid rgba(139,128,255,0.18)"
           }}
         >
           {/* Full-width gradient accent line at top */}
           <div
-            className="absolute top-0 left-0 right-0 h-[1px] pointer-events-none"
+            className="absolute bottom-0 left-0 right-0 h-[1px] pointer-events-none"
             style={{
               background:
-                "linear-gradient(90deg, transparent 0%, #8B80FF 25%, #C0BAFF 50%, #8B80FF 75%, transparent 100%)",
+                "linear-gradient(90deg, transparent 0%, #8B80FF 25%, #C0BAFF 40%, #8B80FF 55%, transparent 100%)",
             }}
           />
 

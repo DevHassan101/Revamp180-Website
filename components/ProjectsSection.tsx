@@ -431,7 +431,6 @@ function ProjectCard({
 // ─── Main Section ─────────────────────────────────────────────────────────────
 export default function ProjectsSection() {
   const [showAll, setShowAll] = useState(false);
-  const [viewAllHovered, setViewAllHovered] = useState(false);
   const visible = showAll ? projects : projects.slice(0, 6);
 
   const rows: (typeof projects)[] = [];
@@ -580,25 +579,14 @@ export default function ProjectsSection() {
           {!showAll ? (
             <button
               onClick={() => setShowAll(true)}
-              onMouseEnter={() => setViewAllHovered(true)}
-              onMouseLeave={() => setViewAllHovered(false)}
-              className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-white font-semibold text-[15px] cursor-pointer transition-all duration-300"
-              style={
-                viewAllHovered
-                  ? {
-                      background: "rgba(255,255,255,0.05)",
-                      border: "1.5px solid rgba(139,128,255,0.35)",
-                      backdropFilter: "blur(10px)",
-                      boxShadow: "none",
-                      transform: "scale(1.04)",
-                    }
-                  : {
-                      background: "linear-gradient(135deg, #080B78 0%, #1C20C0 100%)",
-                      border: "1.5px solid transparent",
-                      boxShadow: "0 0 28px rgba(8,11,120,0.55)",
-                      transform: "scale(1)",
-                    }
-              }
+              className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-white font-semibold text-[15px] cursor-pointer transition-all duration-500"
+              style={{
+                background: "linear-gradient(135deg, #080B78 0%, #00004D 100%)",
+                border: "1.5px solid transparent",
+                boxShadow: "0 0 28px rgba(8,11,120,0.55)",
+              }}
+              onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 0 32px rgba(8,11,120,0.85), 0 0 60px rgba(80,70,255,0.35)")}
+              onMouseLeave={e => (e.currentTarget.style.boxShadow = "0 0 28px rgba(8,11,120,0.55)")}
             >
               View All Projects
               <Icon icon="tabler:arrow-down" className="w-5 h-5" />
@@ -606,12 +594,14 @@ export default function ProjectsSection() {
           ) : (
             <Link
               href="/projects"
-              className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-white font-semibold text-[15px]"
+              className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-white font-semibold text-[15px] transition-all duration-500"
               style={{
-                background: "rgba(255,255,255,0.05)",
-                border: "1.5px solid rgba(139,128,255,0.35)",
-                backdropFilter: "blur(10px)",
+                background: "linear-gradient(135deg, #080B78 0%, #00004D 100%)",
+                border: "1.5px solid transparent",
+                boxShadow: "0 0 28px rgba(8,11,120,0.55)",
               }}
+              onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 0 32px rgba(8,11,120,0.85), 0 0 60px rgba(80,70,255,0.35)")}
+              onMouseLeave={e => (e.currentTarget.style.boxShadow = "0 0 28px rgba(8,11,120,0.55)")}
             >
               See Full Portfolio
               <Icon icon="tabler:arrow-right" className="w-5 h-5" />
