@@ -168,7 +168,7 @@ export default function ReviewsSection() {
     swiperRef.current = new Swiper(swiperElRef.current, {
       modules: [Autoplay, Navigation, Pagination],
       loop: true,                    // ← seamless infinite loop, Swiper handles it natively
-      speed: 650,
+      speed: 1500,
       grabCursor: true,
       spaceBetween: 50,
       slidesPerView: 1,
@@ -258,7 +258,7 @@ export default function ReviewsSection() {
               initial={{ opacity: 0, x: 16 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, ease: EASE, delay: 0.1 }}
+              transition={{ duration: 0.6, ease: EASE, delay: 0.5 }}
               className="flex gap-3 flex-shrink-0 pb-1"
             >
               {/* Prev */}

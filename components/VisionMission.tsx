@@ -126,7 +126,6 @@ export default function AboutPage() {
             style={{
               position: "absolute",
               inset: 0,
-              background: "radial-gradient(circle, #00004D 0%,rgba(0, 0, 0, 1) 100%)",
               opacity: 0,
               zIndex: 1,
               willChange: "opacity",
