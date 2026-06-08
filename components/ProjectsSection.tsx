@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useLayoutEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
+
 
 // ─── Easing curves ────────────────────────────────────────────────────────────
 // Gentle spring-like decelerate — feels organic, not mechanical
@@ -89,10 +90,14 @@ const projects = [
 ];
 
 // ─── Fan-in initial states ────────────────────────────────────────────────────
-// col 1 (middle) → drops in from slightly above (anchor card)
-// col 0 (left)   → starts stacked behind middle (x: +350), slides left to its column
-// col 2 (right)  → starts stacked behind middle (x: -350), slides right to its column
-function getCardInitial(colIndex: number) {
+// Desktop: col 1 (middle) drops from above; col 0 fans from right; col 2 fans from left
+// Mobile:  cards alternate sliding in from left / right (small offset, no overflow)
+function getCardInitial(colIndex: number, index: number, isMobile: boolean) {
+  if (isMobile) {
+    return index % 2 === 0
+      ? { opacity: 0, x: -70, y: 0, scale: 0.96 }
+      : { opacity: 0, x: 70, y: 0, scale: 0.96 };
+  }
   if (colIndex === 0) return { opacity: 0, x: 320, y: 0, scale: 0.82 };
   if (colIndex === 2) return { opacity: 0, x: -320, y: 0, scale: 0.82 };
   return { opacity: 0, x: 0, y: -58, scale: 0.88 };
@@ -104,46 +109,28 @@ function ProjectCard({
   tall,
   index,
   colIndex,
+  isMobile,
 }: {
   project: (typeof projects)[number];
   tall: boolean;
   index: number;
   colIndex: number;
+  isMobile: boolean;
 }) {
+  const delay = isMobile ? 0 : colIndex === 1 ? 0 : 0.18;
+  const duration = isMobile ? 0.65 : colIndex === 1 ? 0.9 : 1.1;
+
   return (
     <motion.div
-      initial={{ ...getCardInitial(colIndex), filter: "blur(6px)" }}
+      initial={{ ...getCardInitial(colIndex, index, isMobile), filter: "blur(6px)" }}
       whileInView={{ opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" }}
       viewport={{ once: true, amount: 0.15 }}
       transition={{
-        // Transform — original curve & duration kept exactly
-        x: {
-          duration: colIndex === 1 ? 0.9 : 1.1,
-          ease: FAN_EASE,
-          delay: colIndex === 1 ? 0 : 0.18,
-        },
-        y: {
-          duration: colIndex === 1 ? 0.9 : 1.1,
-          ease: FAN_EASE,
-          delay: colIndex === 1 ? 0 : 0.18,
-        },
-        scale: {
-          duration: colIndex === 1 ? 0.9 : 1.1,
-          ease: FAN_EASE,
-          delay: colIndex === 1 ? 0 : 0.18,
-        },
-        // Opacity — faster ease-out so cards don't "pop" in late
-        opacity: {
-          duration: 0.55,
-          ease: [0.25, 0.46, 0.45, 0.94],
-          delay: colIndex === 1 ? 0 : 0.18,
-        },
-        // Blur — dissolves gently, slightly longer than opacity
-        filter: {
-          duration: 0.7,
-          ease: [0.25, 0.46, 0.45, 0.94],
-          delay: colIndex === 1 ? 0 : 0.18,
-        },
+        x:      { duration, ease: FAN_EASE, delay },
+        y:      { duration, ease: FAN_EASE, delay },
+        scale:  { duration, ease: FAN_EASE, delay },
+        opacity: { duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94], delay },
+        filter:  { duration: 0.7,  ease: [0.25, 0.46, 0.45, 0.94], delay },
       }}
       className="group/card flex flex-col gap-3"
     >
@@ -431,6 +418,18 @@ function ProjectCard({
 // ─── Main Section ─────────────────────────────────────────────────────────────
 export default function ProjectsSection() {
   const [showAll, setShowAll] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // useLayoutEffect fires synchronously before the browser paints.
+  // This ensures cards mount with the correct initial transform so the
+  // IntersectionObserver never sees them clipped outside overflow-hidden.
+  useLayoutEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   const visible = showAll ? projects : projects.slice(0, 6);
 
   const rows: (typeof projects)[] = [];
@@ -556,11 +555,12 @@ export default function ProjectsSection() {
               >
                 {row.map((project, colIdx) => (
                   <ProjectCard
-                    key={project.title}
+                    key={`${project.title}-${isMobile}`}
                     project={project}
                     tall={colIdx === 1}
                     index={rowIdx * 3 + colIdx}
                     colIndex={colIdx}
+                    isMobile={isMobile}
                   />
                 ))}
               </motion.div>

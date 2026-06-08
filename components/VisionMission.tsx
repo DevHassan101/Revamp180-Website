@@ -15,12 +15,18 @@ export default function AboutPage() {
   const head1Ref = useRef<HTMLDivElement>(null);
   const head2Ref = useRef<HTMLDivElement>(null);
   const hintRef = useRef<HTMLDivElement>(null);
+  const isMobileRef = useRef(false);
 
   const target = useRef(0);
   const smooth = useRef(0);
 
   useEffect(() => {
     let raf = 0;
+
+    const checkMobile = () => {
+      isMobileRef.current = window.innerWidth < 768;
+    };
+    checkMobile();
 
     const readTarget = () => {
       const el = containerRef.current;
@@ -33,27 +39,43 @@ export default function AboutPage() {
     const render = () => {
       smooth.current += (target.current - smooth.current) * 0.09;
       const p = smooth.current;
+      const mob = isMobileRef.current;
 
       const move = easeInOutCubic(range(p, 0.12, 0.4));
       const vanish = easeInOutCubic(range(p, 0.86, 1));
-      const leftPct = 50 - move * 46 - vanish * 24;
-      const scale = 1 + move * 0.05;
+
       if (globeRef.current) {
-        globeRef.current.style.left = `${leftPct}%`;
-        globeRef.current.style.transform = `translate(-50%, -50%) scale(${scale})`;
-        globeRef.current.style.opacity = `${1 - vanish}`;
+        if (mob) {
+          const topPct = 50 - move * 14;
+          globeRef.current.style.left = `50%`;
+          globeRef.current.style.top = `${topPct}%`;
+          globeRef.current.style.transform = `translate(-50%, -50%)`;
+          globeRef.current.style.opacity = `${1 - vanish}`;
+        } else {
+          const leftPct = 50 - move * 46 - vanish * 24;
+          const scale = 1 + move * 0.05;
+          globeRef.current.style.left = `${leftPct}%`;
+          globeRef.current.style.top = `50%`;
+          globeRef.current.style.transform = `translate(-50%, -50%) scale(${scale})`;
+          globeRef.current.style.opacity = `${1 - vanish}`;
+        }
       }
 
       const beamP = easeInOutCubic(range(p, 0.3, 0.55));
       const beamOut = easeInOutCubic(range(p, 0.58, 0.72));
       if (beamRef.current) {
-        const apexX = leftPct * 15.36 + 150;
-        const rightH = 30 + beamP * 520;
-        beamRef.current.setAttribute(
-          "points",
-          `${apexX},372 ${apexX},396 1700,${420 + rightH} 1700,${420 - rightH}`
-        );
-        beamRef.current.style.opacity = `${beamP * (1 - beamOut)}`;
+        if (mob) {
+          beamRef.current.style.opacity = "0";
+        } else {
+          const leftPct = 50 - move * 46 - vanish * 24;
+          const apexX = leftPct * 15.36 + 150;
+          const rightH = 30 + beamP * 520;
+          beamRef.current.setAttribute(
+            "points",
+            `${apexX},372 ${apexX},396 1700,${420 + rightH} 1700,${420 - rightH}`
+          );
+          beamRef.current.style.opacity = `${beamP * (1 - beamOut)}`;
+        }
       }
 
       const fillP = easeInOutCubic(range(p, 0.58, 0.74));
@@ -67,6 +89,7 @@ export default function AboutPage() {
       const h1 = h1In * (1 - h1Out);
       if (head1Ref.current) {
         head1Ref.current.style.opacity = `${h1}`;
+        // both mobile and desktop: translateY(calc(-50% + offset)) since top:50% is used everywhere
         head1Ref.current.style.transform = `translateY(calc(-50% + ${(1 - h1In) * 30 - h1Out * 24}px))`;
       }
 
@@ -85,12 +108,14 @@ export default function AboutPage() {
     smooth.current = target.current;
     window.addEventListener("scroll", readTarget, { passive: true });
     window.addEventListener("resize", readTarget);
+    window.addEventListener("resize", checkMobile);
     raf = requestAnimationFrame(render);
 
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("scroll", readTarget);
       window.removeEventListener("resize", readTarget);
+      window.removeEventListener("resize", checkMobile);
     };
   }, []);
 
@@ -114,13 +139,13 @@ export default function AboutPage() {
             overflow: "hidden",
           }}
         >
-          {/* Star field — pure CSS */}
+          {/* Star field */}
           <div
             className="about-stars"
             style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }}
           />
 
-          {/* Deep-blue flood (replaces orange) */}
+          {/* Deep-blue flood */}
           <div
             ref={orangeFillRef}
             style={{
@@ -133,9 +158,10 @@ export default function AboutPage() {
             }}
           />
 
-          {/* Dot grid — top right corner */}
+          {/* Dot grid — hidden on mobile */}
           <div
             ref={checkerRef}
+            className="vm-checker"
             style={{
               position: "absolute",
               top: 24,
@@ -165,7 +191,7 @@ export default function AboutPage() {
             ))}
           </div>
 
-          {/* Beam / cone with gradient */}
+          {/* Beam / cone */}
           <svg
             style={{
               position: "absolute",
@@ -195,18 +221,16 @@ export default function AboutPage() {
           {/* Globe + glow ring */}
           <div
             ref={globeRef}
+            className="vm-globe"
             style={{
               position: "absolute",
               top: "50%",
               left: "50%",
               transform: "translate(-50%, -50%) scale(1)",
-              width: 540,
-              height: 540,
               zIndex: 4,
-              willChange: "transform, left, opacity",
+              willChange: "transform, left, top, opacity",
             }}
           >
-            {/* Ambient glow sits behind the globe image */}
             <div
               style={{
                 position: "absolute",
@@ -221,22 +245,17 @@ export default function AboutPage() {
             <Globe />
           </div>
 
-          {/* Headline 1 — fades in inside the wedge */}
+          {/* Headline 1 — Vision */}
           <div
             ref={head1Ref}
+            className="vm-head vm-head1"
             style={{
               position: "absolute",
-              left: "34%",
-              top: "50%",
-              transform: "translateY(-50%)",
               zIndex: 5,
               opacity: 0,
-              maxWidth: 680,
-              paddingRight: "2rem",
               willChange: "opacity, transform",
             }}
           >
-            {/* Label row */}
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 22 }}>
               <div
                 style={{
@@ -263,9 +282,9 @@ export default function AboutPage() {
             </div>
 
             <h1
+              className="vm-h1-title"
               style={{
                 color: "#fff",
-                fontSize: "clamp(2rem, 3.8vw, 3.4rem)",
                 fontFamily: font,
                 fontWeight: 700,
                 lineHeight: 1.15,
@@ -287,11 +306,10 @@ export default function AboutPage() {
               </span>
             </h1>
 
-            {/* Supporting tagline */}
             <p
+              className="vm-body-text"
               style={{
                 color: "rgba(203,213,225,0.7)",
-                fontSize: 15,
                 fontFamily: font,
                 fontWeight: 400,
                 marginTop: 20,
@@ -299,12 +317,11 @@ export default function AboutPage() {
                 maxWidth: 480,
               }}
             >
-              We turn ambitious ideas into unstoppable brands — through
-              bold strategy, purposeful design, and technology that scales.
+              We turn ambitious ideas into unstoppable brands — through bold
+              strategy, purposeful design, and technology that scales.
             </p>
 
-            {/* Feature tags */}
-            <div style={{ display: "flex", gap: 10, marginTop: 24, flexWrap: "wrap" }}>
+            <div className="vm-tags" style={{ display: "flex", gap: 10, marginTop: 24, flexWrap: "wrap" }}>
               {["Strategy", "Design", "Technology", "Growth"].map((tag) => (
                 <span
                   key={tag}
@@ -327,22 +344,17 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* Headline 2 — About Revamp180 block */}
+          {/* Headline 2 — Mission */}
           <div
             ref={head2Ref}
+            className="vm-head vm-head2"
             style={{
               position: "absolute",
-              left: "30%",
-              top: "50%",
-              transform: "translateY(-50%)",
               zIndex: 5,
               opacity: 0,
-              maxWidth: 700,
-              paddingRight: "2rem",
               willChange: "opacity, transform",
             }}
           >
-            {/* Label row */}
             <div
               style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}
             >
@@ -371,9 +383,9 @@ export default function AboutPage() {
             </div>
 
             <h2
+              className="vm-h2-title"
               style={{
                 color: "#fff",
-                fontSize: "clamp(1.5rem, 2.9vw, 2.8rem)",
                 fontFamily: font,
                 fontWeight: 700,
                 lineHeight: 1.3,
@@ -381,7 +393,7 @@ export default function AboutPage() {
                 letterSpacing: "-0.02em",
               }}
             >
-              We exist to revamp how businesses grow {" "}
+              We exist to revamp how businesses grow{" "}
               <span
                 style={{
                   background: "linear-gradient(90deg, #8B80FF, #C0BAFF, #8B80FF)",
@@ -394,9 +406,9 @@ export default function AboutPage() {
             </h2>
 
             <p
+              className="vm-body-text"
               style={{
                 color: "rgba(203,213,225,0.8)",
-                fontSize: 16,
                 fontFamily: font,
                 fontWeight: 400,
                 marginTop: 18,
@@ -408,8 +420,7 @@ export default function AboutPage() {
               convert, and leave a lasting impact.
             </p>
 
-            {/* Stats row */}
-            <div style={{ display: "flex", gap: 36, marginTop: 30 }}>
+            <div className="vm-stats" style={{ display: "flex", gap: 36, marginTop: 30 }}>
               {stats.map(({ num, label }) => (
                 <div key={label}>
                   <div
@@ -506,6 +517,60 @@ export default function AboutPage() {
               radial-gradient(circle 1px   at 95% 65%, rgba(255,255,255,0.50) 0%, transparent 100%),
               radial-gradient(circle 1px   at 58% 92%, rgba(255,255,255,0.30) 0%, transparent 100%),
               radial-gradient(circle 1.5px at 28% 70%, rgba(147,197,253,0.40) 0%, transparent 100%);
+          }
+
+          /* ── Globe size ── */
+          .vm-globe { width: 540px; height: 540px; }
+
+          /* ── Desktop text positioning ── */
+          .vm-head1 {
+            left: 34%;
+            top: 50%;
+            max-width: 680px;
+            padding-right: 2rem;
+          }
+          .vm-head2 {
+            left: 30%;
+            top: 50%;
+            max-width: 700px;
+            padding-right: 2rem;
+          }
+          .vm-h1-title  { font-size: clamp(2rem, 3.8vw, 3.4rem); }
+          .vm-h2-title  { font-size: clamp(1.5rem, 2.9vw, 2.8rem); }
+          .vm-body-text { font-size: 15px; }
+
+          /* ── Mobile overrides ── */
+          @media (max-width: 767px) {
+            .vm-globe {
+              width: min(300px, 72vw) !important;
+              height: min(300px, 72vw) !important;
+            }
+            .vm-checker { display: none !important; }
+
+            /* head1 sits in the lower half while globe is still visible above */
+            .vm-head1 {
+              left: 0 !important;
+              top: 62% !important;
+              width: 100% !important;
+              max-width: 100% !important;
+              padding: 0 20px !important;
+              box-sizing: border-box !important;
+            }
+            /* head2 is centered — globe is gone by the time it appears */
+            .vm-head2 {
+              left: 0 !important;
+              top: 50% !important;
+              width: 100% !important;
+              max-width: 100% !important;
+              padding: 0 20px !important;
+              box-sizing: border-box !important;
+            }
+
+            .vm-h1-title  { font-size: clamp(1.55rem, 5.5vw, 2.2rem); }
+            .vm-h2-title  { font-size: clamp(1.25rem, 4.8vw, 1.9rem); }
+            .vm-body-text { font-size: 13px; margin-top: 12px !important; }
+            .vm-stats     { gap: 20px !important; margin-top: 18px !important; }
+            .vm-tags      { margin-top: 16px !important; }
           }
         `}</style>
       </div>
