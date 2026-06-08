@@ -81,7 +81,7 @@ export default function StatsSection() {
           transition={{ duration: 0.85, ease: EASE }}
           className="relative rounded-2xl overflow-hidden"
           style={{
-            border: "1px solid rgba(139,128,255,0.18)"
+            // border: "1px solid rgba(139,128,255,0.18)"
           }}
         >
           {/* Full-width gradient accent line at top */}
