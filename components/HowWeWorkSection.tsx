@@ -52,23 +52,25 @@ function CTAButton() {
   return (
     <Link
       href="/contact"
-      className="group/btn relative inline-flex items-center gap-4 bg-[linear-gradient(135deg,#080B78,#00004D)] pl-1.5 pr-8 md:pr-10 py-1.5 rounded-full transition-all duration-700 shadow-[0_10px_20px_rgba(8,11,120,0.45)] hover:shadow-[0_0_32px_rgba(8,11,120,0.85),0_0_60px_rgba(80,70,255,0.35)] cursor-pointer overflow-hidden"
+      className="group/btn relative inline-flex items-center gap-4 bg-[linear-gradient(135deg,#080B78,#00004D)] pl-1.5 pr-8 md:pr-10 py-1.5 rounded-full transition-all duration-700
+    shadow-[0_0_0_1px_rgba(53,32,220,0.25),0_4px_24px_rgba(53,32,220,0.25),0_2px_8px_rgba(0,0,0,0.4)]
+    hover:shadow-[0_0_20px_rgba(139,128,255,0.55),0_0_50px_rgba(53,32,220,0.45),0_0_80px_rgba(24,0,200,0.25)]
+    cursor-pointer overflow-hidden"
     >
-      <div className="relative z-10 flex items-center transition-all duration-700 group-hover/btn:gap-4 gap-3">
-        <div className="bg-white w-10 h-10 md:w-12 md:h-12 rounded-full flex justify-center items-center transition-all duration-700 ease-out shadow-lg -rotate-40 group-hover/btn:rotate-0">
+      <div className="relative z-10 flex items-center gap-3">
+        <div className="bg-white w-10 h-10 md:w-12 md:h-12 rounded-full flex justify-center items-center transition-all duration-700 ease-out shadow-lg group-hover/btn:-rotate-40">
           <svg
             viewBox="0 0 24 24"
             className="w-5 h-5 md:w-5.5 md:h-5.5 fill-[#080B78] transition-all duration-700"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z" />
+            <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
           </svg>
         </div>
-        <span className="text-white font-semibold tracking-wide text-sm md:text-[17px] whitespace-nowrap transition-all duration-700 drop-shadow-sm group-hover/btn:tracking-wider">
+        <span className="text-white font-semibold tracking-wide text-sm md:text-[17px] whitespace-nowrap drop-shadow-sm">
           Free Consultation
         </span>
       </div>
-      <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 group-hover/btn:translate-x-full" />
     </Link>
   );
 }
@@ -76,10 +78,8 @@ function CTAButton() {
 export default function HowWeWorkSection() {
   return (
     <section className="relative max-w-360 mx-auto">
-
       {/* ─────── MOBILE / TABLET (below lg) ─────── */}
       <div className="lg:hidden px-5 sm:px-10 pt-14 pb-14">
-
         {/* Badge */}
         <motion.div
           initial={{ opacity: 0, scale: 0.82, y: 12 }}
@@ -171,7 +171,6 @@ export default function HowWeWorkSection() {
 
       {/* ─────── DESKTOP (lg+) ─────── */}
       <div className="hidden lg:block relative min-h-250">
-
         {/* ── Left heading ── */}
         <div className="absolute top-16 left-8 lg:left-20 max-w-137.5 z-20">
           <motion.div

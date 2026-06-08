@@ -271,7 +271,7 @@ export default function ReviewsSection() {
                   boxShadow: "0 0 14px rgba(8,11,120,0.55)",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = "0 0 28px rgba(8,11,120,0.85), 0 0 50px rgba(80,70,255,0.35)";
+                  e.currentTarget.style.boxShadow = "0 0 30px rgba(139,128,255,0.55), 0 0 50px rgba(53,32,220,0.45), 0 0 80px rgba(24,0,200,0.25)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.boxShadow = "0 0 14px rgba(8,11,120,0.55)";
@@ -293,7 +293,7 @@ export default function ReviewsSection() {
                   boxShadow: "0 0 14px rgba(8,11,120,0.55)",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = "0 0 28px rgba(8,11,120,0.85), 0 0 50px rgba(80,70,255,0.35)";
+                  e.currentTarget.style.boxShadow = "0 0 30px rgba(139,128,255,0.55), 0 0 50px rgba(53,32,220,0.45), 0 0 80px rgba(24,0,200,0.25)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.boxShadow = "0 0 14px rgba(8,11,120,0.55)";

@@ -355,18 +355,18 @@ export default function Navbar() {
                   ctaHovered
                     ? {
                         background: "linear-gradient(135deg, #080B78 0%, #00004D 100%)",
-                        border: "1.5px solid rgba(139,128,255,0.5)",
-                        boxShadow: "0 0 32px rgba(8,11,120,0.85), 0 0 60px rgba(80,70,255,0.35)",
+                        // border: "1.5px solid rgba(139,128,255,0.5)",
+                        boxShadow: "0 0 20px rgba(139,128,255,0.55), 0 0 50px rgba(53,32,220,0.45), 0 0 80px rgba(24,0,200,0.25)",
                       }
                     : {
                         background: "linear-gradient(135deg, #080B78 0%, #00004D 100%)",
-                        border: "1.5px solid transparent",
+                        // border: "1.5px solid transparent",
                         boxShadow: "0 0 28px rgba(8,11,120,0.55)",
                       }
                 }
               >
-                <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/25 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
-                <span className="relative z-10 transition-all duration-500 group-hover:tracking-wider">
+                {/* <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/25 to-transparent transition-transform duration-1000 group-hover:translate-x-full" /> */}
+                <span className="relative z-10 transition-all duration-500">
                   Get A Quote
                 </span>
               </Link>
@@ -377,12 +377,12 @@ export default function Navbar() {
                   ctaHovered
                     ? {
                         background: "linear-gradient(135deg, #080B78 0%, #00004D 100%)",
-                        border: "1.5px solid rgba(139,128,255,0.5)",
-                        boxShadow: "0 0 32px rgba(8,11,120,0.85), 0 0 60px rgba(80,70,255,0.35)",
+                        // border: "1.5px solid rgba(139,128,255,0.5)",
+                        boxShadow: "0 0 20px rgba(139,128,255,0.55), 0 0 50px rgba(53,32,220,0.45), 0 0 80px rgba(24,0,200,0.25)",
                       }
                     : {
                         background: "linear-gradient(135deg, #080B78 0%, #00004D 100%)",
-                        border: "1.5px solid transparent",
+                        // border: "1.5px solid transparent",
                         boxShadow: "0 0 28px rgba(8,11,120,0.55)",
                       }
                 }
