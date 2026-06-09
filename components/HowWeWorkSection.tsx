@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 
@@ -27,7 +28,7 @@ const steps = [
     icon: "tabler:code",
     svgX: 51,
     svgY: 37,
-    dotDelay: 0.9,
+    dotDelay: 2.9,
     cardLeft: "40.3%",
     cardTop: "39%",
   },
@@ -39,7 +40,7 @@ const steps = [
     icon: "tabler:rocket",
     svgX: 84,
     svgY: 12.5,
-    dotDelay: 1.4,
+    dotDelay: 3.4,
     cardLeft: "73%",
     cardTop: "14%",
   },
@@ -73,6 +74,82 @@ function CTAButton() {
       </div>
       <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 group-hover/btn:translate-x-full"></span>
     </Link>
+  );
+}
+
+// ── Right Panel with shared useInView ref ──
+function RightPanel() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.3 });
+
+  return (
+    <div ref={ref} className="relative flex-1 overflow-hidden">
+      {/* Wave SVG */}
+      <svg
+        className="absolute inset-0 w-full h-full"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+        fill="none"
+        style={{ zIndex: 5 }}
+      >
+        <defs>
+          <linearGradient id="waveGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#3520DC" stopOpacity="0.45" />
+            <stop offset="50%" stopColor="#5B4FF0" stopOpacity="0.75" />
+            <stop offset="100%" stopColor="#8B80FF" stopOpacity="0.9" />
+          </linearGradient>
+        </defs>
+        <motion.path
+          d={WAVE}
+          stroke="url(#waveGrad2)"
+          strokeWidth="0.45"
+          strokeLinecap="round"
+          animate={
+            isInView
+              ? { pathLength: 1, opacity: 1 }
+              : { pathLength: 0, opacity: 0 }
+          }
+          transition={{ duration: 1.8, ease: "easeInOut", delay: 0.2 }}
+        />
+        <motion.path
+          d={WAVE}
+          stroke="url(#waveGrad2)"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeOpacity="0.11"
+          animate={
+            isInView
+              ? { pathLength: 1, opacity: 1 }
+              : { pathLength: 0, opacity: 0 }
+          }
+          transition={{ duration: 1.8, ease: "easeInOut", delay: 0.2 }}
+        />
+      </svg>
+
+      {/* Dots */}
+      {steps.map((step) => (
+        <StepDot key={`dot-${step.number}`} step={step} isInView={isInView} />
+      ))}
+
+      {/* Cards */}
+      {steps.map((step) => (
+        <motion.div
+          key={`card-${step.number}`}
+          className="absolute z-20 w-[230px]"
+          style={{ left: step.cardLeft, top: step.cardTop }}
+          animate={
+            isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }
+          }
+          transition={{
+            duration: 0.55,
+            ease: EASE,
+            delay: step.dotDelay + 0.2,
+          }}
+        >
+          <CompactCard step={step} />
+        </motion.div>
+      ))}
+    </div>
   );
 }
 
@@ -157,7 +234,7 @@ export default function HowWeWorkSection() {
       </div>
 
       {/* ─────── DESKTOP (lg+) ─────── */}
-      <div className="hidden lg:flex h-full items-stretch ">
+      <div className="hidden lg:flex h-full items-stretch">
         {/* ── Left Panel ── */}
         <div className="relative z-20 flex flex-col justify-center pl-10 pr-0 w-125 shrink-0">
           {/* Badge */}
@@ -266,70 +343,8 @@ export default function HowWeWorkSection() {
           </motion.div>
         </div>
 
-        {/* ── Right: Wave + Dots + Cards ── */}
-        <div className="relative flex-1 overflow-hidden">
-          {/* Wave SVG */}
-          <svg
-            className="absolute inset-0 w-full h-full"
-            viewBox="0 0 100 100"
-            preserveAspectRatio="none"
-            fill="none"
-            style={{ zIndex: 5 }}
-          >
-            <defs>
-              <linearGradient id="waveGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#3520DC" stopOpacity="0.45" />
-                <stop offset="50%" stopColor="#5B4FF0" stopOpacity="0.75" />
-                <stop offset="100%" stopColor="#8B80FF" stopOpacity="0.9" />
-              </linearGradient>
-            </defs>
-            <motion.path
-              d={WAVE}
-              stroke="url(#waveGrad2)"
-              strokeWidth="0.45"
-              strokeLinecap="round"
-              initial={{ pathLength: 0, opacity: 0 }}
-              whileInView={{ pathLength: 1, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.8, ease: "easeInOut", delay: 0.2 }}
-            />
-            <motion.path
-              d={WAVE}
-              stroke="url(#waveGrad2)"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeOpacity="0.11"
-              initial={{ pathLength: 0, opacity: 0 }}
-              whileInView={{ pathLength: 1, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.8, ease: "easeInOut", delay: 0.2 }}
-            />
-          </svg>
-
-          {/* Dots */}
-          {steps.map((step) => (
-            <StepDot key={`dot-${step.number}`} step={step} />
-          ))}
-
-          {/* Cards */}
-          {steps.map((step) => (
-            <motion.div
-              key={`card-${step.number}`}
-              className="absolute z-20 w-[230px]"
-              style={{ left: step.cardLeft, top: step.cardTop }}
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.55,
-                ease: EASE,
-                delay: step.dotDelay + 0.2,
-              }}
-            >
-              <CompactCard step={step} />
-            </motion.div>
-          ))}
-        </div>
+        {/* ── Right Panel (shared useInView) ── */}
+        <RightPanel />
       </div>
     </section>
   );
@@ -339,7 +354,7 @@ export default function HowWeWorkSection() {
 function CompactCard({ step }: { step: (typeof steps)[number] }) {
   return (
     <div
-      className="relative rounded-2xl px-4 py-4 overflow-hidden bg-amber-200"
+      className="relative rounded-2xl px-4 py-4 overflow-hidden"
       style={{
         background: "rgba(8,0,55,0.82)",
         border: "1px solid rgba(139,128,255,0.25)",
@@ -401,7 +416,14 @@ function CompactCard({ step }: { step: (typeof steps)[number] }) {
   );
 }
 
-function StepDot({ step }: { step: (typeof steps)[number] }) {
+// ── Step Dot ──
+function StepDot({
+  step,
+  isInView,
+}: {
+  step: (typeof steps)[number];
+  isInView: boolean;
+}) {
   return (
     <motion.div
       className="absolute"
@@ -411,9 +433,7 @@ function StepDot({ step }: { step: (typeof steps)[number] }) {
         transform: "translate(-50%, -50%)",
         zIndex: 100,
       }}
-      initial={{ scale: 0, opacity: 0 }}
-      whileInView={{ scale: 1, opacity: 1 }}
-      viewport={{ once: true }}
+      animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
       transition={{
         type: "spring",
         stiffness: 280,

@@ -157,38 +157,6 @@ export default function AboutPage() {
             }}
           />
 
-          {/* Dot grid — hidden on mobile */}
-          <div
-            ref={checkerRef}
-            className="vm-checker"
-            style={{
-              position: "absolute",
-              top: 24,
-              right: 24,
-              width: 252,
-              height: 252,
-              opacity: 0,
-              zIndex: 3,
-              display: "grid",
-              gridTemplateColumns: "repeat(7, 1fr)",
-              gridTemplateRows: "repeat(7, 1fr)",
-              gap: 8,
-              willChange: "opacity",
-            }}
-          >
-            {[...Array(49)].map((_, i) => (
-              <div
-                key={i}
-                style={{
-                  width: 3,
-                  height: 3,
-                  borderRadius: "50%",
-                  backgroundColor: "rgba(147,197,253,0.55)",
-                  visibility: i % 3 === 2 ? "hidden" : "visible",
-                }}
-              />
-            ))}
-          </div>
 
           {/* Beam / cone */}
           <svg
@@ -494,30 +462,6 @@ export default function AboutPage() {
             border-bottom: 1.5px solid rgba(148,163,184,0.45);
             animation: aboutScrollArrow 1.6s ease-in-out infinite;
           }
-          .about-stars {
-            background-image:
-              radial-gradient(circle 1px   at  8% 12%, rgba(255,255,255,0.80) 0%, transparent 100%),
-              radial-gradient(circle 1px   at 22% 38%, rgba(255,255,255,0.50) 0%, transparent 100%),
-              radial-gradient(circle 1.5px at 38%  6%, rgba(255,255,255,0.90) 0%, transparent 100%),
-              radial-gradient(circle 1px   at 55% 20%, rgba(255,255,255,0.60) 0%, transparent 100%),
-              radial-gradient(circle 2px   at 68% 14%, rgba(147,197,253,0.70) 0%, transparent 100%),
-              radial-gradient(circle 1px   at 82% 30%, rgba(255,255,255,0.50) 0%, transparent 100%),
-              radial-gradient(circle 1px   at 92%  8%, rgba(255,255,255,0.80) 0%, transparent 100%),
-              radial-gradient(circle 1px   at 12% 55%, rgba(255,255,255,0.40) 0%, transparent 100%),
-              radial-gradient(circle 1px   at 48% 62%, rgba(255,255,255,0.60) 0%, transparent 100%),
-              radial-gradient(circle 1.5px at 78% 58%, rgba(147,197,253,0.50) 0%, transparent 100%),
-              radial-gradient(circle 1px   at  3% 80%, rgba(255,255,255,0.70) 0%, transparent 100%),
-              radial-gradient(circle 1px   at 32% 82%, rgba(255,255,255,0.40) 0%, transparent 100%),
-              radial-gradient(circle 1px   at 62% 78%, rgba(255,255,255,0.60) 0%, transparent 100%),
-              radial-gradient(circle 1px   at 88% 72%, rgba(255,255,255,0.50) 0%, transparent 100%),
-              radial-gradient(circle 2px   at 45% 48%, rgba(165,180,252,0.50) 0%, transparent 100%),
-              radial-gradient(circle 1px   at 18% 25%, rgba(255,255,255,0.30) 0%, transparent 100%),
-              radial-gradient(circle 1px   at 72% 45%, rgba(255,255,255,0.40) 0%, transparent 100%),
-              radial-gradient(circle 1px   at 95% 65%, rgba(255,255,255,0.50) 0%, transparent 100%),
-              radial-gradient(circle 1px   at 58% 92%, rgba(255,255,255,0.30) 0%, transparent 100%),
-              radial-gradient(circle 1.5px at 28% 70%, rgba(147,197,253,0.40) 0%, transparent 100%);
-          }
-
           /* ── Globe size ── */
           .vm-globe { width: 540px; height: 540px; }
 
