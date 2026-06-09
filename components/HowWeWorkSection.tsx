@@ -28,7 +28,7 @@ const steps = [
     icon: "tabler:code",
     svgX: 51,
     svgY: 37,
-    dotDelay: 2.9,
+    dotDelay: 1.1,
     cardLeft: "40.3%",
     cardTop: "39%",
   },
@@ -40,7 +40,7 @@ const steps = [
     icon: "tabler:rocket",
     svgX: 84,
     svgY: 12.5,
-    dotDelay: 3.4,
+    dotDelay: 1.8,
     cardLeft: "73%",
     cardTop: "14%",
   },
@@ -80,7 +80,7 @@ function CTAButton() {
 // ── Right Panel with shared useInView ref ──
 function RightPanel() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const isInView = useInView(ref, { once: true, amount: 0.65 });
 
   return (
     <div ref={ref} className="relative flex-1 overflow-hidden">
@@ -132,18 +132,20 @@ function RightPanel() {
       ))}
 
       {/* Cards */}
+      {/* Cards */}
       {steps.map((step) => (
         <motion.div
           key={`card-${step.number}`}
           className="absolute z-20 w-[230px]"
           style={{ left: step.cardLeft, top: step.cardTop }}
+          initial={{ opacity: 0, y: 12 }}          // ← yeh add karo
           animate={
             isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }
           }
           transition={{
             duration: 0.55,
             ease: EASE,
-            delay: step.dotDelay + 0.2,
+            delay: step.dotDelay + 0.15,
           }}
         >
           <CompactCard step={step} />
