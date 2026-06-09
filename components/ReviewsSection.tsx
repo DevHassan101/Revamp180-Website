@@ -252,7 +252,7 @@ export default function ReviewsSection() {
           <div className="relative overflow-hidden marquee-track">
             {/* Left fade edge */}
             <div
-              className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
+              className="hidden xl:flex absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
               style={{
                 background:
                   "linear-gradient(to right, var(--bg-base, #08081a) 0%, transparent 100%)",
@@ -260,7 +260,7 @@ export default function ReviewsSection() {
             />
             {/* Right fade edge */}
             <div
-              className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
+              className="hidden xl:flex absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
               style={{
                 background:
                   "linear-gradient(to left, var(--bg-base, #08081a) 0%, transparent 100%)",
@@ -269,7 +269,7 @@ export default function ReviewsSection() {
 
             <div className="marquee-inner py-2">
               {doubled.map((r, i) => (
-                <div key={i} className="flex-shrink-0 w-[300px] md:w-[340px]">
+                <div key={i} className="flex-shrink-0 w-[280px] md:w-[340px]">
                   <ReviewCard review={r} />
                 </div>
               ))}
