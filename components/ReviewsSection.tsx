@@ -1,11 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import Swiper from "swiper";
-import { Autoplay, Navigation, Pagination } from "swiper/modules";
-import type { Swiper as SwiperType } from "swiper";
-import "swiper/css";
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
@@ -84,17 +79,23 @@ function ReviewCard({ review }: { review: (typeof reviews)[number] }) {
         WebkitBackdropFilter: "blur(16px)",
       }}
     >
-      {/* Top shimmer */}
+      {/* Top shimmer line */}
       <div
         className="absolute top-0 left-1/2 -translate-x-1/2 w-3/5 h-[1.5px] pointer-events-none"
-        style={{ background: "linear-gradient(90deg, transparent, rgba(139,128,255,0.6), transparent)" }}
+        style={{
+          background:
+            "linear-gradient(90deg, transparent, rgba(139,128,255,0.6), transparent)",
+        }}
       />
-      {/* Inner top glow */}
+      {/* Top glow */}
       <div
         className="absolute top-0 left-0 right-0 h-20 pointer-events-none"
-        style={{ background: "linear-gradient(180deg, rgba(139,128,255,0.06) 0%, transparent 100%)" }}
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(139,128,255,0.06) 0%, transparent 100%)",
+        }}
       />
-      {/* Watermark quote */}
+      {/* Decorative quote mark */}
       <div
         className="absolute bottom-4 right-5 text-[96px] font-black leading-none pointer-events-none select-none"
         style={{ color: "rgba(139,128,255,0.06)", fontFamily: "Georgia, serif" }}
@@ -112,11 +113,16 @@ function ReviewCard({ review }: { review: (typeof reviews)[number] }) {
         >
           &ldquo;{review.text}&rdquo;
         </p>
-        <div className="w-full h-px mb-5" style={{ background: "rgba(139,128,255,0.12)" }} />
+        <div
+          className="w-full h-px mb-5"
+          style={{ background: "rgba(139,128,255,0.12)" }}
+        />
         <div className="flex items-center gap-3">
           <div
             className="flex-shrink-0 rounded-full p-[2px]"
-            style={{ background: `linear-gradient(135deg, ${review.ringColor}, rgba(139,128,255,0.2))` }}
+            style={{
+              background: `linear-gradient(135deg, ${review.ringColor}, rgba(139,128,255,0.2))`,
+            }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -125,14 +131,24 @@ function ReviewCard({ review }: { review: (typeof reviews)[number] }) {
               width={44}
               height={44}
               className="rounded-full object-cover block"
-              style={{ width: "44px", height: "44px", border: "2px solid rgba(0,0,50,0.6)" }}
+              style={{
+                width: "44px",
+                height: "44px",
+                border: "2px solid rgba(0,0,50,0.6)",
+              }}
             />
           </div>
           <div className="min-w-0">
-            <p className="text-white font-semibold leading-tight truncate" style={{ fontSize: "14px" }}>
+            <p
+              className="text-white font-semibold leading-tight truncate"
+              style={{ fontSize: "14px" }}
+            >
               {review.name}
             </p>
-            <p className="text-[11.5px] mt-0.5 truncate" style={{ color: "rgba(192,186,255,0.50)" }}>
+            <p
+              className="text-[11.5px] mt-0.5 truncate"
+              style={{ color: "rgba(192,186,255,0.50)" }}
+            >
               {review.role}
             </p>
           </div>
@@ -154,176 +170,111 @@ function ReviewCard({ review }: { review: (typeof reviews)[number] }) {
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 export default function ReviewsSection() {
-  const swiperElRef  = useRef<HTMLDivElement>(null);
-  const swiperRef    = useRef<SwiperType | null>(null);
-  const prevBtnRef   = useRef<HTMLButtonElement>(null);
-  const nextBtnRef   = useRef<HTMLButtonElement>(null);
-  const paginationRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!swiperElRef.current) return;
-
-    Swiper.use([Autoplay, Navigation, Pagination]);
-
-    swiperRef.current = new Swiper(swiperElRef.current, {
-      modules: [Autoplay, Navigation, Pagination],
-      loop: true,                    // ← seamless infinite loop, Swiper handles it natively
-      speed: 1500,
-      grabCursor: true,
-      spaceBetween: 50,
-      slidesPerView: 1,
-      breakpoints: {
-        640: { slidesPerView: 3, spaceBetween: 20 },
-      },
-      autoplay: {
-        delay: 20,
-        disableOnInteraction: false, // resumes after manual swipe/click
-        pauseOnMouseEnter: true,
-      },
-      navigation: {
-        prevEl: prevBtnRef.current,
-        nextEl: nextBtnRef.current,
-      },
-      pagination: {
-        el: paginationRef.current,
-        clickable: true,
-        renderBullet: (_index, className) =>
-          `<span class="${className}" style="background:rgba(139,128,255,0.28);width:7px;height:7px;border-radius:9999px;display:inline-block;transition:all 0.3s;"></span>`,
-      },
-    });
-
-    return () => {
-      swiperRef.current?.destroy(true, true);
-    };
-  }, []);
+  // Duplicate cards — CSS marquee needs 2 sets so the loop is seamless.
+  // translateX(-50%) lands exactly at the start of the second set,
+  // then the animation resets to 0 invisibly → zero jerk, zero JS.
+  const doubled = [...reviews, ...reviews];
 
   return (
     <>
-      {/* ── Custom Swiper bullet styles ── */}
       <style>{`
-        .reviews-pagination .swiper-pagination-bullet-active {
-          background: #8B80FF !important;
-          width: 24px !important;
-          border-radius: 9999px !important;
+        @keyframes marquee {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .marquee-inner {
+          display: flex;
+          gap: 24px;
+          width: max-content;
+          animation: marquee 18s linear infinite;
+          will-change: transform;
+        }
+        .marquee-track:hover .marquee-inner {
+          animation-play-state: paused;
         }
       `}</style>
 
       <section className="relative w-full pt-10 pb-24 px-4 overflow-hidden">
-        {/* BG ambient glow */}
+        {/* Background glow */}
         <div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[480px] rounded-full blur-3xl pointer-events-none"
-          style={{ background: "radial-gradient(circle, rgba(139,128,255,0.06) 0%, transparent 70%)" }}
+          style={{
+            background:
+              "radial-gradient(circle, rgba(139,128,255,0.06) 0%, transparent 70%)",
+          }}
         />
 
         <div className="relative z-10 max-w-7xl mx-auto">
-
-          {/* ── Header + Nav ── */}
-          <div className="flex items-end justify-between mb-10 gap-4 flex-wrap">
-            <div>
-              <motion.div
-                initial={{ opacity: 0, scale: 0.82, y: 10 }}
-                whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ type: "spring", stiffness: 280, damping: 22 }}
-                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-4"
-                style={{
-                  background: "rgba(139,128,255,0.10)",
-                  border: "1px solid rgba(139,128,255,0.28)",
-                }}
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-[#8B80FF] animate-pulse" />
-                <span className="text-[#C0BAFF] text-sm font-medium tracking-wide">Client Reviews</span>
-              </motion.div>
-
-              <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.7, ease: EASE, delay: 0.06 }}
-                className="font-extrabold text-white"
-                style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", letterSpacing: "-0.02em" }}
-              >
-                Trusted by{" "}
-                <span
-                  className="bg-clip-text text-transparent"
-                  style={{ backgroundImage: "linear-gradient(90deg, #8B80FF, #C0BAFF, #8B80FF)" }}
-                >
-                  Growing Brands
-                </span>
-              </motion.h2>
-            </div>
-
-            {/* Custom nav buttons — wired to Swiper via refs */}
+          {/* ── Header ── */}
+          <div className="mb-10">
             <motion.div
-              initial={{ opacity: 0, x: 16 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, scale: 0.82, y: 10 }}
+              whileInView={{ opacity: 1, scale: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, ease: EASE, delay: 0.5 }}
-              className="flex gap-3 flex-shrink-0 pb-1"
+              transition={{ type: "spring", stiffness: 280, damping: 22 }}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-4"
+              style={{
+                background: "rgba(139,128,255,0.10)",
+                border: "1px solid rgba(139,128,255,0.28)",
+              }}
             >
-              {/* Prev */}
-              <button
-                ref={prevBtnRef}
-                className="w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 active:scale-95"
-                style={{
-                  background: "linear-gradient(135deg, #080B78 0%, #00004D 100%)",
-                  border: "1.5px solid transparent",
-                  boxShadow: "0 0 14px rgba(8,11,120,0.55)",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = "0 0 30px rgba(139,128,255,0.55), 0 0 50px rgba(53,32,220,0.45), 0 0 80px rgba(24,0,200,0.25)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = "0 0 14px rgba(8,11,120,0.55)";
-                }}
-                aria-label="Previous"
-              >
-                <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-                  <polyline points="15 18 9 12 15 6" />
-                </svg>
-              </button>
-
-              {/* Next */}
-              <button
-                ref={nextBtnRef}
-                className="w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 active:scale-95"
-                style={{
-                  background: "linear-gradient(135deg, #080B78 0%, #00004D 100%)",
-                  border: "1.5px solid transparent",
-                  boxShadow: "0 0 14px rgba(8,11,120,0.55)",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = "0 0 30px rgba(139,128,255,0.55), 0 0 50px rgba(53,32,220,0.45), 0 0 80px rgba(24,0,200,0.25)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = "0 0 14px rgba(8,11,120,0.55)";
-                }}
-                aria-label="Next"
-              >
-                <svg viewBox="0 0 24 24" fill="none" stroke="rgba(192,186,255,0.85)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-                  <polyline points="9 18 15 12 9 6" />
-                </svg>
-              </button>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#8B80FF] animate-pulse" />
+              <span className="text-[#C0BAFF] text-sm font-medium tracking-wide">
+                Client Reviews
+              </span>
             </motion.div>
+
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, ease: EASE, delay: 0.06 }}
+              className="font-extrabold text-white"
+              style={{
+                fontSize: "clamp(1.8rem, 4vw, 2.8rem)",
+                letterSpacing: "-0.02em",
+              }}
+            >
+              Trusted by{" "}
+              <span
+                className="bg-clip-text text-transparent"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(90deg, #8B80FF, #C0BAFF, #8B80FF)",
+                }}
+              >
+                Growing Brands
+              </span>
+            </motion.h2>
           </div>
 
-          {/* ── Swiper ── */}
-          <div ref={swiperElRef} className="swiper">
-            <div className="swiper-wrapper items-stretch">
-              {reviews.map((r) => (
-                <div key={r.name} className="swiper-slide !h-auto">
+          {/* ── Marquee track ── */}
+          <div className="relative overflow-hidden marquee-track">
+            {/* Left fade edge */}
+            <div
+              className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
+              style={{
+                background:
+                  "linear-gradient(to right, var(--bg-base, #08081a) 0%, transparent 100%)",
+              }}
+            />
+            {/* Right fade edge */}
+            <div
+              className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
+              style={{
+                background:
+                  "linear-gradient(to left, var(--bg-base, #08081a) 0%, transparent 100%)",
+              }}
+            />
+
+            <div className="marquee-inner py-2">
+              {doubled.map((r, i) => (
+                <div key={i} className="flex-shrink-0 w-[300px] md:w-[340px]">
                   <ReviewCard review={r} />
                 </div>
               ))}
             </div>
           </div>
-
-          {/* ── Pagination dots ── */}
-          <div
-            ref={paginationRef}
-            className="reviews-pagination flex items-center justify-center gap-2.5 mt-8"
-          />
-
         </div>
       </section>
     </>

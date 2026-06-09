@@ -129,7 +129,7 @@ export default function AboutPage() {
 
   return (
     <>
-      <div ref={containerRef} style={{ height: "600vh", position: "relative" }}>
+      <div ref={containerRef} className="relative h-[350vh] xl:h-[600vh]">
         {/* ── Sticky viewport ── */}
         <div
           style={{
@@ -255,7 +255,7 @@ export default function AboutPage() {
               willChange: "opacity, transform",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 22 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 10, marginBottom: 10 }}>
               <div
                 style={{
                   width: 28,
@@ -311,16 +311,16 @@ export default function AboutPage() {
                 color: "rgba(203,213,225,0.7)",
                 fontFamily: font,
                 fontWeight: 400,
-                marginTop: 20,
+                marginTop: 17,
                 lineHeight: 1.75,
                 maxWidth: 480,
               }}
             >
-              We turn ambitious ideas into unstoppable brands — through bold
+              We turn ambitious ideas into unstoppable brands through bold
               strategy, purposeful design, and technology that scales.
             </p>
 
-            <div className="vm-tags" style={{ display: "flex", gap: 10, marginTop: 24, flexWrap: "wrap" }}>
+            <div className="vm-tags" style={{ display: "flex", gap: 10, marginTop: 18, flexWrap: "wrap" }}>
               {["Strategy", "Design", "Technology", "Growth"].map((tag) => (
                 <span
                   key={tag}
@@ -523,7 +523,7 @@ export default function AboutPage() {
 
           /* ── Desktop text positioning ── */
           .vm-head1 {
-            left: 34%;
+            left: 38%;
             top: 50%;
             max-width: 680px;
             padding-right: 2rem;
@@ -534,7 +534,7 @@ export default function AboutPage() {
             max-width: 700px;
             padding-right: 2rem;
           }
-          .vm-h1-title  { font-size: clamp(2rem, 3.8vw, 3.4rem); }
+          .vm-h1-title  { font-size: clamp(2rem, 2.8vw, 3.4rem); }
           .vm-h2-title  { font-size: clamp(1.5rem, 2.9vw, 2.8rem); }
           .vm-body-text { font-size: 15px; }
 

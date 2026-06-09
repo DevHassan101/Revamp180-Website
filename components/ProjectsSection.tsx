@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 
-
 // ─── Easing curves ────────────────────────────────────────────────────────────
 // Gentle spring-like decelerate — feels organic, not mechanical
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -122,15 +121,18 @@ function ProjectCard({
 
   return (
     <motion.div
-      initial={{ ...getCardInitial(colIndex, index, isMobile), filter: "blur(6px)" }}
+      initial={{
+        ...getCardInitial(colIndex, index, isMobile),
+        filter: "blur(6px)",
+      }}
       whileInView={{ opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" }}
       viewport={{ once: true, amount: 0.15 }}
       transition={{
-        x:      { duration, ease: FAN_EASE, delay },
-        y:      { duration, ease: FAN_EASE, delay },
-        scale:  { duration, ease: FAN_EASE, delay },
+        x: { duration, ease: FAN_EASE, delay },
+        y: { duration, ease: FAN_EASE, delay },
+        scale: { duration, ease: FAN_EASE, delay },
         opacity: { duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94], delay },
-        filter:  { duration: 0.7,  ease: [0.25, 0.46, 0.45, 0.94], delay },
+        filter: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94], delay },
       }}
       className="group/card flex flex-col gap-3"
     >
@@ -438,9 +440,7 @@ export default function ProjectsSection() {
   }
 
   return (
-    <section
-      className="relative w-full py-28 px-4 overflow-hidden"
-    >
+    <section className="relative w-full py-28 px-4 overflow-hidden">
       {/*
         ── Scoped CSS for hover states ────────────────────────────────────────
         FIX: All hover micro-interactions live here, handled purely by browser
@@ -486,7 +486,6 @@ export default function ProjectsSection() {
           transform: translateX(0) !important;
         }
       `}</style>
-
 
       <div className="relative z-10 max-w-6xl mx-auto">
         {/* ── Header ── */}
@@ -579,32 +578,91 @@ export default function ProjectsSection() {
           {!showAll ? (
             <button
               onClick={() => setShowAll(true)}
-              className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-white font-semibold text-[15px] cursor-pointer transition-all duration-500"
-              style={{
-                background: "linear-gradient(135deg, #080B78 0%, #00004D 100%)",
-                border: "1.5px solid transparent",
-                boxShadow: "0 0 28px rgba(8,11,120,0.55)",
-              }}
-              onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 0 20px rgba(139,128,255,0.55), 0 0 50px rgba(53,32,220,0.45), 0 0 80px rgba(24,0,200,0.25)")}
-              onMouseLeave={e => (e.currentTarget.style.boxShadow = "0 0 28px rgba(8,11,120,0.55)")}
+              className="group group/btn relative inline-flex items-center gap-4
+              bg-[linear-gradient(135deg,#080B78,#00004D)]
+              pl-8 pr-1.5 py-1.5 rounded-full overflow-hidden
+              transition-all duration-700 
+                shadow-[0_0_0_1px_rgba(53,32,220,0.25),0_4px_24px_rgba(53,32,220,0.25),0_2px_8px_rgba(0,0,0,0.4)]
+                hover:shadow-[0_0_14px_rgba(180,190,255,0.50),0_0_17px_rgba(255,255,255,0.25)]"
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.boxShadow =
+                  "0 0 14px rgba(180,190,255,0.50) , 0 0 17px rgba(255,255,255,0.25)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.boxShadow =
+                  "0 0 28px rgba(8,11,120,0.55)")
+              }
             >
-              View All Projects
-              <Icon icon="tabler:arrow-down" className="w-5 h-5" />
+              <span className="text-white font-semibold tracking-wide text-sm md:text-[15px] whitespace-nowrap">
+                View More
+              </span>
+
+              <div
+                className="
+                  bg-white w-10 h-10 md:w-11 md:h-11 rounded-full
+                  flex items-center justify-center
+                  transition-all duration-500 ease-out
+                  shadow-lg
+                "
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  className="
+                    w-4.5 h-4.5 fill-[#080B78]
+                    transition-all duration-700
+                    group-hover:rotate-90
+                  "
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z" />
+                </svg>
+              </div>
+
+              <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 group-hover/btn:translate-x-full"></span>
             </button>
           ) : (
             <Link
               href="/projects"
-              className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-white font-semibold text-[15px] transition-all duration-500"
-              style={{
-                background: "linear-gradient(135deg, #080B78 0%, #00004D 100%)",
-                border: "1.5px solid transparent",
-                boxShadow: "0 0 28px rgba(8,11,120,0.55)",
-              }}
-              onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 0 32px rgba(8,11,120,0.85), 0 0 60px rgba(80,70,255,0.35)")}
-              onMouseLeave={e => (e.currentTarget.style.boxShadow = "0 0 28px rgba(8,11,120,0.55)")}
+              className="group group/btn relative inline-flex items-center gap-4
+              bg-[linear-gradient(135deg,#080B78,#00004D)]
+              pl-8 pr-1.5 py-1.5 rounded-full overflow-hidden
+              transition-all duration-700 
+                shadow-[0_0_0_1px_rgba(53,32,220,0.25),0_4px_24px_rgba(53,32,220,0.25),0_2px_8px_rgba(0,0,0,0.4)]
+                hover:shadow-[0_0_14px_rgba(180,190,255,0.50),0_0_17px_rgba(255,255,255,0.25)]"
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.boxShadow =
+                  "0 0 14px rgba(180,190,255,0.50) , 0 0 17px rgba(255,255,255,0.25)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.boxShadow =
+                  "0 0 28px rgba(8,11,120,0.55)")
+              }
             >
-              See Full Portfolio
-              <Icon icon="tabler:arrow-right" className="w-5 h-5" />
+              <span className="text-white font-semibold tracking-wide text-sm md:text-[15px] whitespace-nowrap">
+                See All Projects
+              </span>
+
+              <div
+                className="
+                  bg-white w-10 h-10 md:w-11 md:h-11 rounded-full
+                  flex items-center justify-center
+                  transition-all duration-500 ease-out
+                  shadow-lg
+                "
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  className="
+                    w-4.5 h-4.5 fill-[#080B78]
+                    transition-all duration-700
+                    group-hover:-rotate-90
+                  "
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z" />
+                </svg>
+              </div>
+              <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 group-hover/btn:translate-x-full"></span>
             </Link>
           )}
         </motion.div>

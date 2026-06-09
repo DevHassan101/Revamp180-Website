@@ -57,24 +57,8 @@ const cardVariants = {
 export default function ServicesSection() {
   return (
     <section
-      className="relative w-full pt-24 pb-20 px-4 overflow-hidden"
+      className="relative w-full pt-8 xl:pt-24 pb-8 xl:pb-20 px-4 overflow-hidden"
     >
-      {/* Glow orb — top center */}
-      {/* <div
-        className="absolute left-1/2 -top-16 -translate-x-1/2 w-[640px] h-[280px] rounded-full blur-3xl pointer-events-none"
-        style={{
-          background: "radial-gradient(circle, #1800C8 0%, transparent 70%)",
-          opacity: 0.18,
-        }}
-      /> */}
-      {/* Glow orb — bottom right */}
-      {/* <div
-        className="absolute right-[-80px] bottom-0 w-[360px] h-[360px] rounded-full blur-3xl pointer-events-none"
-        style={{
-          background: "radial-gradient(circle, #3520DC 0%, transparent 70%)",
-          opacity: 0.12,
-        }}
-      /> */}
 
       <div className="relative z-10 max-w-6xl mx-auto">
 
@@ -134,7 +118,7 @@ export default function ServicesSection() {
         </div>
 
         {/* ── Cards Grid ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-5">
           {services.map((service, i) => (
             <ServiceCard key={service.label} service={service} index={i} />
           ))}

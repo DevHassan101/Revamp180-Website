@@ -47,7 +47,7 @@ export default function BackToTop() {
           width: "50px",
           height: "50px",
           borderRadius: "50%",
-          background: "#25D366",
+          background: "#5b4bff", // Light Purple
           border: "none",
           cursor: "pointer",
           zIndex: 9000,
@@ -58,6 +58,20 @@ export default function BackToTop() {
           boxShadow: "0 2px 8px rgba(0,0,0,0.25)",
         }}
       >
+        {/* Blinking notification dot */}
+        <span
+          style={{
+            position: "absolute",
+            top: "4px",
+            right: "2px",
+            width: "10px",
+            height: "10px",
+            borderRadius: "50%",
+            background: "#ff0000",
+            animation: "blink 1s infinite",
+          }}
+        />
+
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="1.7em"

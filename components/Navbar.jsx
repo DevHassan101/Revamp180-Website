@@ -107,7 +107,7 @@ export default function Navbar() {
         }`}
       >
         <nav
-          className={`grid grid-cols-[1fr_auto_1fr] items-center transition-all duration-500 ease-in-out ${scrolled ? "px-2 py-1.5" : "py-0"}`}
+          className={`grid grid-cols-[1fr_auto_1fr] items-center transition-all duration-500 ease-in-out ${scrolled ? "py-0" : "py-0"}`}
         >
           {/* ── Logo ── */}
           <Link
@@ -178,9 +178,12 @@ export default function Navbar() {
                     style={!scrolled ? { color: "#01004C" } : {}}
                   >
                     <span
-                      className={`px-2 py-[3px] inline-block relative transition-all duration-200 before:content-[''] before:absolute before:bottom-0 before:left-1/2 before:-translate-x-1/2 before:h-[3px] before:rounded-full before:bg-gradient-to-r before:from-[#8B80FF] before:via-[#3520DC] before:to-[#00004D] before:w-0 hover:before:w-[70%] before:transition-all before:duration-300 hover:[text-shadow:0_0_12px_rgba(139,128,255,0.75)] ${
-                        !scrolled && isActive(item.href) ? "" : ""
-                      }`}
+                      className={`px-2 py-[3px] inline-block relative transition-all duration-200 before:content-[''] before:absolute before:bottom-0 before:left-1/2 before:-translate-x-1/2 before:h-[3px] before:rounded-full before:bg-gradient-to-r before:from-[#8B80FF] before:via-[#3520DC] before:to-[#00004D] before:w-0 hover:before:w-[70%] before:transition-all before:duration-300 hover:[text-shadow:0_0_8px_rgba(139,128,255,1),0_0_20px_rgba(139,128,255,0.9),0_0_40px_rgba(139,128,255,0.5)]
+                        ${
+                          !scrolled && isActive(item.href)
+                            ? "before:w-[70%] [text-shadow:0_0_8px_rgba(139,128,255,1),0_0_20px_rgba(139,128,255,0.9),0_0_40px_rgba(139,128,255,0.5)]"
+                            : ""
+                        }`}
                     >
                       {item.name}
                     </span>
@@ -197,19 +200,18 @@ export default function Navbar() {
                   onMouseLeave={() => setServicesOpen(false)}
                 >
                   <button
-                    className={`flex items-center gap-1 text-[12px] xl:text-[15px] tracking-wide xl:tracking-wider font-medium transition-all duration-500 uppercase cursor-pointer ${
-                      scrolled
-                        ? isServicesActive
-                          ? "text-[#8B80FF]"
-                          : "text-white hover:text-[#8B80FF]"
-                        : "hover:text-blue-600"
-                    }`}
+                    className={`flex items-center gap-1 text-[12px] xl:text-[15px] tracking-wide xl:tracking-wider font-medium transition-all duration-500 uppercase cursor-pointer 
+                      ${
+                        !scrolled && isServicesActive
+                          ? "before:w-[70%] [text-shadow:0_0_8px_rgba(139,128,255,1),0_0_20px_rgba(139,128,255,0.9),0_0_40px_rgba(139,128,255,0.5)]"
+                          : ""
+                      }`}
                     style={!scrolled ? { color: "#01004C" } : {}}
                     aria-haspopup="true"
                     aria-expanded={servicesOpen}
                   >
                     <span
-                      className={`px-2 inline-block relative transition-all duration-200 before:content-[''] before:absolute before:bottom-0 before:left-1/2 before:-translate-x-1/2 before:h-[3px] before:rounded-full before:bg-gradient-to-r before:from-[#8B80FF] before:via-[#3520DC] before:to-[#00004D] before:w-0 hover:before:w-[70%] before:transition-all before:duration-300 hover:[text-shadow:0_0_12px_rgba(139,128,255,0.75)] ${
+                      className={`px-2 inline-block relative transition-all duration-200 before:content-[''] before:absolute before:bottom-0 before:left-1/2 before:-translate-x-1/2 before:h-[3px] before:rounded-full before:bg-gradient-to-r before:from-[#8B80FF] before:via-[#3520DC] before:to-[#00004D] before:w-0 hover:before:w-[70%] before:transition-all before:duration-300 hover:[text-shadow:0_0_8px_rgba(139,128,255,1),0_0_20px_rgba(139,128,255,0.9),0_0_40px_rgba(139,128,255,0.5)] ${
                         !scrolled && isServicesActive
                           ? "border border-[#01004C]/70"
                           : ""
@@ -316,20 +318,19 @@ export default function Navbar() {
                   <Link
                     href={item.href}
                     className={`text-[12px] xl:text-[15px] tracking-wide xl:tracking-wider font-medium transition-all duration-500 uppercase ${
-                      scrolled
-                        ? isActive(item.href)
-                          ? "text-[#8B80FF]"
-                          : "text-white hover:text-[#8B80FF]"
-                        : "hover:text-blue-600"
+                      !scrolled && isActive(item.href)
+                        ? "before:w-[70%] [text-shadow:0_0_12px_rgba(139,128,255,0.75)]"
+                        : ""
                     }`}
                     style={!scrolled ? { color: "#01004C" } : {}}
                   >
                     <span
-                      className={`px-2 py-[3px] inline-block relative transition-all duration-200 before:content-[''] before:absolute before:bottom-0 before:left-1/2 before:-translate-x-1/2 before:h-[3px] before:rounded-full before:bg-gradient-to-r before:from-[#8B80FF] before:via-[#3520DC] before:to-[#00004D] before:w-0 hover:before:w-[70%] before:transition-all before:duration-300 hover:[text-shadow:0_0_12px_rgba(139,128,255,0.75)] ${
-                        !scrolled && isActive(item.href)
-                          ? "border border-[#01004C]/70"
-                          : ""
-                      }`}
+                      className={`px-2 py-[3px] inline-block relative transition-all duration-200 before:content-[''] before:absolute before:bottom-0 before:left-1/2 before:-translate-x-1/2 before:h-[3px] before:rounded-full before:bg-gradient-to-r before:from-[#8B80FF] before:via-[#3520DC] before:to-[#00004D] before:w-0 hover:before:w-[70%] before:transition-all before:duration-300 hover:[text-shadow:0_0_8px_rgba(139,128,255,1),0_0_20px_rgba(139,128,255,0.9),0_0_40px_rgba(139,128,255,0.5)]
+                        ${
+                          !scrolled && isActive(item.href)
+                            ? "before:w-[70%] [text-shadow:0_0_8px_rgba(139,128,255,1),0_0_20px_rgba(139,128,255,0.9),0_0_40px_rgba(139,128,255,0.5)]"
+                            : ""
+                        }`}
                     >
                       {item.name}
                     </span>
@@ -343,52 +344,46 @@ export default function Navbar() {
           <div className="col-start-3 flex items-center justify-end">
             {/* Desktop CTA Buttons */}
             <div
-              className={`hidden lg:flex items-center gap-1 z-50 group ${scrolled ? "mt-0" : "mt-2"}`}
+              className={`hidden lg:flex items-center gap-1 z-200 group ${scrolled ? "mt-0" : "mt-2.5"}`}
               onMouseEnter={() => setCtaHovered(true)}
               onMouseLeave={() => setCtaHovered(false)}
             >
               <Link
                 href="/contact"
-                aria-label="linkToContactUs"
-                className="relative px-8 py-3 rounded-full text-white text-sm font-semibold tracking-wide overflow-hidden transition-all duration-500"
-                style={
-                  ctaHovered
-                    ? {
-                        background: "linear-gradient(135deg, #080B78 0%, #00004D 100%)",
-                        // border: "1.5px solid rgba(139,128,255,0.5)",
-                        boxShadow: "0 0 20px rgba(139,128,255,0.55), 0 0 50px rgba(53,32,220,0.45), 0 0 80px rgba(24,0,200,0.25)",
-                      }
-                    : {
-                        background: "linear-gradient(135deg, #080B78 0%, #00004D 100%)",
-                        // border: "1.5px solid transparent",
-                        boxShadow: "0 0 28px rgba(8,11,120,0.55)",
-                      }
-                }
+                className="group group/btn relative inline-flex items-center gap-4
+  bg-[linear-gradient(135deg,#080B78,#00004D)]
+  pl-8 pr-1.5 py-1.5 rounded-full overflow-hidden
+  transition-all duration-700 
+    shadow-[0_0_0_1px_rgba(53,32,220,0.25),0_4px_24px_rgba(53,32,220,0.25),0_2px_8px_rgba(0,0,0,0.4)]
+    hover:shadow-[0_0_14px_rgba(180,190,255,0.50),0_0_17px_rgba(255,255,255,0.25)]"
               >
-                {/* <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/25 to-transparent transition-transform duration-1000 group-hover:translate-x-full" /> */}
-                <span className="relative z-10 transition-all duration-500">
+                <span className="text-white font-semibold tracking-wide text-sm md:text-[15px] whitespace-nowrap">
                   Get A Quote
                 </span>
+
+                <div
+                  className="
+      bg-white w-10 h-10 md:w-9 md:h-9 rounded-full
+      flex items-center justify-center
+      transition-all duration-500 ease-out
+      shadow-lg
+    "
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="
+        w-4.5 h-4.5 fill-[#080B78]
+        transition-all duration-500
+        group-hover:-rotate-45
+      "
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z" />
+                  </svg>
+                </div>
+
+                <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 group-hover/btn:translate-x-full"></span>
               </Link>
-              <button
-                aria-label="rightToContactUs"
-                className="relative w-11 h-11 rounded-full flex items-center justify-center overflow-hidden transition-all duration-500 group-hover:rotate-45"
-                style={
-                  ctaHovered
-                    ? {
-                        background: "linear-gradient(135deg, #080B78 0%, #00004D 100%)",
-                        // border: "1.5px solid rgba(139,128,255,0.5)",
-                        boxShadow: "0 0 20px rgba(139,128,255,0.55), 0 0 50px rgba(53,32,220,0.45), 0 0 80px rgba(24,0,200,0.25)",
-                      }
-                    : {
-                        background: "linear-gradient(135deg, #080B78 0%, #00004D 100%)",
-                        // border: "1.5px solid transparent",
-                        boxShadow: "0 0 28px rgba(8,11,120,0.55)",
-                      }
-                }
-              >
-                <MoveUpRight size={18} className="text-white relative z-10" strokeWidth={2.5} />
-              </button>
             </div>
             {/* Mobile Hamburger */}
             <motion.button
@@ -610,7 +605,8 @@ export default function Navbar() {
                       boxShadow: "none",
                     }
                   : {
-                      background: "linear-gradient(135deg, #080B78 0%, #00004D 100%)",
+                      background:
+                        "linear-gradient(135deg, #080B78 0%, #00004D 100%)",
                       border: "1.5px solid transparent",
                       boxShadow: "0 0 28px rgba(8,11,120,0.55)",
                     }
