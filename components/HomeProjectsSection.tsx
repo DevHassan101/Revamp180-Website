@@ -655,7 +655,7 @@ export default function ProjectsSection() {
                   className="
                     w-4.5 h-4.5 fill-[#080B78]
                     transition-all duration-700
-                    group-hover:-rotate-90
+                    group-hover:-rotate-40
                   "
                   xmlns="http://www.w3.org/2000/svg"
                 >

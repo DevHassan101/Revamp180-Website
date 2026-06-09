@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Icon } from "@iconify/react";
-import { ChevronDown, MoveUpRight } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import styles from "./navbar.module.css";
 
 const services = [
@@ -51,6 +51,8 @@ const services = [
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [scrollingUp, setScrollingUp] = useState(false);
+  const prevScrollY = useRef(0);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
@@ -60,17 +62,27 @@ export default function Navbar() {
   const pathname = usePathname();
 
   useEffect(() => {
-    setScrolled(window.scrollY > 20);
+    const initialY = window.scrollY;
+    setScrolled(initialY > 20);
+    prevScrollY.current = initialY;
+
     let ticking = false;
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          setScrolled(window.scrollY > 20);
+          const currentY = window.scrollY;
+          const goingUp = currentY < prevScrollY.current; // 👈 direction check
+
+          setScrolled(currentY > 20);
+          setScrollingUp(goingUp); // 👈 state update
+
+          prevScrollY.current = currentY;
           ticking = false;
         });
         ticking = true;
       }
     };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -118,7 +130,7 @@ export default function Navbar() {
               {/* Text */}
               <div
                 className={`absolute inset-0 flex items-center transition-all duration-200 ${
-                  scrolled
+                  scrolled && !scrollingUp
                     ? "opacity-0 scale-90 pointer-events-none"
                     : "opacity-100 scale-100"
                 }`}
@@ -134,7 +146,7 @@ export default function Navbar() {
                 whileTap={{ scale: 0.96 }}
                 transition={{ type: "spring", stiffness: 400, damping: 20 }}
                 className={`absolute inset-0 flex items-center transition-all duration-300 ${
-                  scrolled
+                  scrolled && !scrollingUp
                     ? "opacity-100 scale-100 delay-150"
                     : "opacity-0 scale-75 pointer-events-none delay-0"
                 }`}
@@ -153,11 +165,15 @@ export default function Navbar() {
 
           {/* ── Desktop Nav — White Pill (ByteCloude design) ── */}
           <div
-            className={`col-start-2 hidden lg:flex items-center justify-center relative h-[65px] xl:h-[68px] self-start transition-opacity duration-150 ${scrolled ? "opacity-0 pointer-events-none" : "opacity-100"}`}
+            className={`col-start-2 hidden lg:flex items-center justify-center relative h-[65px] xl:h-[68px] self-start transition-opacity duration-150 ${
+              scrolled && !scrollingUp
+                ? "opacity-0 pointer-events-none"
+                : "opacity-100"
+            }`}
           >
             {/* White pill shape — only visible when not scrolled */}
             <div
-              className={`absolute inset-0 bg-white transition-opacity duration-700 ease-in-out ${styles.maskShape} ${scrolled ? "invisible" : "visible"}`}
+              className={`absolute inset-0 bg-white transition-opacity duration-700 ease-in-out ${styles.maskShape} ${scrolled && !scrollingUp ? "invisible" : "visible"}`}
             />
 
             <ul className="relative flex items-center gap-3 xl:gap-8 px-13 xl:px-20 h-full z-10">
@@ -175,13 +191,13 @@ export default function Navbar() {
                           : "text-white hover:text-[#8B80FF]"
                         : "hover:text-blue-600"
                     }`}
-                    style={!scrolled ? { color: "#01004C" } : {}}
+                    style={!scrolled || scrollingUp ? { color: "#01004C" } : {}}
                   >
                     <span
-                      className={`px-2 py-[3px] inline-block relative transition-all duration-200 before:content-[''] before:absolute before:bottom-0 before:left-1/2 before:-translate-x-1/2 before:h-[3px] before:rounded-full before:bg-gradient-to-r before:from-[#8B80FF] before:via-[#3520DC] before:to-[#00004D] before:w-0 hover:before:w-[70%] before:transition-all before:duration-300 hover:[text-shadow:0_0_8px_rgba(139,128,255,1),0_0_20px_rgba(139,128,255,0.9),0_0_40px_rgba(139,128,255,0.5)]
+                      className={`px-2 py-[3px] inline-block relative transition-all duration-200 before:content-[''] before:absolute before:bottom-0 before:left-1/2 before:-translate-x-1/2 before:h-[3px] before:rounded-full before:bg-gradient-to-r before:from-[#8B80FF] before:via-[#3520DC] before:to-[#00004D] before:w-0 hover:before:w-[70%] before:transition-all before:duration-300  
                         ${
                           !scrolled && isActive(item.href)
-                            ? "before:w-[70%] [text-shadow:0_0_8px_rgba(139,128,255,1),0_0_20px_rgba(139,128,255,0.9),0_0_40px_rgba(139,128,255,0.5)]"
+                            ? "before:w-[70%]"
                             : ""
                         }`}
                     >
@@ -203,15 +219,15 @@ export default function Navbar() {
                     className={`flex items-center gap-1 text-[12px] xl:text-[15px] tracking-wide xl:tracking-wider font-medium transition-all duration-500 uppercase cursor-pointer 
                       ${
                         !scrolled && isServicesActive
-                          ? "before:w-[70%] [text-shadow:0_0_8px_rgba(139,128,255,1),0_0_20px_rgba(139,128,255,0.9),0_0_40px_rgba(139,128,255,0.5)]"
+                          ? "before:w-[70%]"
                           : ""
                       }`}
-                    style={!scrolled ? { color: "#01004C" } : {}}
+                    style={!scrolled || scrollingUp ? { color: "#01004C" } : {}}
                     aria-haspopup="true"
                     aria-expanded={servicesOpen}
                   >
                     <span
-                      className={`px-2 inline-block relative transition-all duration-200 before:content-[''] before:absolute before:bottom-0 before:left-1/2 before:-translate-x-1/2 before:h-[3px] before:rounded-full before:bg-gradient-to-r before:from-[#8B80FF] before:via-[#3520DC] before:to-[#00004D] before:w-0 hover:before:w-[70%] before:transition-all before:duration-300 hover:[text-shadow:0_0_8px_rgba(139,128,255,1),0_0_20px_rgba(139,128,255,0.9),0_0_40px_rgba(139,128,255,0.5)] ${
+                      className={`px-2 inline-block relative transition-all duration-200 before:content-[''] before:absolute before:bottom-0 before:left-1/2 before:-translate-x-1/2 before:h-[3px] before:rounded-full before:bg-gradient-to-r before:from-[#8B80FF] before:via-[#3520DC] before:to-[#00004D] before:w-0 hover:before:w-[70%] before:transition-all before:duration-300   ${
                         !scrolled && isServicesActive
                           ? "border border-[#01004C]/70"
                           : ""
@@ -322,13 +338,13 @@ export default function Navbar() {
                         ? "before:w-[70%] [text-shadow:0_0_12px_rgba(139,128,255,0.75)]"
                         : ""
                     }`}
-                    style={!scrolled ? { color: "#01004C" } : {}}
+                    style={!scrolled || scrollingUp ? { color: "#01004C" } : {}}
                   >
                     <span
-                      className={`px-2 py-[3px] inline-block relative transition-all duration-200 before:content-[''] before:absolute before:bottom-0 before:left-1/2 before:-translate-x-1/2 before:h-[3px] before:rounded-full before:bg-gradient-to-r before:from-[#8B80FF] before:via-[#3520DC] before:to-[#00004D] before:w-0 hover:before:w-[70%] before:transition-all before:duration-300 hover:[text-shadow:0_0_8px_rgba(139,128,255,1),0_0_20px_rgba(139,128,255,0.9),0_0_40px_rgba(139,128,255,0.5)]
+                      className={`px-2 py-[3px] inline-block relative transition-all duration-200 before:content-[''] before:absolute before:bottom-0 before:left-1/2 before:-translate-x-1/2 before:h-[3px] before:rounded-full before:bg-gradient-to-r before:from-[#8B80FF] before:via-[#3520DC] before:to-[#00004D] before:w-0 hover:before:w-[70%] before:transition-all before:duration-300 
                         ${
                           !scrolled && isActive(item.href)
-                            ? "before:w-[70%] [text-shadow:0_0_8px_rgba(139,128,255,1),0_0_20px_rgba(139,128,255,0.9),0_0_40px_rgba(139,128,255,0.5)]"
+                            ? "before:w-[70%] "
                             : ""
                         }`}
                     >
@@ -344,7 +360,7 @@ export default function Navbar() {
           <div className="col-start-3 flex items-center justify-end">
             {/* Desktop CTA Buttons */}
             <div
-              className={`hidden lg:flex items-center gap-1 z-200 group ${scrolled ? "mt-0" : "mt-2.5"}`}
+              className={`hidden lg:flex items-center gap-1 z-200 group ${scrolled ? "mt-2.5" : "mt-2.5"}`}
               onMouseEnter={() => setCtaHovered(true)}
               onMouseLeave={() => setCtaHovered(false)}
             >
