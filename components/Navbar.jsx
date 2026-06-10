@@ -196,7 +196,7 @@ export default function Navbar() {
                     <span
                       className={`px-2 py-[3px] inline-block relative transition-all duration-200 before:content-[''] before:absolute before:bottom-0 before:left-1/2 before:-translate-x-1/2 before:h-[3px] before:rounded-full before:bg-gradient-to-r before:from-[#8B80FF] before:via-[#3520DC] before:to-[#00004D] before:w-0 hover:before:w-[70%] before:transition-all before:duration-300  
                         ${
-                          !scrolled && isActive(item.href)
+                          isActive(item.href)
                             ? "before:w-[70%]"
                             : ""
                         }`}
