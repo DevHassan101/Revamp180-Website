@@ -1,7 +1,557 @@
+"use client";
+
+import { useState } from "react";
+import { motion, type Variants } from "framer-motion";
+import { Icon } from "@iconify/react";
+import Link from "next/link";
+
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+const container: Variants = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.07, delayChildren: 0.1 },
+  },
+};
+
+const fieldIn: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE } },
+};
+
+const cardIn: Variants = {
+  hidden: { opacity: 0, y: 28 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } },
+};
+
+const expectations = [
+  {
+    icon: "tabler:clock-hour-4",
+    title: "Reply in 2–4 hours",
+    sub: "During business hours PKT / EST",
+  },
+  {
+    icon: "tabler:file-text",
+    title: "Written quote in 48 hours",
+    sub: "Detailed and fixed-price",
+  },
+  {
+    icon: "tabler:shield-check",
+    title: "No obligation",
+    sub: "Zero pressure, just honest advice",
+  },
+  {
+    icon: "tabler:code",
+    title: "Talk to the developer",
+    sub: "Not an account manager",
+  },
+];
+
+const contactDetails = [
+  {
+    icon: "tabler:mail",
+    label: "Email",
+    value: "info@revamp180.com",
+    href: "mailto:info@revamp180.com",
+  },
+  {
+    icon: "tabler:phone",
+    label: "Phone",
+    value: "+966-502624196",
+    href: "tel:+966502624196",
+  },
+  {
+    icon: "tabler:map-pin",
+    label: "Location",
+    value: "Riyadh, Saudi Arabia",
+    href: null,
+  },
+  {
+    icon: "tabler:clock",
+    label: "Working Hours",
+    value: "Mon – Sat, 9am – 7pm PKT",
+    href: null,
+  },
+];
+
+const subjects = [
+  { value: "general", label: "General Inquiry" },
+  { value: "new-project", label: "New Project / Quote" },
+  { value: "support", label: "Support Request" },
+  { value: "feedback", label: "Feedback" },
+];
+
+const initialForm = {
+  fullName: "",
+  email: "",
+  phone: "",
+  subject: "",
+  message: "",
+  company: "", // honeypot
+};
+
+type Status = "idle" | "loading" | "success" | "error";
+
+const inputClass =
+  "rounded-lg border border-[rgba(139,128,255,0.3)] bg-[rgba(139,128,255,0.04)] px-3 py-2 text-white placeholder:text-white/40 transition-colors duration-200 focus:border-[rgba(139,128,255,0.6)] focus:outline-none focus:ring-2 focus:ring-[rgba(139,128,255,0.25)]";
+
 export default function ContactPage() {
+  const [form, setForm] = useState(initialForm);
+  const [status, setStatus] = useState<Status>("idle");
+  const [error, setError] = useState("");
+
+  const update =
+    (key: keyof typeof form) =>
+    (
+      e: React.ChangeEvent<
+        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+      >
+    ) =>
+      setForm((prev) => ({ ...prev, [key]: e.target.value }));
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (status === "loading") return;
+
+    setStatus("loading");
+    setError("");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        throw new Error(data?.error || "Something went wrong. Please try again.");
+      }
+
+      setStatus("success");
+      setForm(initialForm);
+    } catch (err) {
+      setStatus("error");
+      setError(
+        err instanceof Error ? err.message : "Something went wrong. Please try again."
+      );
+    }
+  }
+
   return (
-    <main className="p-6">
-      <h1 className="text-2xl font-bold text-white">Contact Page</h1>
+    <main className="relative w-full overflow-hidden">
+      {/* ── Hero ── */}
+      <section className="relative px-4 pt-32 pb-10">
+        <div
+          className="pointer-events-none absolute left-1/2 top-10 h-[420px] w-[680px] -translate-x-1/2 rounded-full blur-3xl"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(139,128,255,0.18) 0%, transparent 70%)",
+          }}
+        />
+        <div className="relative z-10 mx-auto max-w-4xl text-center">
+          <motion.span
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: EASE }}
+            className="mb-5 inline-flex items-center gap-2 rounded-full border border-[rgba(139,128,255,0.3)] bg-[rgba(139,128,255,0.08)] px-4 py-1.5 text-xs font-medium tracking-wide text-[#C0BAFF]"
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-[#8B80FF] animate-pulse" />
+            We&apos;re online and ready to help
+          </motion.span>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 22 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: EASE, delay: 0.08 }}
+            className="font-extrabold text-white"
+            style={{
+              fontSize: "clamp(2.4rem, 6vw, 4rem)",
+              letterSpacing: "-0.02em",
+              lineHeight: 1.05,
+            }}
+          >
+            Let&apos;s Talk About{" "}
+            <span
+              className="bg-clip-text text-transparent"
+              style={{
+                backgroundImage:
+                  "linear-gradient(90deg, #8B80FF, #C0BAFF, #8B80FF)",
+              }}
+            >
+              Your Project
+            </span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 16, filter: "blur(6px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ duration: 0.72, ease: EASE, delay: 0.16 }}
+            className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/55"
+          >
+            No sales pitch. No pressure. Tell us what you need — we&apos;ll give
+            you an honest answer and a written quote within 48 hours.
+          </motion.p>
+        </div>
+      </section>
+
+      {/* ── Content grid ── */}
+      <section className="px-4 pb-24">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 lg:grid-cols-3">
+          {/* ── Form card ── */}
+          <motion.div
+            variants={cardIn}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.15 }}
+            className="lg:col-span-2"
+          >
+              <div>
+            <div
+              className="group h-full rounded-xl p-6 text-white sm:p-8"
+              style={{
+                border: "1px solid rgba(139,128,255,0.3)",
+                background: "rgba(139,128,255,0.04)",
+                backdropFilter: "blur(14px)",
+                WebkitBackdropFilter: "blur(14px)",
+              }}
+            >
+              <h2 className="text-xl font-semibold">Send Us a Message</h2>
+              <p className="mt-1 text-sm font-light text-white/60">
+                We read every message and reply personally.
+              </p>
+
+              {status === "success" ? (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, ease: EASE }}
+                  className="mt-8 flex flex-col items-center gap-3 rounded-xl border border-green-500/40 bg-green-500/10 px-6 py-12 text-center"
+                >
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.15, type: "spring", stiffness: 200 }}
+                    className="flex h-14 w-14 items-center justify-center rounded-full bg-green-500/20 text-green-400"
+                  >
+                    <Icon icon="tabler:check" className="h-8 w-8" />
+                  </motion.div>
+                  <h3 className="text-lg font-semibold">Message sent!</h3>
+                  <p className="max-w-sm text-sm text-white/60">
+                    Thanks for reaching out. We&apos;ll get back to you within
+                    2–4 hours during business hours.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setStatus("idle")}
+                    className="mt-2 text-sm font-medium text-[#8B80FF] hover:text-[#C0BAFF] transition-colors"
+                  >
+                    Send another message
+                  </button>
+                </motion.div>
+              ) : (
+                <motion.form
+                  onSubmit={handleSubmit}
+                  variants={container}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true, amount: 0.1 }}
+                  className="mt-6"
+                  noValidate
+                >
+                  {/* Honeypot — hidden from real users */}
+                  <input
+                    type="text"
+                    name="company"
+                    value={form.company}
+                    onChange={update("company")}
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    className="absolute left-[-9999px] h-0 w-0 opacity-0"
+                  />
+
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <motion.div variants={fieldIn} className="flex flex-col gap-2">
+                      <label htmlFor="fullName" className="text-sm">
+                        Full Name <span className="text-red-400">*</span>
+                      </label>
+                      <input
+                        id="fullName"
+                        type="text"
+                        name="fullName"
+                        required
+                        value={form.fullName}
+                        onChange={update("fullName")}
+                        placeholder="John Doe"
+                        className={inputClass}
+                      />
+                    </motion.div>
+
+                    <motion.div variants={fieldIn} className="flex flex-col gap-2">
+                      <label htmlFor="email" className="text-sm">
+                        Email <span className="text-red-400">*</span>
+                      </label>
+                      <input
+                        id="email"
+                        type="email"
+                        name="email"
+                        required
+                        value={form.email}
+                        onChange={update("email")}
+                        placeholder="you@company.com"
+                        className={inputClass}
+                      />
+                    </motion.div>
+
+                    <motion.div variants={fieldIn} className="flex flex-col gap-2">
+                      <label htmlFor="phone" className="text-sm">
+                        Phone <span className="text-red-400">*</span>
+                      </label>
+                      <input
+                        id="phone"
+                        type="tel"
+                        name="phone"
+                        required
+                        value={form.phone}
+                        onChange={update("phone")}
+                        placeholder="+966-502624196"
+                        className={inputClass}
+                      />
+                    </motion.div>
+
+                    <motion.div variants={fieldIn} className="flex flex-col gap-2">
+                      <label htmlFor="subject" className="text-sm">
+                        Subject <span className="text-red-400">*</span>
+                      </label>
+                      <select
+                        id="subject"
+                        name="subject"
+                        required
+                        value={form.subject}
+                        onChange={update("subject")}
+                        className={`${inputClass} ${
+                          form.subject ? "text-white" : "text-white/40"
+                        }`}
+                      >
+                        <option value="" disabled className="bg-[#00004D]">
+                          Select a subject
+                        </option>
+                        {subjects.map((s) => (
+                          <option
+                            key={s.value}
+                            value={s.value}
+                            className="bg-[#00004D] text-white"
+                          >
+                            {s.label}
+                          </option>
+                        ))}
+                      </select>
+                    </motion.div>
+
+                    <motion.div
+                      variants={fieldIn}
+                      className="col-span-1 flex flex-col gap-2 sm:col-span-2"
+                    >
+                      <label htmlFor="message" className="text-sm">
+                        Message <span className="text-red-400">*</span>
+                      </label>
+                      <textarea
+                        id="message"
+                        name="message"
+                        rows={5}
+                        required
+                        value={form.message}
+                        onChange={update("message")}
+                        placeholder="Tell us a bit about your project, goals and timeline…"
+                        className={`${inputClass} resize-none`}
+                      />
+                    </motion.div>
+                  </div>
+
+                  {status === "error" && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mt-4 flex items-center gap-2 rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-300"
+                    >
+                      <Icon icon="tabler:alert-circle" className="h-4 w-4 flex-shrink-0" />
+                      {error}
+                    </motion.p>
+                  )}
+
+                  <motion.div variants={fieldIn} className="mt-5">
+                    <button
+                      type="submit"
+                      disabled={status === "loading"}
+                      className="group/btn relative inline-flex w-full items-center justify-center gap-3 overflow-hidden rounded-full bg-[linear-gradient(135deg,#080B78,#00004D)] py-3.5 transition-all duration-700
+                        shadow-[0_0_0_1px_rgba(53,32,220,0.25),0_4px_24px_rgba(53,32,220,0.25),0_2px_8px_rgba(0,0,0,0.4)]
+                        hover:shadow-[0_0_14px_rgba(180,190,255,0.50),0_0_17px_rgba(255,255,255,0.25)]
+                        disabled:cursor-not-allowed disabled:opacity-70"
+                    >
+                      <span className="relative z-10 flex items-center gap-3">
+                        {status === "loading" ? (
+                          <>
+                            <Icon
+                              icon="tabler:loader-2"
+                              className="h-5 w-5 animate-spin"
+                            />
+                            <span className="text-sm font-semibold tracking-wide text-white md:text-[17px]">
+                              Sending…
+                            </span>
+                          </>
+                        ) : (
+                          <>
+                            <span className="text-sm font-semibold tracking-wide text-white drop-shadow-sm md:text-[17px]">
+                              Send Message
+                            </span>
+                            <Icon
+                              icon="tabler:send"
+                              className="h-5 w-5 text-white transition-transform duration-500 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1"
+                            />
+                          </>
+                        )}
+                      </span>
+                      <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 group-hover/btn:translate-x-full" />
+                    </button>
+                  </motion.div>
+                </motion.form>
+              )}
+            </div>
+            </div>
+          </motion.div>
+
+          {/* ── Sidebar ── */}
+          <motion.div
+            variants={container}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.1 }}
+            className="flex flex-col gap-6"
+          >
+            {/* What to expect */}
+            <motion.div
+              variants={cardIn}
+              className="rounded-xl p-6"
+              style={{
+                background: "rgba(139,128,255,0.12)",
+                border: "1px solid rgba(139,128,255,0.3)",
+                backdropFilter: "blur(14px)",
+                WebkitBackdropFilter: "blur(14px)",
+              }}
+            >
+              <h3
+                className="mb-4 text-sm font-semibold uppercase tracking-wide"
+                style={{ color: "#8B80FF" }}
+              >
+                What to expect
+              </h3>
+              <div className="flex flex-col gap-4">
+                {expectations.map((item) => (
+                  <div key={item.title} className="flex items-start gap-3">
+                    <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-[#8B80FF] text-white">
+                      <Icon icon={item.icon} className="h-5 w-5" />
+                    </div>
+                    <div className="flex flex-col">
+                      <p className="text-sm text-white">{item.title}</p>
+                      <p className="text-xs text-white/60">{item.sub}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Contact details */}
+            <motion.div
+              variants={cardIn}
+              className="rounded-xl p-6 text-white"
+              style={{
+                border: "1px solid rgba(139,128,255,0.3)",
+                background: "rgba(139,128,255,0.04)",
+                backdropFilter: "blur(14px)",
+                WebkitBackdropFilter: "blur(14px)",
+              }}
+            >
+              <h3 className="mb-5 text-sm font-semibold uppercase tracking-wide">
+                Contact Details
+              </h3>
+              <div className="flex flex-col">
+                {contactDetails.map((c, i) => {
+                  const inner = (
+                    <div className="flex items-start gap-3">
+                      <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-[#8B80FF] text-white">
+                        <Icon icon={c.icon} className="h-5 w-5" />
+                      </div>
+                      <div className="flex flex-col">
+                        <p className="text-xs uppercase tracking-wide text-white/60">
+                          {c.label}
+                        </p>
+                        <span className="text-sm text-white">{c.value}</span>
+                      </div>
+                    </div>
+                  );
+                  const border =
+                    i < contactDetails.length - 1
+                      ? "border-b border-[rgba(139,128,255,0.2)]"
+                      : "";
+                  return (
+                    <div key={c.label} className={`py-3 first:pt-0 last:pb-0 ${border}`}>
+                      {c.href ? (
+                        <Link
+                          href={c.href}
+                          className="block transition-opacity hover:opacity-80"
+                        >
+                          {inner}
+                        </Link>
+                      ) : (
+                        inner
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </motion.div>
+
+            {/* Prefer a call */}
+            <motion.div
+              variants={cardIn}
+              className="flex flex-col items-center gap-2 rounded-xl border border-green-500/40 bg-green-500/10 p-6 text-center text-white"
+              style={{
+                backdropFilter: "blur(14px)",
+                WebkitBackdropFilter: "blur(14px)",
+              }}
+            >
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-500/20 text-green-400">
+                <Icon icon="tabler:calendar-event" className="h-6 w-6" />
+              </div>
+              <p className="font-semibold">Prefer a Call?</p>
+              <span className="text-xs text-white/70">
+                Book a free 30-minute consultation directly in our calendar.
+              </span>
+              <Link
+                href="/contact"
+                className="group/btn relative mt-3 inline-flex items-center gap-3 overflow-hidden rounded-full bg-[linear-gradient(135deg,#080B78,#00004D)] py-2.5 pl-1.5 pr-6 transition-all duration-700
+                  shadow-[0_0_0_1px_rgba(53,32,220,0.25),0_4px_24px_rgba(53,32,220,0.25),0_2px_8px_rgba(0,0,0,0.4)]
+                  hover:shadow-[0_0_14px_rgba(180,190,255,0.50),0_0_17px_rgba(255,255,255,0.25)]"
+              >
+                <span className="relative z-10 flex items-center gap-3">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white shadow-lg">
+                    <Icon
+                      icon="tabler:calendar-event"
+                      className="h-4 w-4 text-[#080B78]"
+                    />
+                  </span>
+                  <span className="whitespace-nowrap text-sm tracking-wide text-white drop-shadow-sm">
+                    Book Free Consultation
+                  </span>
+                </span>
+                <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 group-hover/btn:translate-x-full" />
+              </Link>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
     </main>
   );
 }
