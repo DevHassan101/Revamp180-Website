@@ -67,9 +67,9 @@ function ProjectSlider({ images, title }: { images: string[]; title: string }) {
             animate="center"
             exit="exit"
             transition={{
-              x: { duration: 1.1, ease: [0.32, 0.72, 0, 1] },
-              opacity: { duration: 0.7, ease: "easeInOut" },
-              scale: { duration: 1.1, ease: [0.32, 0.72, 0, 1] },
+              x: { duration: 0.55, ease: EASE },
+              opacity: { duration: 0.35 },
+              scale: { duration: 0.55, ease: EASE },
             }}
             drag={count > 1 ? "x" : false}
             dragConstraints={{ left: 0, right: 0 }}
@@ -211,7 +211,7 @@ export default function ProjectDetailPage() {
           transition={{ duration: 0.6, ease: EASE }}
           className="mb-10"
         >
-          <div className="mb-4 flex flex-wrap items-center gap-3">
+          {/* <div className="mb-4 flex flex-wrap items-center gap-3">
             <span
               className="rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wide"
               style={{
@@ -223,7 +223,7 @@ export default function ProjectDetailPage() {
               {project.category}
             </span>
             <span className="text-sm text-white/40">{project.service}</span>
-          </div>
+          </div> */}
 
           <h1
             className="font-extrabold text-white"
@@ -367,19 +367,28 @@ export default function ProjectDetailPage() {
             one.
           </p>
           <Link
-            href="/contact"
-            className="group mt-2 inline-flex items-center gap-3 rounded-full bg-[linear-gradient(135deg,#080B78,#00004D)] py-2 pl-6 pr-2 transition-all duration-500 hover:shadow-[0_0_20px_rgba(139,128,255,0.45)]"
-          >
-            <span className="text-sm font-semibold text-white">
-              Start a Project
-            </span>
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white">
-              <Icon
-                icon="tabler:arrow-right"
-                className="h-4 w-4 text-[#080B78] transition-transform duration-300 group-hover:translate-x-0.5"
-              />
-            </span>
-          </Link>
+              href="/contact"
+              className="group/btn relative inline-flex items-center gap-4 bg-[linear-gradient(135deg,#080B78,#00004D)] pl-1.5 pr-8 md:pr-10 py-1.5 rounded-full transition-all duration-700
+    shadow-[0_0_0_1px_rgba(53,32,220,0.25),0_4px_24px_rgba(53,32,220,0.25),0_2px_8px_rgba(0,0,0,0.4)]
+    hover:shadow-[0_0_14px_rgba(180,190,255,0.50),0_0_17px_rgba(255,255,255,0.25)]
+    cursor-pointer overflow-hidden"
+            >
+              <div className="relative z-10 flex items-center gap-3">
+                <div className="bg-white w-10 h-10 md:w-12 md:h-12 rounded-full flex justify-center items-center transition-all duration-700 ease-out shadow-lg rotate-0 group-hover/btn:-rotate-40">
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="w-5 h-5 md:w-5.5 md:h-5.5 fill-[#080B78] transition-all duration-700"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
+                  </svg>
+                </div>
+                <span className="text-white font-semibold tracking-wide text-sm md:text-[17px] whitespace-nowrap drop-shadow-sm">
+                  Start a Project
+                </span>
+              </div>
+              <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 group-hover/btn:translate-x-full"></span>
+            </Link>
         </motion.div>
       </div>
     </main>

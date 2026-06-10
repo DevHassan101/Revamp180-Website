@@ -366,7 +366,7 @@ export default function ProjectPage() {
             <AnimatePresence mode="popLayout">
               {visible.map((project, index) => (
                 <ProjectCard
-                  key={project.slug}
+                  key={`${active}-${project.slug}`}
                   project={project}
                   index={index}
                 />
