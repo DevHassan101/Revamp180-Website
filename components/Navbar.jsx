@@ -365,7 +365,7 @@ export default function Navbar() {
               onMouseLeave={() => setCtaHovered(false)}
             >
               <Link
-                href="/contact"
+                href="/quote"
                 className="group group/btn relative inline-flex items-center gap-4
   bg-[linear-gradient(135deg,#080B78,#00004D)]
   pl-8 pr-1.5 py-1.5 rounded-full overflow-hidden

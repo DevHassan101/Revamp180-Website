@@ -530,7 +530,7 @@ export default function ContactPage() {
                 Book a free 30-minute consultation directly in our calendar.
               </span>
               <Link
-                href="/contact"
+                href="/consultation"
                 className="group/btn relative mt-3 inline-flex items-center gap-3 overflow-hidden rounded-full bg-[linear-gradient(135deg,#080B78,#00004D)] py-2.5 pl-1.5 pr-6 transition-all duration-700
                   shadow-[0_0_0_1px_rgba(53,32,220,0.25),0_4px_24px_rgba(53,32,220,0.25),0_2px_8px_rgba(0,0,0,0.4)]
                   hover:shadow-[0_0_14px_rgba(180,190,255,0.50),0_0_17px_rgba(255,255,255,0.25)]"

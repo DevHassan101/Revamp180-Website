@@ -51,7 +51,7 @@ const WAVE =
 function CTAButton() {
   return (
     <Link
-      href="/contact"
+      href="/consultation"
       className="group/btn relative inline-flex items-center gap-4 bg-[linear-gradient(135deg,#080B78,#00004D)] pl-1.5 pr-8 md:pr-10 py-1.5 rounded-full transition-all duration-700
     shadow-[0_0_0_1px_rgba(53,32,220,0.25),0_4px_24px_rgba(53,32,220,0.25),0_2px_8px_rgba(0,0,0,0.4)]
     hover:shadow-[0_0_20px_rgba(139,128,255,0.55),0_0_50px_rgba(53,32,220,0.45),0_0_80px_rgba(24,0,200,0.25)]

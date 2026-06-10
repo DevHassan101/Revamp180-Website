@@ -202,7 +202,7 @@ export default function Footer() {
 
             {/* CTA */}
             <Link
-              href="/contact"
+              href="/quote"
               className="inline-flex items-center gap-2 px-5 py-3.5 rounded-full text-white text-sm font-semibold transition-all duration-300 shadow-[0_0_14px_rgba(8,11,120,0.55)] hover:shadow-[0_0_20px_rgba(139,128,255,0.55),0_0_50px_rgba(53,32,220,0.45),0_0_80px_rgba(24,0,200,0.25)]"
               style={{
                 background: "linear-gradient(135deg, #080B78 0%, #00004D 100%)",
