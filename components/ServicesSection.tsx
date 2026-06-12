@@ -2,12 +2,23 @@
 
 import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
+import Link from "next/link";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-const services = [
+type Service = {
+  label: string;
+  slug: string;
+  icon: string;
+  icons?: string[];
+  badge?: string;
+  description: string;
+};
+
+const services: Service[] = [
   {
     label: "Website Revamping",
+    slug: "services#website-revamping",
     icon: "tabler:refresh",
     badge: "Core Service",
     description:
@@ -15,30 +26,41 @@ const services = [
   },
   {
     label: "Web Design & Development",
+    slug: "services#web-design-development",
     icon: "tabler:code",
     description:
       "Custom websites built for speed, performance, and scale — from landing pages to complex web applications.",
   },
   {
     label: "App Design & Development",
+    slug: "services#app-design-development",
     icon: "tabler:device-mobile",
     description:
       "Native and cross-platform mobile apps designed for engagement and built for long-term reliability.",
   },
   {
     label: "Branding & UI/UX Design",
+    slug: "services#branding-ui-ux-design",
     icon: "tabler:brush",
     description:
       "Identities and interfaces that leave a lasting impression — from logo design to full design systems.",
   },
   {
     label: "Social Media Management",
+    slug: "services#social-media-management",
     icon: "tabler:brand-instagram",
+    icons: [
+      "tabler:brand-linkedin",
+      "tabler:brand-instagram",
+      "tabler:brand-facebook",
+      "tabler:brand-youtube",
+    ],
     description:
       "Strategic content creation, scheduling, and growth management to expand your audience on every platform.",
   },
   {
     label: "Video Editing",
+    slug: "services#video-editing",
     icon: "tabler:video",
     description:
       "Professional video editing that tells your brand story and keeps your audience hooked from first frame to last.",
@@ -118,7 +140,7 @@ export default function ServicesSection() {
         </div>
 
         {/* ── Cards Grid ── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {services.map((service, i) => (
             <ServiceCard key={service.label} service={service} index={i} />
           ))}
@@ -167,6 +189,12 @@ function ServiceCard({
         el.style.boxShadow = "none";
       }}
     >
+      {/* Full-card link → opens services page and scrolls to this section */}
+      <Link
+        href={`/${service.slug}`}
+        aria-label={service.label}
+        className="absolute inset-0 z-20"
+      />
       {/* Top accent line */}
       <div
         className="absolute top-0 left-0 right-0 h-[2px] z-10"
@@ -196,17 +224,36 @@ function ServiceCard({
       <div className="relative z-10 p-7 flex flex-col h-full">
         {/* Icon + badge row */}
         <div className="flex items-start justify-between mb-6">
-          <div
-            className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0"
-            style={{
-              background:
-                "linear-gradient(135deg, rgba(139,128,255,0.18) 0%, rgba(53,32,220,0.10) 100%)",
-              border: "1px solid rgba(139,128,255,0.28)",
-              boxShadow: "0 0 20px rgba(139,128,255,0.10)",
-            }}
-          >
-            <Icon icon={service.icon} className="w-7 h-7 text-[#8B80FF]" />
-          </div>
+          {service.icons ? (
+            <div className="flex items-center gap-2">
+              {service.icons.map((ic) => (
+                <div
+                  key={ic}
+                  className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, rgba(139,128,255,0.18) 0%, rgba(53,32,220,0.10) 100%)",
+                    border: "1px solid rgba(139,128,255,0.28)",
+                    boxShadow: "0 0 20px rgba(139,128,255,0.10)",
+                  }}
+                >
+                  <Icon icon={ic} className="w-7 h-7 text-[#8B80FF]" />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div
+              className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0"
+              style={{
+                background:
+                  "linear-gradient(135deg, rgba(139,128,255,0.18) 0%, rgba(53,32,220,0.10) 100%)",
+                border: "1px solid rgba(139,128,255,0.28)",
+                boxShadow: "0 0 20px rgba(139,128,255,0.10)",
+              }}
+            >
+              <Icon icon={service.icon} className="w-7 h-7 text-[#8B80FF]" />
+            </div>
+          )}
 
           {service.badge && (
             <span

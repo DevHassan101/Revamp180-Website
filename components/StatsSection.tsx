@@ -17,7 +17,7 @@ interface Stat {
 const stats: Stat[] = [
   { label: "Years Active",  sublabel: "Building digital products",  to: 6,   suffix: "+" },
   { label: "Projects Done", sublabel: "Shipped across industries",  to: 445, suffix: "+" },
-  { label: "Satisfaction",  sublabel: "Client retention rate",      to: 100, suffix: "%" },
+  { label: "Satisfaction",  sublabel: "Client retention rate",      to: 97, suffix: "%" },
 ];
 
 // ─── Ease ─────────────────────────────────────────────────────────────────────

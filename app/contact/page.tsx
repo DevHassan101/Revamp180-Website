@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { motion, type Variants } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 
@@ -32,7 +32,7 @@ const expectations = [
   },
   {
     icon: "tabler:file-text",
-    title: "Written quote in 48 hours",
+    title: "Written quote in 24 hours",
     sub: "Detailed and fixed-price",
   },
   {
@@ -65,14 +65,14 @@ const contactDetails = [
   {
     icon: "tabler:brand-whatsapp",
     label: "Whatsapp",
-    value: "+966-502624196",
+    value: "Message on WhatsApp",
     href: "https://wa.me/966502624196",
     target: "_blank",
   },
   {
     icon: "tabler:brand-linkedin",
     label: "LinkedIn",
-    value: "Revamp 180°",
+    value: "linkedin.com/company/revamp180",
     href: "https://www.linkedin.com/company/revamp180/",
     target: "_blank",
   },
@@ -109,7 +109,7 @@ export default function ContactPage() {
     (
       e: React.ChangeEvent<
         HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-      >
+      >,
     ) =>
       setForm((prev) => ({ ...prev, [key]: e.target.value }));
 
@@ -130,7 +130,9 @@ export default function ContactPage() {
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
-        throw new Error(data?.error || "Something went wrong. Please try again.");
+        throw new Error(
+          data?.error || "Something went wrong. Please try again.",
+        );
       }
 
       setStatus("success");
@@ -138,7 +140,9 @@ export default function ContactPage() {
     } catch (err) {
       setStatus("error");
       setError(
-        err instanceof Error ? err.message : "Something went wrong. Please try again."
+        err instanceof Error
+          ? err.message
+          : "Something went wrong. Please try again.",
       );
     }
   }
@@ -195,7 +199,7 @@ export default function ContactPage() {
             className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/55"
           >
             No sales pitch. No pressure. Tell us what you need — we&apos;ll give
-            you an honest answer and a written quote within 48 hours.
+            you an honest answer and a written quote within 24 hours.
           </motion.p>
         </div>
       </section>
@@ -276,7 +280,10 @@ export default function ContactPage() {
                   />
 
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    <motion.div variants={fieldIn} className="flex flex-col gap-2">
+                    <motion.div
+                      variants={fieldIn}
+                      className="flex flex-col gap-2"
+                    >
                       <label htmlFor="fullName" className="text-sm">
                         Full Name <span className="text-red-400">*</span>
                       </label>
@@ -292,7 +299,10 @@ export default function ContactPage() {
                       />
                     </motion.div>
 
-                    <motion.div variants={fieldIn} className="flex flex-col gap-2">
+                    <motion.div
+                      variants={fieldIn}
+                      className="flex flex-col gap-2"
+                    >
                       <label htmlFor="email" className="text-sm">
                         Email <span className="text-red-400">*</span>
                       </label>
@@ -308,7 +318,10 @@ export default function ContactPage() {
                       />
                     </motion.div>
 
-                    <motion.div variants={fieldIn} className="flex flex-col gap-2">
+                    <motion.div
+                      variants={fieldIn}
+                      className="flex flex-col gap-2"
+                    >
                       <label htmlFor="phone" className="text-sm">
                         Phone <span className="text-red-400">*</span>
                       </label>
@@ -324,33 +337,19 @@ export default function ContactPage() {
                       />
                     </motion.div>
 
-                    <motion.div variants={fieldIn} className="flex flex-col gap-2">
+                    <motion.div
+                      variants={fieldIn}
+                      className="flex flex-col gap-2"
+                    >
                       <label htmlFor="subject" className="text-sm">
                         Subject <span className="text-red-400">*</span>
                       </label>
-                      <select
-                        id="subject"
-                        name="subject"
-                        required
+                      <SubjectDropdown
                         value={form.subject}
-                        onChange={update("subject")}
-                        className={`${inputClass} ${
-                          form.subject ? "text-white" : "text-white/40"
-                        }`}
-                      >
-                        <option value="" disabled className="bg-[#00004D]">
-                          Select a subject
-                        </option>
-                        {subjects.map((s) => (
-                          <option
-                            key={s.value}
-                            value={s.value}
-                            className="bg-[#00004D] text-white"
-                          >
-                            {s.label}
-                          </option>
-                        ))}
-                      </select>
+                        onChange={(value) =>
+                          setForm((prev) => ({ ...prev, subject: value }))
+                        }
+                      />
                     </motion.div>
 
                     <motion.div
@@ -379,7 +378,10 @@ export default function ContactPage() {
                       animate={{ opacity: 1, y: 0 }}
                       className="mt-4 flex items-center gap-2 rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-300"
                     >
-                      <Icon icon="tabler:alert-circle" className="h-4 w-4 flex-shrink-0" />
+                      <Icon
+                        icon="tabler:alert-circle"
+                        className="h-4 w-4 flex-shrink-0"
+                      />
                       {error}
                     </motion.p>
                   )}
@@ -481,16 +483,33 @@ export default function ContactPage() {
               <div className="flex flex-col">
                 {contactDetails.map((c, i) => {
                   const inner = (
-                    <div className="flex items-start gap-3">
-                      <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-[#8B80FF] text-white">
-                        <Icon icon={c.icon} className="h-5 w-5" />
+                    <div className="group flex justify-between items-center gap-3">
+                      <div className="flex items-start gap-3 group-hover:ml-2 transition-all duration-200">
+                        <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-[#8B80FF] text-white">
+                          <Icon icon={c.icon} className="h-5 w-5" />
+                        </div>
+                        <div className="flex flex-col">
+                          <p className="text-[10px] uppercase tracking-wide text-white/60">
+                            {c.label}
+                          </p>
+                          <span className="text-[12px] text-white">{c.value}</span>
+                        </div>
                       </div>
-                      <div className="flex flex-col">
-                        <p className="text-xs uppercase tracking-wide text-white/60">
-                          {c.label}
-                        </p>
-                        <span className="text-sm text-white">{c.value}</span>
-                      </div>
+                      <svg
+                        width="20px"
+                        height="20px"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <rect width="24" height="24" fill="none" />
+                        <path
+                          d="M9.5 7L14.5 12L9.5 17"
+                          stroke="#FFFFFF"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
                     </div>
                   );
                   const border =
@@ -498,7 +517,10 @@ export default function ContactPage() {
                       ? "border-b border-[rgba(139,128,255,0.2)]"
                       : "";
                   return (
-                    <div key={c.label} className={`py-3 first:pt-0 last:pb-0 ${border}`}>
+                    <div
+                      key={c.label}
+                      className={`py-3 first:pt-0 last:pb-0 ${border}`}
+                    >
                       {c.href ? (
                         <Link
                           href={c.href}
@@ -519,63 +541,166 @@ export default function ContactPage() {
         </div>
       </section>
 
-
-              <motion.div
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.4 }}
-                transition={{ duration: 0.6, ease: EASE }}
-                className="relative z-10 mx-auto flex max-w-4xl flex-col items-center gap-6 text-center pb-24"
-              >
-                <h2
-                  className="font-bold text-white"
-                  style={{
-                    fontSize: "clamp(1.8rem, 4vw, 2.8rem)",
-                    letterSpacing: "-0.02em",
-                  }}
-                >
-                  Do you want to discuss in more detail?
-                </h2>
-                <p className="max-w-2xl leading-relaxed text-white/55">
-                  Book a 30-minute free consultation with our lead developer to discuss your project, get advice and see if we&apos;re a good fit — no strings attached.
-                </p>
-                <CTAButton href="/consultation" label="Get a Consultation" />
-              </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.4 }}
+        transition={{ duration: 0.6, ease: EASE }}
+        className="relative z-10 mx-auto flex max-w-4xl flex-col items-center gap-6 text-center pb-24"
+      >
+        <h2
+          className="font-bold text-white"
+          style={{
+            fontSize: "clamp(1.8rem, 4vw, 2.8rem)",
+            letterSpacing: "-0.02em",
+          }}
+        >
+          Do you want to discuss in more detail?
+        </h2>
+        <p className="max-w-2xl leading-relaxed text-white/55">
+          Book a 30-minute free consultation with our lead developer to discuss
+          your project, get advice and see if we&apos;re a good fit — no strings
+          attached.
+        </p>
+        <CTAButton href="/consultation" label="Get a Consultation" />
+      </motion.div>
     </main>
   );
 
-// ─── Reusable CTA button (matches site-wide style) ────────────────────────────
-function CTAButton({
-  href,
-  label,
-}: {
-  href: string;
-  label: string;
-}) {
-  return (
-    <Link
-      href={href}
-      className="group/btn relative inline-flex items-center gap-4 bg-[linear-gradient(135deg,#080B78,#00004D)] pl-1.5 pr-8 md:pr-10 py-1.5 rounded-full transition-all duration-700
+  // ─── Reusable CTA button (matches site-wide style) ────────────────────────────
+  function CTAButton({ href, label }: { href: string; label: string }) {
+    return (
+      <Link
+        href={href}
+        className="group/btn relative inline-flex items-center gap-4 bg-[linear-gradient(135deg,#080B78,#00004D)] pl-1.5 pr-8 md:pr-10 py-1.5 rounded-full transition-all duration-700
     shadow-[0_0_0_1px_rgba(53,32,220,0.25),0_4px_24px_rgba(53,32,220,0.25),0_2px_8px_rgba(0,0,0,0.4)]
     hover:shadow-[0_0_14px_rgba(180,190,255,0.50),0_0_17px_rgba(255,255,255,0.25)]
     cursor-pointer overflow-hidden"
-    >
-      <div className="relative z-10 flex items-center gap-3">
-        <div className="bg-white w-10 h-10 md:w-12 md:h-12 rounded-full flex justify-center items-center transition-all duration-700 ease-out shadow-lg rotate-0 group-hover/btn:-rotate-40">
-          <svg
-            viewBox="0 0 24 24"
-            className="w-5 h-5 md:w-5.5 md:h-5.5 fill-[#080B78] transition-all duration-700"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
-          </svg>
+      >
+        <div className="relative z-10 flex items-center gap-3">
+          <div className="bg-white w-10 h-10 md:w-12 md:h-12 rounded-full flex justify-center items-center transition-all duration-700 ease-out shadow-lg rotate-0 group-hover/btn:-rotate-40">
+            <svg
+              viewBox="0 0 24 24"
+              className="w-5 h-5 md:w-5.5 md:h-5.5 fill-[#080B78] transition-all duration-700"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
+            </svg>
+          </div>
+          <span className="text-white font-semibold tracking-wide text-sm md:text-[17px] whitespace-nowrap drop-shadow-sm">
+            {label}
+          </span>
         </div>
-        <span className="text-white font-semibold tracking-wide text-sm md:text-[17px] whitespace-nowrap drop-shadow-sm">
-          {label}
-        </span>
-      </div>
-      <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 group-hover/btn:translate-x-full"></span>
-    </Link>
-  );
+        <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 group-hover/btn:translate-x-full"></span>
+      </Link>
+    );
+  }
 }
+
+// ─── Custom themed subject dropdown ───────────────────────────────────────────
+function SubjectDropdown({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  const selected = subjects.find((s) => s.value === value);
+
+  // Close on outside click
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setOpen(false);
+    }
+    if (open) {
+      document.addEventListener("mousedown", handleClick);
+      document.addEventListener("keydown", handleKey);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, [open]);
+
+  return (
+    <div ref={ref} className="relative">
+      {/* Hidden input keeps native form behaviour / value tracking */}
+      <input type="hidden" name="subject" value={value} required />
+
+      <button
+        type="button"
+        id="subject"
+        onClick={() => setOpen((o) => !o)}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        className={`flex w-full items-center justify-between rounded-lg border bg-[rgba(139,128,255,0.04)] px-3 py-2 text-left transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[rgba(139,128,255,0.25)] ${
+          open
+            ? "border-[rgba(139,128,255,0.6)]"
+            : "border-[rgba(139,128,255,0.3)] hover:border-[rgba(139,128,255,0.45)]"
+        } ${selected ? "text-white" : "text-white/40"}`}
+      >
+        <span>{selected ? selected.label : "Select a subject"}</span>
+        <Icon
+          icon="tabler:chevron-down"
+          className={`h-4 w-4 flex-shrink-0 text-[#8B80FF] transition-transform duration-300 ${
+            open ? "rotate-180" : ""
+          }`}
+        />
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.ul
+            initial={{ opacity: 0, y: -6, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -6, scale: 0.98 }}
+            transition={{ duration: 0.18, ease: EASE }}
+            role="listbox"
+            className="absolute z-30 mt-2 w-full overflow-hidden rounded-lg border border-[rgba(139,128,255,0.3)] p-1 shadow-[0_8px_30px_rgba(0,0,0,0.45)]"
+            style={{
+              background: "rgba(13,12,46,0.92)",
+              backdropFilter: "blur(14px)",
+              WebkitBackdropFilter: "blur(14px)",
+            }}
+          >
+            {subjects.map((s) => {
+              const active = s.value === value;
+              return (
+                <li key={s.value} role="option" aria-selected={active}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onChange(s.value);
+                      setOpen(false);
+                    }}
+                    className={`flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-sm transition-colors duration-150 ${
+                      active
+                        ? "bg-[rgba(139,128,255,0.18)] text-white"
+                        : "text-white/75 hover:bg-[rgba(139,128,255,0.1)] hover:text-white"
+                    }`}
+                  >
+                    <span>{s.label}</span>
+                    {active && (
+                      <Icon
+                        icon="tabler:check"
+                        className="h-4 w-4 text-[#8B80FF]"
+                      />
+                    )}
+                  </button>
+                </li>
+              );
+            })}
+          </motion.ul>
+        )}
+      </AnimatePresence>
+    </div>
+  );
 }

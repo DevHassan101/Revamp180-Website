@@ -5,6 +5,8 @@ import StatsSection from "@/components/StatsSection";
 import VisionMission from "@/components/VisionMission";
 import HomeProjectsSection from "@/components/HomeProjectsSection";
 import ReviewsSection from "@/components/ReviewsSection";
+import Team from "@/components/Team";
+
 
 export default function Home() {
   return (
@@ -15,6 +17,7 @@ export default function Home() {
       <HowWeWorkSection />
       <VisionMission  />
       <HomeProjectsSection />
+      <Team/>
       <ReviewsSection />
     </div>
   );

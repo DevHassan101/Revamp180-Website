@@ -13,6 +13,7 @@ type Service = {
   id: string;
   label: string;
   icon: string;
+  icons?: string[];
   badge?: string;
   tagline: string;
   description: string;
@@ -25,7 +26,7 @@ const services: Service[] = [
     label: "Website Revamping",
     icon: "tabler:refresh",
     badge: "Core Service",
-    tagline: "Our signature transformation",
+    tagline: "",
     description:
       "Transform your outdated website into a modern, high-converting digital experience that drives real business results. We audit, redesign, and rebuild — keeping what works and reinventing what doesn't.",
     features: [
@@ -81,6 +82,12 @@ const services: Service[] = [
     id: "social-media-management",
     label: "Social Media Management",
     icon: "tabler:brand-instagram",
+    icons: [
+      "tabler:brand-linkedin",
+      "tabler:brand-instagram",
+      "tabler:brand-facebook",
+      "tabler:brand-youtube",
+    ],
     tagline: "Grow your audience",
     description:
       "Strategic content creation, scheduling, and growth management to expand your audience on every platform. We turn followers into a community and a community into customers.",
@@ -108,13 +115,7 @@ const services: Service[] = [
 ];
 
 // ─── Reusable CTA button (matches site-wide style) ────────────────────────────
-function CTAButton({
-  href,
-  label,
-}: {
-  href: string;
-  label: string;
-}) {
+function CTAButton({ href, label }: { href: string; label: string }) {
   return (
     <Link
       href={href}
@@ -178,7 +179,8 @@ function ServiceRow({ service, index }: { service: Service; index: number }) {
             <div
               className="pointer-events-none absolute left-1/2 top-1/2 h-[120%] w-[120%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
               style={{
-                background: "radial-gradient(circle, #3520DC 0%, transparent 65%)",
+                background:
+                  "radial-gradient(circle, #3520DC 0%, transparent 65%)",
                 opacity: 0.22,
               }}
             />
@@ -190,17 +192,39 @@ function ServiceRow({ service, index }: { service: Service; index: number }) {
                   "linear-gradient(90deg, transparent 0%, #8B80FF 50%, transparent 100%)",
               }}
             />
-            <div
-              className="relative flex h-28 w-28 items-center justify-center rounded-3xl"
-              style={{
-                background:
-                  "linear-gradient(135deg, rgba(139,128,255,0.20) 0%, rgba(53,32,220,0.12) 100%)",
-                border: "1px solid rgba(139,128,255,0.30)",
-                boxShadow: "0 0 40px rgba(139,128,255,0.18)",
-              }}
-            >
-              <Icon icon={service.icon} className="h-14 w-14 text-[#8B80FF]" />
-            </div>
+            {service.icons ? (
+              <div className="relative grid grid-cols-2 gap-3">
+                {service.icons.map((ic) => (
+                  <div
+                    key={ic}
+                    className="flex h-[3.25rem] w-[3.25rem] items-center justify-center rounded-2xl"
+                    style={{
+                      background:
+                        "linear-gradient(135deg, rgba(139,128,255,0.20) 0%, rgba(53,32,220,0.12) 100%)",
+                      border: "1px solid rgba(139,128,255,0.30)",
+                      boxShadow: "0 0 40px rgba(139,128,255,0.18)",
+                    }}
+                  >
+                    <Icon icon={ic} className="h-7 w-7 text-[#8B80FF]" />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div
+                className="relative flex h-28 w-28 items-center justify-center rounded-3xl"
+                style={{
+                  background:
+                    "linear-gradient(135deg, rgba(139,128,255,0.20) 0%, rgba(53,32,220,0.12) 100%)",
+                  border: "1px solid rgba(139,128,255,0.30)",
+                  boxShadow: "0 0 40px rgba(139,128,255,0.18)",
+                }}
+              >
+                <Icon
+                  icon={service.icon}
+                  className="h-14 w-14 text-[#8B80FF]"
+                />
+              </div>
+            )}
 
             {/* index watermark */}
             <span
@@ -221,9 +245,11 @@ function ServiceRow({ service, index }: { service: Service; index: number }) {
           className="w-full lg:w-[60%]"
         >
           <div className="mb-3 flex items-center gap-3">
-            <span className="text-sm font-medium tracking-wide text-[#C0BAFF]">
-              {service.tagline}
+            {service.tagline && (
+              <span className="text-sm font-medium tracking-wide text-[#C0BAFF]">
+            {service.tagline}
             </span>
+            )}
             {service.badge && (
               <span
                 className="rounded-full px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider text-white"

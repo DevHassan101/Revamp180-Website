@@ -38,7 +38,7 @@ const services = [
   {
     name: "Social Media Management",
     desc: "Grow your audience with strategic content",
-    icon: "tabler:brand-instagram",
+    icon: "tabler:brand-linkedin",
     href: "/services#social-media-management",
   },
   {
@@ -124,7 +124,7 @@ export default function Navbar() {
           {/* ── Logo ── */}
           <Link
             href="/"
-            className={`col-start-1 flex items-center gap-3 shrink-0 z-50 transition-all duration-500 ${scrolled ? "mt-0" : "mt-5 md:mt-2"}`}
+            className={`col-start-1 flex items-center gap-3 shrink-0 z-50 transition-all duration-500 ${scrolled ? "mt-0" : "mt-5 md:mt-0"}`}
           >
             <div className="relative w-32 h-11 flex items-center">
               {/* Text */}
@@ -227,7 +227,7 @@ export default function Navbar() {
                     aria-expanded={servicesOpen}
                   >
                     <span
-                      className={`px-2 inline-block relative transition-all duration-200 before:content-[''] before:absolute before:bottom-0 before:left-1/2 before:-translate-x-1/2 before:h-[3px] before:rounded-full before:bg-gradient-to-r before:from-[#8B80FF] before:via-[#3520DC] before:to-[#00004D] before:w-0 hover:before:w-[70%] before:transition-all before:duration-300   ${
+                      className={`border-none px-2 inline-block relative transition-all duration-200 before:content-[''] before:absolute before:bottom-0 before:left-1/2 before:-translate-x-1/2 before:h-[3px] before:rounded-full before:bg-gradient-to-r before:from-[#8B80FF] before:via-[#3520DC] before:to-[#00004D] before:w-0 hover:before:w-[70%] before:transition-all before:duration-300   ${
                         !scrolled && isServicesActive
                           ? "border border-[#01004C]/70"
                           : ""
@@ -505,7 +505,7 @@ export default function Navbar() {
             <li className="border-b border-[#8B80FF]/20">
               <button
                 onClick={() => setMobileServicesOpen((o) => !o)}
-                className={`w-full flex items-center justify-between px-6 py-4 font-medium transition-colors ${
+                className={`w-full flex items-center justify-between px-6 py-4 font-medium transition-colors border-none outline-none ${
                   isServicesActive ? "text-[#8B80FF]" : "text-white"
                 }`}
               >

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion, type Variants } from "framer-motion";
 import { Icon } from "@iconify/react";
 import CTAButton from "@/components/CTAButton";
@@ -84,8 +84,8 @@ const trust = [
 const stats = [
   { value: "445+", label: "Projects" },
   { value: "6+", label: "Years" },
-  { value: "98%", label: "Satisfaction" },
-  { value: "48h", label: "Quote turnaround" },
+  { value: "97%", label: "Satisfaction" },
+  { value: "24h", label: "Quote turnaround" },
 ];
 
 const initialForm = {
@@ -124,16 +124,27 @@ export default function QuotePage() {
   const setValue = (key: keyof typeof form, value: string) =>
     setForm((prev) => ({ ...prev, [key]: value }));
 
-  function stepIsValid(s: number) {
-    if (s === 1)
-      return form.fullName.trim() && form.email.trim() && form.phone.trim();
-    if (s === 2) return form.service.trim() && form.description.trim();
-    return true;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // Returns an error message for the step, or "" if the step is valid.
+  function stepError(s: number) {
+    if (s === 1) {
+      if (!form.fullName.trim() || !form.email.trim() || !form.phone.trim())
+        return "Please fill in the required fields before continuing.";
+      if (!emailRegex.test(form.email.trim()))
+        return "Please enter a valid email address.";
+    }
+    if (s === 2) {
+      if (!form.service.trim() || !form.description.trim())
+        return "Please fill in the required fields before continuing.";
+    }
+    return "";
   }
 
   function next() {
-    if (!stepIsValid(step)) {
-      setError("Please fill in the required fields before continuing.");
+    const msg = stepError(step);
+    if (msg) {
+      setError(msg);
       return;
     }
     setError("");
@@ -148,6 +159,14 @@ export default function QuotePage() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (status === "loading") return;
+
+    // Re-validate earlier steps (user may have edited fields after advancing).
+    const msg = stepError(1) || stepError(2);
+    if (msg) {
+      setError(msg);
+      setStep(stepError(1) ? 1 : 2);
+      return;
+    }
 
     setStatus("loading");
     setError("");
@@ -199,7 +218,7 @@ export default function QuotePage() {
             className="mb-5 inline-flex items-center gap-2 rounded-full border border-[rgba(139,128,255,0.3)] bg-[rgba(139,128,255,0.08)] px-4 py-1.5 text-xs font-medium tracking-wide text-[#C0BAFF]"
           >
             <span className="h-1.5 w-1.5 rounded-full bg-[#8B80FF] animate-pulse" />
-            Written, fixed-price quote in 48 hours
+            Written, fixed-price quote in 24 hours
           </motion.span>
 
           <motion.h1
@@ -276,7 +295,7 @@ export default function QuotePage() {
                   <h3 className="text-lg font-semibold">Request received!</h3>
                   <p className="max-w-sm text-sm text-white/60">
                     Thanks for the details. We&apos;ll review your project and
-                    send a written, fixed-price quote within 48 hours.
+                    send a written, fixed-price quote within 24 hours.
                   </p>
                   <button
                     type="button"
@@ -433,31 +452,10 @@ export default function QuotePage() {
 
                           <div className="mt-6 grid grid-cols-1 gap-4">
                             <Field label="Service" required>
-                              <select
-                                name="service"
+                              <ServiceDropdown
                                 value={form.service}
-                                onChange={update("service")}
-                                className={`${inputClass} ${
-                                  form.service ? "text-white" : "text-white/40"
-                                }`}
-                              >
-                                <option
-                                  value=""
-                                  disabled
-                                  className="bg-[#00004D]"
-                                >
-                                  Select a service
-                                </option>
-                                {services.map((s) => (
-                                  <option
-                                    key={s}
-                                    value={s}
-                                    className="bg-[#00004D] text-white"
-                                  >
-                                    {s}
-                                  </option>
-                                ))}
-                              </select>
+                                onChange={(value) => setValue("service", value)}
+                              />
                             </Field>
 
                             <Field label="Project Description" required>
@@ -765,6 +763,111 @@ function Field({
       </label>
       {children}
     </motion.div>
+  );
+}
+
+// ─── Custom themed service dropdown ───────────────────────────────────────────
+function ServiceDropdown({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  // Close on outside click / Escape
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setOpen(false);
+    }
+    if (open) {
+      document.addEventListener("mousedown", handleClick);
+      document.addEventListener("keydown", handleKey);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, [open]);
+
+  return (
+    <div ref={ref} className="relative">
+      {/* Hidden input keeps native form behaviour / value tracking */}
+      <input type="hidden" name="service" value={value} required />
+
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        className={`flex w-full items-center justify-between rounded-lg border bg-[rgba(139,128,255,0.04)] px-3 py-2 text-left transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[rgba(139,128,255,0.25)] ${
+          open
+            ? "border-[rgba(139,128,255,0.6)]"
+            : "border-[rgba(139,128,255,0.3)] hover:border-[rgba(139,128,255,0.45)]"
+        } ${value ? "text-white" : "text-white/40"}`}
+      >
+        <span>{value || "Select a service"}</span>
+        <Icon
+          icon="tabler:chevron-down"
+          className={`h-4 w-4 flex-shrink-0 text-[#8B80FF] transition-transform duration-300 ${
+            open ? "rotate-180" : ""
+          }`}
+        />
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.ul
+            initial={{ opacity: 0, y: -6, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -6, scale: 0.98 }}
+            transition={{ duration: 0.18, ease: EASE }}
+            role="listbox"
+            className="absolute z-30 mt-2 w-full overflow-hidden rounded-lg border border-[rgba(139,128,255,0.3)] p-1 shadow-[0_8px_30px_rgba(0,0,0,0.45)]"
+            style={{
+              background: "rgba(13,12,46,0.92)",
+              backdropFilter: "blur(14px)",
+              WebkitBackdropFilter: "blur(14px)",
+            }}
+          >
+            {services.map((s) => {
+              const active = s === value;
+              return (
+                <li key={s} role="option" aria-selected={active}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onChange(s);
+                      setOpen(false);
+                    }}
+                    className={`flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-sm transition-colors duration-150 ${
+                      active
+                        ? "bg-[rgba(139,128,255,0.18)] text-white"
+                        : "text-white/75 hover:bg-[rgba(139,128,255,0.1)] hover:text-white"
+                    }`}
+                  >
+                    <span>{s}</span>
+                    {active && (
+                      <Icon
+                        icon="tabler:check"
+                        className="h-4 w-4 text-[#8B80FF]"
+                      />
+                    )}
+                  </button>
+                </li>
+              );
+            })}
+          </motion.ul>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
 

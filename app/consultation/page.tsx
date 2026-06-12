@@ -33,15 +33,27 @@ const stepVariants: Variants = {
 
 const trustSignals = [
   { icon: "tabler:credit-card-off", label: "Free — no credit card" },
-  { icon: "tabler:file-text", label: "Quote within 48 hours" },
+  { icon: "tabler:file-text", label: "Quote within 24 hours" },
   { icon: "tabler:lock", label: "NDA available on request" },
   { icon: "tabler:rosette-discount-check", label: "445+ projects delivered" },
 ];
 
 const timeSlots = [
-  { value: "Morning (9 AM – 12 PM)", icon: "tabler:sunrise", sub: "9 AM – 12 PM" },
-  { value: "Afternoon (12 PM – 4 PM)", icon: "tabler:sun", sub: "12 PM – 4 PM" },
-  { value: "Evening (4 PM – 8 PM)", icon: "tabler:sunset-2", sub: "4 PM – 8 PM" },
+  {
+    value: "Morning (9 AM – 12 PM)",
+    icon: "tabler:sunrise",
+    sub: "9 AM – 12 PM",
+  },
+  {
+    value: "Afternoon (12 PM – 4 PM)",
+    icon: "tabler:sun",
+    sub: "12 PM – 4 PM",
+  },
+  {
+    value: "Evening (4 PM – 8 PM)",
+    icon: "tabler:sunset-2",
+    sub: "4 PM – 8 PM",
+  },
   { value: "I'm flexible", icon: "tabler:clock-hour-4", sub: "Any time works" },
 ];
 
@@ -64,7 +76,7 @@ const howItWorks = [
   {
     icon: "tabler:file-invoice",
     title: "Written proposal",
-    sub: "A detailed, fixed-price proposal in your inbox within 48 hours.",
+    sub: "A detailed, fixed-price proposal in your inbox within 24 hours.",
   },
   {
     icon: "tabler:rocket",
@@ -84,7 +96,7 @@ const contactDetails = [
   {
     icon: "tabler:brand-whatsapp",
     label: "Whatsapp",
-    value: "+966-502624196",
+    value: "Message on Whatsapp",
     href: "https://wa.me/966502624196",
     target: "_blank",
   },
@@ -123,7 +135,8 @@ const inputClass =
 const WEEKDAYS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
 const pad = (n: number) => String(n).padStart(2, "0");
-const toISO = (y: number, m: number, d: number) => `${y}-${pad(m + 1)}-${pad(d)}`;
+const toISO = (y: number, m: number, d: number) =>
+  `${y}-${pad(m + 1)}-${pad(d)}`;
 
 function formatDisplayDate(iso: string) {
   if (!iso) return "";
@@ -149,7 +162,7 @@ export default function ConsultationPage() {
     (
       e: React.ChangeEvent<
         HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-      >
+      >,
     ) =>
       setForm((prev) => ({ ...prev, [key]: e.target.value }));
 
@@ -185,7 +198,9 @@ export default function ConsultationPage() {
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
-        throw new Error(data?.error || "Something went wrong. Please try again.");
+        throw new Error(
+          data?.error || "Something went wrong. Please try again.",
+        );
       }
 
       setStatus("success");
@@ -194,7 +209,9 @@ export default function ConsultationPage() {
     } catch (err) {
       setStatus("error");
       setError(
-        err instanceof Error ? err.message : "Something went wrong. Please try again."
+        err instanceof Error
+          ? err.message
+          : "Something went wrong. Please try again.",
       );
     }
   }
@@ -312,8 +329,8 @@ export default function ConsultationPage() {
                   </motion.div>
                   <h3 className="text-lg font-semibold">Request received!</h3>
                   <p className="max-w-sm text-sm text-white/60">
-                    Thanks — we&apos;ll confirm your discovery call shortly. Keep an
-                    eye on your inbox and WhatsApp.
+                    Thanks — we&apos;ll confirm your discovery call shortly.
+                    Keep an eye on your inbox and WhatsApp.
                   </p>
                   <button
                     type="button"
@@ -402,7 +419,9 @@ export default function ConsultationPage() {
                       >
                         <div className="flex items-start justify-between gap-3">
                           <div>
-                            <h2 className="text-xl font-semibold">Pick a time</h2>
+                            <h2 className="text-xl font-semibold">
+                              Pick a time
+                            </h2>
                             <p className="mt-1 text-sm font-light text-white/60">
                               When works best on that day?
                             </p>
@@ -417,7 +436,10 @@ export default function ConsultationPage() {
                         >
                           <Icon icon="tabler:calendar" className="h-4 w-4" />
                           {formatDisplayDate(form.date)}
-                          <Icon icon="tabler:pencil" className="h-3.5 w-3.5 opacity-70" />
+                          <Icon
+                            icon="tabler:pencil"
+                            className="h-3.5 w-3.5 opacity-70"
+                          />
                         </button>
 
                         <motion.div
@@ -462,7 +484,10 @@ export default function ConsultationPage() {
                             onClick={() => setStep("date")}
                             className="inline-flex items-center gap-2 rounded-full border border-[rgba(139,128,255,0.3)] px-5 py-3 text-sm font-medium text-white/80 transition-colors hover:border-[rgba(139,128,255,0.6)] hover:text-white"
                           >
-                            <Icon icon="tabler:arrow-left" className="h-4 w-4" />
+                            <Icon
+                              icon="tabler:arrow-left"
+                              className="h-4 w-4"
+                            />
                             Back
                           </button>
                         </div>
@@ -524,9 +549,13 @@ export default function ConsultationPage() {
                           />
 
                           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                            <motion.div variants={fieldIn} className="flex flex-col gap-2">
+                            <motion.div
+                              variants={fieldIn}
+                              className="flex flex-col gap-2"
+                            >
                               <label htmlFor="fullName" className="text-sm">
-                                Full Name <span className="text-red-400">*</span>
+                                Full Name{" "}
+                                <span className="text-red-400">*</span>
                               </label>
                               <input
                                 id="fullName"
@@ -540,7 +569,10 @@ export default function ConsultationPage() {
                               />
                             </motion.div>
 
-                            <motion.div variants={fieldIn} className="flex flex-col gap-2">
+                            <motion.div
+                              variants={fieldIn}
+                              className="flex flex-col gap-2"
+                            >
                               <label htmlFor="email" className="text-sm">
                                 Email <span className="text-red-400">*</span>
                               </label>
@@ -556,7 +588,10 @@ export default function ConsultationPage() {
                               />
                             </motion.div>
 
-                            <motion.div variants={fieldIn} className="flex flex-col gap-2">
+                            <motion.div
+                              variants={fieldIn}
+                              className="flex flex-col gap-2"
+                            >
                               <label htmlFor="phone" className="text-sm">
                                 Phone <span className="text-red-400">*</span>
                               </label>
@@ -597,7 +632,10 @@ export default function ConsultationPage() {
                               animate={{ opacity: 1, y: 0 }}
                               className="mt-4 flex items-center gap-2 rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-300"
                             >
-                              <Icon icon="tabler:alert-circle" className="h-4 w-4 flex-shrink-0" />
+                              <Icon
+                                icon="tabler:alert-circle"
+                                className="h-4 w-4 flex-shrink-0"
+                              />
                               {error}
                             </motion.p>
                           )}
@@ -611,7 +649,10 @@ export default function ConsultationPage() {
                               onClick={() => setStep("time")}
                               className="inline-flex items-center gap-2 rounded-full border border-[rgba(139,128,255,0.3)] px-5 py-3 text-sm font-medium text-white/80 transition-colors hover:border-[rgba(139,128,255,0.6)] hover:text-white"
                             >
-                              <Icon icon="tabler:arrow-left" className="h-4 w-4" />
+                              <Icon
+                                icon="tabler:arrow-left"
+                                className="h-4 w-4"
+                              />
                               Back
                             </button>
 
@@ -680,8 +721,8 @@ export default function ConsultationPage() {
               </div>
               <p className="text-sm leading-relaxed text-white/80">
                 &ldquo;The discovery call was incredibly helpful. They asked all
-                the right questions and had a proposal in my inbox before the day
-                was over.&rdquo;
+                the right questions and had a proposal in my inbox before the
+                day was over.&rdquo;
               </p>
               <p className="mt-4 text-sm font-semibold text-white">Sarah K.</p>
               <p className="text-xs text-white/55">E-commerce Founder, UK</p>
@@ -698,23 +739,44 @@ export default function ConsultationPage() {
                 WebkitBackdropFilter: "blur(14px)",
               }}
             >
-              <h3 className="mb-1 text-sm font-semibold">Prefer to reach out directly?</h3>
+              <h3 className="mb-1 text-sm font-semibold">
+                Prefer to reach out directly?
+              </h3>
               <p className="mb-5 text-xs text-white/55">
                 We usually reply within 2–4 hours.
               </p>
               <div className="flex flex-col">
                 {contactDetails.map((c, i) => {
                   const inner = (
-                    <div className="flex items-start gap-3">
-                      <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-[#8B80FF] text-white">
-                        <Icon icon={c.icon} className="h-5 w-5" />
+                    <div className="group flex justify-between items-center gap-3">
+                      <div className="flex items-start gap-3 group-hover:ml-2 transition-all duration-200">
+                        <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-[#8B80FF] text-white">
+                          <Icon icon={c.icon} className="h-5 w-5" />
+                        </div>
+                        <div className="flex flex-col">
+                          <p className="text-[10px] uppercase tracking-wide text-white/60">
+                            {c.label}
+                          </p>
+                          <span className="text-[12px] text-white">
+                            {c.value}
+                          </span>
+                        </div>
                       </div>
-                      <div className="flex flex-col">
-                        <p className="text-xs uppercase tracking-wide text-white/60">
-                          {c.label}
-                        </p>
-                        <span className="text-sm text-white">{c.value}</span>
-                      </div>
+                      <svg
+                        width="20px"
+                        height="20px"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <rect width="24" height="24" fill="none" />
+                        <path
+                          d="M9.5 7L14.5 12L9.5 17"
+                          stroke="#FFFFFF"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
                     </div>
                   );
                   const border =
@@ -722,7 +784,10 @@ export default function ConsultationPage() {
                       ? "border-b border-[rgba(139,128,255,0.2)]"
                       : "";
                   return (
-                    <div key={c.label} className={`py-3 first:pt-0 last:pb-0 ${border}`}>
+                    <div
+                      key={c.label}
+                      className={`py-3 first:pt-0 last:pb-0 ${border}`}
+                    >
                       <Link
                         href={c.href}
                         target={c.target || "_self"}
@@ -759,7 +824,8 @@ export default function ConsultationPage() {
               How the call works
             </h2>
             <p className="mx-auto mt-3 max-w-2xl text-white/55">
-              No fluff — a focused conversation that leaves you with a clear plan.
+              No fluff — a focused conversation that leaves you with a clear
+              plan.
             </p>
           </motion.div>
 
@@ -813,7 +879,7 @@ function Calendar({
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
   const [view, setView] = useState(
-    () => new Date(now.getFullYear(), now.getMonth(), 1)
+    () => new Date(now.getFullYear(), now.getMonth(), 1),
   );
   // Direction for slide animation (-1 prev, 1 next)
   const [dir, setDir] = useState(0);
@@ -929,7 +995,10 @@ function Calendar({
                 animate={{
                   opacity: isPast ? 0.25 : 1,
                   scale: 1,
-                  transition: { delay: Math.min(i * 0.012, 0.25), duration: 0.2 },
+                  transition: {
+                    delay: Math.min(i * 0.012, 0.25),
+                    duration: 0.2,
+                  },
                 }}
                 className={`relative flex aspect-square items-center justify-center rounded-lg text-sm transition-colors duration-150 ${
                   isSelected

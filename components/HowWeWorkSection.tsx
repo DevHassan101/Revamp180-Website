@@ -136,7 +136,7 @@ function RightPanel() {
       {steps.map((step) => (
         <motion.div
           key={`card-${step.number}`}
-          className="absolute z-20 w-[230px]"
+          className="absolute z-20 w-[clamp(11rem,15vw,14.375rem)]"
           style={{ left: step.cardLeft, top: step.cardTop }}
           initial={{ opacity: 0, y: 12 }}          // ← yeh add karo
           animate={
@@ -157,7 +157,7 @@ function RightPanel() {
 
 export default function HowWeWorkSection() {
   return (
-    <section className="relative max-w-360 mx-auto w-full h-auto max-h-auto xl:h-screen xl:max-h-[660px] overflow-hidden">
+    <section className="relative max-w-360 mx-auto w-full h-auto max-h-auto lg:h-screen lg:max-h-[660px] overflow-hidden">
       {/* ─────── MOBILE / TABLET (below lg) ─────── */}
       <div className="lg:hidden px-5 sm:px-10 pt-10 pb-20 h-full overflow-y-auto">
         {/* Badge */}
@@ -213,7 +213,7 @@ export default function HowWeWorkSection() {
           call to your final launch.
         </motion.p>
 
-        <div className="space-y-3 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
           {steps.map((step, i) => (
             <motion.div
               key={`mobile-card-${step.number}`}
@@ -238,7 +238,7 @@ export default function HowWeWorkSection() {
       {/* ─────── DESKTOP (lg+) ─────── */}
       <div className="hidden lg:flex h-full items-stretch">
         {/* ── Left Panel ── */}
-        <div className="relative z-20 flex flex-col justify-center pl-10 pr-0 w-125 shrink-0">
+        <div className="relative z-20 flex flex-col justify-center pl-6 xl:pl-10 pr-0 w-[clamp(19rem,30vw,31.25rem)] shrink-0">
           {/* Badge */}
           <motion.div
             initial={{ opacity: 0, scale: 0.82, y: 12 }}

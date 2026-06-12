@@ -49,7 +49,7 @@ function ProjectSlider({ images, title }: { images: string[]; title: string }) {
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
         style={{
-          aspectRatio: "16 / 9",
+          aspectRatio: "16 / 8",
           border: "1px solid rgba(139,128,255,0.20)",
           boxShadow:
             "0 0 0 1px rgba(139,128,255,0.10), 0 30px 80px rgba(53,32,220,0.30)",

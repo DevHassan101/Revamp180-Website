@@ -123,7 +123,7 @@ export default function AboutPage() {
 
   const stats = [
     { num: "50+", label: "Brands Transformed" },
-    { num: "5+", label: "Years of Impact" },
+    { num: "6+", label: "Years of Impact" },
     { num: "∞", label: "Room to Grow" },
   ];
 
@@ -345,7 +345,7 @@ export default function AboutPage() {
                   margin: 0,
                 }}
               >
-                Vision &amp; Mission
+                Our Vision
               </p>
             </div>
 

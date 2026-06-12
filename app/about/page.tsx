@@ -24,7 +24,7 @@ type TeamMember = {
 const team: TeamMember[] = [
   {
     label: "Web\nDevelopers",
-    img: "/images/team-members/1.png",
+    img: "/images/our-team/web-developer.png",
     color: "#4F86E8",
     w: 212,
     h: 166,
@@ -32,8 +32,8 @@ const team: TeamMember[] = [
     path: "M211.443 0.185981C239.062 58.4197 214.258 128.024 156.016 155.658C97.7841 183.303 28.1737 158.506 0.554106 100.273L211.443 0.185981Z",
   },
   {
-    label: "UI/UX\nDesigners",
-    img: "/images/team-members/2.png",
+    label: "App\nDevelopers",
+    img: "/images/our-team/app-developer.png",
     color: "#F4795B",
     w: 185,
     h: 182,
@@ -41,8 +41,8 @@ const team: TeamMember[] = [
     path: "M184.586 13.3233L13.9131 0L0.82349 167.678L171.496 181.002L184.586 13.3233Z",
   },
   {
-    label: "Brand\nDesigners",
-    img: "/images/team-members/3.png",
+    label: "Founder",
+    img: "/images/our-team/founder.png",
     color: "#F6A623",
     w: 171,
     h: 170,
@@ -50,8 +50,8 @@ const team: TeamMember[] = [
     path: "M170.824 84.7246C170.824 131.42 132.774 169.262 85.8237 169.262C38.8732 169.262 0.82373 131.42 0.82373 84.7246C0.82373 38.0296 38.8732 0.186951 85.8237 0.186951C132.774 0.186951 170.824 38.0296 170.824 84.7246Z",
   },
   {
-    label: "Social Media\nManagers",
-    img: "/images/team-members/4.png",
+    label: "Branding\nExperts",
+    img: "/images/our-team/branding-expert.png",
     color: "#6FCF97",
     w: 203,
     h: 180,
@@ -59,8 +59,8 @@ const team: TeamMember[] = [
     path: "M101.172 0.687866H202.318L151.755 89.7602L101.172 178.832L50.589 89.7602L0.00561523 0.687866H101.172Z",
   },
   {
-    label: "Video\nEditors",
-    img: "/images/team-members/5.png",
+    label: "UX\nDesigners",
+    img: "/images/our-team/ux-designer.png",
     color: "#8E7BEE",
     w: 178,
     h: 190,
@@ -264,7 +264,7 @@ export default function AboutPage() {
             transition={{ duration: 0.72, ease: EASE, delay: 0.16 }}
             className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/55"
           >
-            A full-service digital agency from Karachi — blending design,
+            A full-service digital agency from Riyadh — blending design,
             technology and strategy to help brands stand out and scale up.
           </motion.p>
 

@@ -27,9 +27,9 @@ const socials = [
 ];
 
 const contactDetails = [
-  { icon: "tabler:mail",     value: "hello@revamp180.com",  href: "mailto:hello@revamp180.com" },
-  { icon: "tabler:phone",    value: "+92 300 000 0000",     href: "tel:+923000000000"          },
-  { icon: "tabler:map-pin",  value: "Karachi, Pakistan",    href: null                         },
+  { icon: "tabler:mail",     value: "info@revamp180.com",  href: "mailto:info@revamp180.com" },
+  { icon: "tabler:phone",    value: "+966-502624196",     href: "tel:+966502624196"          },
+  { icon: "tabler:map-pin",  value: "Riyadh, Saudi Arabia",    href: null                         },
 ];
 
 export default function Footer() {
@@ -226,14 +226,17 @@ export default function Footer() {
           </p>
 
           <div className="flex items-center gap-5">
-            {["Privacy Policy", "Terms of Service"].map((item) => (
+            {[
+              { label: "Privacy Policy", href: "/privacy-policy" },
+              { label: "Terms of Service", href: "/terms-of-service" },
+            ].map((item) => (
               <Link
-                key={item}
-                href="#"
+                key={item.label}
+                href={item.href}
                 className="text-xs transition-colors duration-150 hover:text-white"
                 style={{ color: "rgba(255,255,255,0.28)" }}
               >
-                {item}
+                {item.label}
               </Link>
             ))}
           </div>

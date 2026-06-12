@@ -47,7 +47,7 @@ function AnimatedHeadline({
           style={{
             display: "inline-block",
             overflow: "hidden",
-            lineHeight: 1.25,
+            lineHeight: 1.12,
           }}
         >
           <motion.span
@@ -82,7 +82,7 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center px-4 pt-35 pb-30">
+    <div className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center px-4 pt-[clamp(5rem,12vh,8.75rem)] pb-[clamp(1.75rem,7vh,7.5rem)]">
       <ParticlesCanvas />
 
       {/* Main content */}
@@ -92,7 +92,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 16, filter: "blur(8px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           transition={{ duration: 0.7, ease: EASE, delay: 0.2 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-3"
+          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-[clamp(0.5rem,1.5vh,0.75rem)]"
           style={{
             background: "rgba(139,128,255,0.1)",
             border: "1px solid rgba(139,128,255,0.28)",
@@ -111,7 +111,7 @@ export default function HeroSection() {
           delay={0.42}
           className="font-extrabold text-white tracking-tight mb-0 block"
           style={{
-            fontSize: "clamp(2.6rem, 6vw, 3.8rem)",
+            fontSize: "clamp(2rem, min(6vw, 7vh), 3.8rem)",
             letterSpacing: "-0.02em",
           }}
         />
@@ -120,7 +120,7 @@ export default function HeroSection() {
           delay={0.72}
           className="font-extrabold tracking-tight mb-0 bg-clip-text text-transparent block"
           style={{
-            fontSize: "clamp(2.6rem, 6vw, 3.8rem)",
+            fontSize: "clamp(2rem, min(6vw, 7vh), 3.8rem)",
             letterSpacing: "-0.02em",
             backgroundImage:
               "linear-gradient(90deg, #8B80FF, #C0BAFF, #8B80FF)",
@@ -132,7 +132,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 18, filter: "blur(8px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           transition={{ duration: 0.85, ease: EASE, delay: 1.1 }}
-          className="text-white/55 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
+          className="text-white/55 text-base md:text-xl max-w-2xl mx-auto mb-[clamp(1.25rem,4vh,2.5rem)] leading-relaxed"
         >
           We are a full-service digital agency with{" "}
           <span
@@ -166,7 +166,7 @@ export default function HeroSection() {
             hidden: {},
             show: { transition: { staggerChildren: 0.08, delayChildren: 1.3 } },
           }}
-          className="flex flex-wrap justify-center gap-2.5 mb-10"
+          className="flex flex-wrap justify-center gap-2.5 mb-[clamp(1.25rem,4vh,2.5rem)]"
         >
           {services.map((s, i) => (
             <motion.button
