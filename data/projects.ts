@@ -40,8 +40,8 @@ export type Project = {
 export const projects: Project[] = [
   // ── Website Revamping ──
   {
-    slug: "techvault",
-    title: "TechVault",
+    slug: "bunzilla",
+    title: "Bunzilla",
     category: "Website Revamping",
     service: "Website Revamping",
     overlay: "rgba(12,0,64,0.55)",
@@ -51,24 +51,28 @@ export const projects: Project[] = [
       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80",
       "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1200&q=80",
     ],
-    client: "TechVault Inc.",
+    client: "Bunzilla Inc.",
     year: "2025",
     overview:
       "A full revamp of an outdated corporate site into a fast, modern, SEO-first platform.",
     requirements: [
-      "Modernize a dated, slow-loading legacy website.",
-      "Improve search rankings and organic traffic.",
-      "Make the whole experience responsive and accessible.",
+      "Create a modern and visually appealing food ordering experience.",
+      "Establish a strong brand identity that stands out in a competitive market.",
+      "Showcase menu items with high-quality visuals to increase engagement.",
+      "Ensure smooth navigation and a user-friendly ordering journey.",
+      "Design a mobile-first interface optimized for customer convenience."
     ],
     solution: [
-      "Rebuilt the front-end on Next.js for instant page loads and clean routing.",
-      "Restructured content and metadata around a fresh SEO strategy.",
-      "Introduced a reusable design system for consistent, responsive UI.",
+      "Developed a bold and memorable brand identity with a vibrant visual system.",
+      "Designed an intuitive mobile UI focused on usability and seamless user flows.",
+      "Integrated appetizing product imagery to enhance customer engagement.",
+      "Created a scalable design system for consistent user experiences across screens.",
+      "Delivered high-fidelity mockups and interactive prototypes for presentation and development handoff."
     ],
     techStack: [
-      { name: "Next.js", icon: "logos:nextjs-icon" },
-      { name: "TypeScript", icon: "logos:typescript-icon" },
-      { name: "Tailwind CSS", icon: "logos:tailwindcss-icon" },
+      { name: "Abode illustrator", icon: "logos:adobe-illustrator" },
+      { name: "Figma", icon: "logos:figma" },
+      { name: "Canva", icon: "logos:canva" },
     ],
   },
   {
