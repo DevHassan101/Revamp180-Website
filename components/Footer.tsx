@@ -134,7 +134,7 @@ export default function Footer() {
           {/* ── Right — Contact + CTA ── */}
           <div className="flex flex-col items-center lg:items-end gap-5 order-3 lg:order-3">
             <p
-              className="w-full text-center lg:text-right text-[10.5px] font-bold uppercase tracking-[0.22em]"
+              className="w-full text-center lg:text-left text-[10.5px] font-bold uppercase tracking-[0.22em]"
               style={{ color: "rgba(139,128,255,0.7)" }}
             >
               Contact
