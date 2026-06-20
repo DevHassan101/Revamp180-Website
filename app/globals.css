@@ -38,6 +38,21 @@ body {
     scrollbar-color: #4f46e5 #05053d;
 }
 
+@keyframes spin-reverse {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.animate-spin-reverse {
+  animation: spin-reverse 3s linear infinite;
+  transform-origin: center;
+  will-change: transform;
+}
+
 @keyframes blink {
   0% {
     transform: scale(1);

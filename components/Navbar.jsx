@@ -226,7 +226,7 @@ export default function Navbar() {
                     aria-haspopup="true"
                     aria-expanded={servicesOpen}
                   >
-                    <span
+                    <Link href="/services"
                       className={`border-none px-2 inline-block relative transition-all duration-200 before:content-[''] before:absolute before:bottom-0 before:left-1/2 before:-translate-x-1/2 before:h-[3px] before:rounded-full before:bg-gradient-to-r before:from-[#8B80FF] before:via-[#3520DC] before:to-[#00004D] before:w-0 hover:before:w-[70%] before:transition-all before:duration-300   ${
                         !scrolled && isServicesActive
                           ? "border border-[#01004C]/70"
@@ -234,7 +234,7 @@ export default function Navbar() {
                       }`}
                     >
                       Services
-                    </span>
+                    </Link>
                     <motion.span
                       animate={{ rotate: servicesOpen ? 180 : 0 }}
                       transition={{ duration: 0.2, ease: "easeOut" }}

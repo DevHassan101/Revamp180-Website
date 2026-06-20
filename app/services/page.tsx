@@ -221,7 +221,11 @@ function ServiceRow({ service, index }: { service: Service; index: number }) {
               >
                 <Icon
                   icon={service.icon}
-                  className="h-14 w-14 text-[#8B80FF]"
+                  className={`h-14 w-14 text-[#8B80FF] ${
+                    service.icon === "tabler:refresh"
+                      ? "animate-spin-reverse"
+                      : ""
+                  }`}
                 />
               </div>
             )}

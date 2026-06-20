@@ -1,7 +1,12 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { AnimatePresence, motion, type Variants } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useInView,
+  type Variants,
+} from "framer-motion";
 import { Icon } from "@iconify/react";
 import CTAButton from "@/components/CTAButton";
 
@@ -680,7 +685,7 @@ export default function QuotePage() {
                       className="text-2xl font-extrabold"
                       style={{ color: "#C0BAFF" }}
                     >
-                      {s.value}
+                      <CountUp value={s.value} />
                     </span>
                     <span className="text-xs text-white/60">{s.label}</span>
                   </div>
@@ -743,6 +748,45 @@ export default function QuotePage() {
         </motion.div>
       </section>
     </main>
+  );
+}
+
+// ─── Animated count-up number ─────────────────────────────────────────────────
+// Splits a value like "445+", "97%" or "24h" into its numeric part (which
+// counts up from 0 when scrolled into view) and a trailing suffix.
+function CountUp({ value, duration = 1.6 }: { value: string; duration?: number }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.5 });
+  const [display, setDisplay] = useState(0);
+
+  const match = value.match(/^([\d.]+)(.*)$/);
+  const target = match ? parseFloat(match[1]) : 0;
+  const suffix = match ? match[2] : value;
+
+  useEffect(() => {
+    if (!inView) return;
+    let raf = 0;
+    let start: number | null = null;
+
+    const tick = (now: number) => {
+      if (start === null) start = now;
+      const progress = Math.min((now - start) / (duration * 1000), 1);
+      // easeOutCubic for a snappy finish
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setDisplay(target * eased);
+      if (progress < 1) raf = requestAnimationFrame(tick);
+      else setDisplay(target);
+    };
+
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [inView, target, duration]);
+
+  return (
+    <span ref={ref}>
+      {Math.round(display)}
+      {suffix}
+    </span>
   );
 }
 
