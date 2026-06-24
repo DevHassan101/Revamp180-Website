@@ -361,7 +361,7 @@ export default function ProjectDetailPage() {
                   border: "1px solid rgba(139,128,255,0.16)",
                 }}
               >
-                <Icon icon={tech.icon} className="h-10 w-10" />
+                <Icon icon={tech.icon} className="h-10 w-10 text-white" />
                 <span className="text-center text-sm font-medium text-white/80">
                   {tech.name}
                 </span>

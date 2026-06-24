@@ -857,7 +857,7 @@ export const projects: Project[] = [
     techStack: [
       { name: "Kling AI", icon: "tabler:sparkles" },
       { name: "Captions.io", icon: "tabler:badge-cc" },
-      { name: "CapCut", icon: "simple-icons:capcut" },
+      { name: "CapCut", icon: "arcticons:capcut" },
     ],
   },
   {
@@ -893,7 +893,7 @@ export const projects: Project[] = [
     techStack: [
       { name: "Kling AI", icon: "tabler:sparkles" },
       { name: "Eleven Labs", icon: "simple-icons:elevenlabs" },
-      { name: "CapCut", icon: "simple-icons:capcut" },
+      { name: "CapCut", icon: "arcticons:capcut" },
     ],
   },
   {
@@ -929,7 +929,7 @@ export const projects: Project[] = [
     techStack: [
       { name: "Kling AI", icon: "tabler:sparkles" },
       { name: "Eleven Labs", icon: "simple-icons:elevenlabs" },
-      { name: "CapCut", icon: "simple-icons:capcut" },
+      { name: "CapCut", icon: "arcticons:capcut" },
     ],
   },
   {
