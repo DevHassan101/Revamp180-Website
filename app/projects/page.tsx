@@ -58,22 +58,44 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                 "transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.4s ease, box-shadow 0.4s ease",
             }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={project.images[0]}
-              alt={project.title}
-              className="card-img"
-              style={{
-                position: "absolute",
-                inset: 0,
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                willChange: "transform",
-                transition:
-                  "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-              }}
-            />
+            {project.video ? (
+              <video
+                src={project.video}
+                className="card-img"
+                muted
+                loop
+                playsInline
+                autoPlay
+                preload="metadata"
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  willChange: "transform",
+                  transition:
+                    "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                }}
+              />
+            ) : (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
+                src={project.images[0]}
+                alt={project.title}
+                className="card-img"
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  willChange: "transform",
+                  transition:
+                    "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                }}
+              />
+            )}
 
             {/* Brand colour multiply */}
             <div

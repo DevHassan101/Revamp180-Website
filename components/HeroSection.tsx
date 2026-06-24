@@ -9,14 +9,18 @@ import ParticlesCanvas from "./ParticlesCanvas";
 // Softer expo-out — less aggressive initial snap
 const EASE = [0.22, 1, 0.36, 1] as const;
 
+// href targets match the navbar's services dropdown (/services#<anchor>)
 const services = [
-  { label: "Website Revamping", icon: "tabler:refresh" },
-  { label: "Web Design & Development", icon: "tabler:code" },
-  { label: "App Design & Development", icon: "tabler:device-mobile" },
-  { label: "Branding & UI/UX Design", icon: "tabler:brush" },
-  { label: "Social Media Management", icon: "tabler:brand-instagram" },
-  { label: "Video Editing", icon: "tabler:video" },
+  { label: "Website Revamping", icon: "tabler:refresh", href: "/services#website-revamping" },
+  { label: "Web Design & Development", icon: "tabler:code", href: "/services#web-design-development" },
+  { label: "App Design & Development", icon: "tabler:device-mobile", href: "/services#app-design-development" },
+  { label: "Branding & UI/UX Design", icon: "tabler:brush", href: "/services#branding-ui-ux-design" },
+  { label: "Social Media Management", icon: "tabler:brand-instagram", href: "/services#social-media-management" },
+  { label: "Video Editing", icon: "tabler:video", href: "/services#video-editing" },
 ];
+
+// Animated Next.js Link so the chips can keep their motion props while navigating
+const MotionLink = motion.create(Link);
 
 function AnimatedHeadline({
   text,
@@ -169,8 +173,9 @@ export default function HeroSection() {
           className="flex flex-wrap justify-center gap-2.5 mb-[clamp(1.25rem,4vh,2.5rem)]"
         >
           {services.map((s, i) => (
-            <motion.button
+            <MotionLink
               key={i}
+              href={s.href}
               variants={{
                 hidden: { opacity: 0, scale: 0.82, y: 16 },
                 show: {
@@ -182,7 +187,7 @@ export default function HeroSection() {
               }}
               whileHover={{ scale: 1.06 }}
               whileTap={{ scale: 0.94 }}
-              onClick={() => setActiveService(i)}
+              onMouseEnter={() => setActiveService(i)}
               className="relative flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium cursor-pointer overflow-hidden"
               style={{
                 background: "rgba(255,255,255,0.06)",
@@ -209,7 +214,7 @@ export default function HeroSection() {
                 <Icon icon={s.icon} className="w-4 h-4 flex-shrink-0" />
                 {s.label}
               </span>
-            </motion.button>
+            </MotionLink>
           ))}
         </motion.div>
 

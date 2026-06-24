@@ -4,6 +4,7 @@ import { useState, useLayoutEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
+import { getProject } from "@/data/projects";
 
 // ─── Easing curves ────────────────────────────────────────────────────────────
 // Gentle spring-like decelerate — feels organic, not mechanical
@@ -13,80 +14,34 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 const FAN_EASE = [0, 0, 0.2, 1] as const;
 
 // ─── Project data ─────────────────────────────────────────────────────────────
-const projects = [
-  {
-    title: "FoodieHub",
-    category: "Web Development",
-    image:
-      "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&q=80",
-    overlay: "rgba(24,0,200,0.52)",
-    tags: ["Next.js", "Node.js"],
-  },
-  {
-    title: "StyleKart",
-    category: "E-commerce",
-    image:
-      "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80",
-    overlay: "rgba(53,32,220,0.48)",
-    tags: ["Shopify", "Branding"],
-  },
-  {
-    title: "FitApp",
-    category: "App Design",
-    image:
-      "https://images.unsplash.com/photo-1534258936925-c58bed479fcb?w=800&q=80",
-    overlay: "rgba(107,33,168,0.50)",
-    tags: ["React Native", "Flutter"],
-  },
-  {
-    title: "Nova Brand",
-    category: "Branding & UI/UX",
-    image:
-      "https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=800&q=80",
-    overlay: "rgba(45,27,105,0.52)",
-    tags: ["Branding", "Figma"],
-  },
-  {
-    title: "SocialPulse",
-    category: "Social Media",
-    image:
-      "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&q=80",
-    overlay: "rgba(124,58,237,0.50)",
-    tags: ["Instagram", "Video"],
-  },
-  {
-    title: "TechVault",
-    category: "Website Revamping",
-    image:
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
-    overlay: "rgba(12,0,64,0.55)",
-    tags: ["Revamp", "SEO"],
-  },
-  {
-    title: "MediCare",
-    category: "Web Design",
-    image:
-      "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80",
-    overlay: "rgba(0,80,160,0.52)",
-    tags: ["Next.js", "UI/UX"],
-  },
-  {
-    title: "EduLearn",
-    category: "App Development",
-    image:
-      "https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=800&q=80",
-    overlay: "rgba(30,0,180,0.50)",
-    tags: ["React", "Firebase"],
-  },
-  {
-    title: "FinTrack",
-    category: "Web App",
-    image:
-      "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
-    overlay: "rgba(20,0,100,0.54)",
-    tags: ["Dashboard", "Node.js"],
-  },
-];
+// Homepage feature order + which cover to show per project — see
+// public/images/projects-images/Homepage.txt. `image` is a 0-based index into
+// the project's images[]; `video: true` uses the project's video instead.
+const HOMEPAGE_FEATURE = [
+  { slug: "three-angle-marketing", image: 1 }, // 2nd image
+  { slug: "fight-tv", image: 0 }, // 1st image
+  { slug: "bunzilla", image: 0 }, // 1st image
+  { slug: "the-royal-seat", image: 1 }, // 2nd image
+  { slug: "stampbox", image: 0 }, // 1st image
+  { slug: "pulse-media", video: true }, // video
+  { slug: "legit-ai-solutions", image: 1 }, // 2nd image
+  { slug: "qr-code", image: 0 }, // 1st image
+  { slug: "yong-real-estate", image: 1 }, // 2nd image
+] as const;
+
+const projects = HOMEPAGE_FEATURE.map((entry) => {
+  const p = getProject(entry.slug)!;
+  const useVideo = "video" in entry && entry.video;
+  return {
+    slug: p.slug,
+    title: p.title,
+    category: p.category,
+    overlay: p.overlay,
+    tags: p.tags,
+    image: useVideo ? undefined : p.images["image" in entry ? entry.image : 0],
+    video: useVideo ? p.video : undefined,
+  };
+});
 
 // ─── Fan-in initial states ────────────────────────────────────────────────────
 // Desktop: col 1 (middle) drops from above; col 0 fans from right; col 2 fans from left
@@ -206,22 +161,44 @@ function ProjectCard({
               "transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.4s ease, box-shadow 0.4s ease",
           }}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={project.image}
-            alt={project.title}
-            className="card-img"
-            style={{
-              position: "absolute",
-              inset: 0,
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              willChange: "transform",
-              // FIX: longer duration + ease-out for silky image zoom
-              transition: "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-            }}
-          />
+          {project.video ? (
+            <video
+              src={project.video}
+              className="card-img"
+              muted
+              loop
+              playsInline
+              autoPlay
+              preload="metadata"
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                willChange: "transform",
+                transition:
+                  "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+              }}
+            />
+          ) : (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              src={project.image}
+              alt={project.title}
+              className="card-img"
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                willChange: "transform",
+                // FIX: longer duration + ease-out for silky image zoom
+                transition: "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+              }}
+            />
+          )}
 
           {/* Brand colour multiply */}
           <div

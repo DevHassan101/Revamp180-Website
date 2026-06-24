@@ -269,7 +269,31 @@ export default function ProjectDetailPage() {
           transition={{ duration: 0.65, ease: EASE, delay: 0.1 }}
           className="mb-16"
         >
-          <ProjectSlider images={project.images} title={project.title} />
+          {project.video ? (
+            <div
+              className="relative w-full overflow-hidden rounded-2xl"
+              style={{
+                aspectRatio: "16 / 8",
+                border: "1px solid rgba(139,128,255,0.20)",
+                boxShadow:
+                  "0 0 0 1px rgba(139,128,255,0.10), 0 30px 80px rgba(53,32,220,0.30)",
+                background: "rgba(8,11,30,0.6)",
+              }}
+            >
+              <video
+                src={project.video}
+                controls
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+            </div>
+          ) : (
+            <ProjectSlider images={project.images} title={project.title} />
+          )}
         </motion.div>
 
         {/* ── Case study ── */}
