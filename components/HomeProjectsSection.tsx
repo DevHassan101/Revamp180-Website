@@ -150,7 +150,7 @@ function ProjectCard({
             borderRadius: "1rem",
             overflow: "hidden",
             cursor: "pointer",
-            height: tall ? "308px" : "232px",
+            aspectRatio: "16 / 10",
             border: tall
               ? "1px solid rgba(139,128,255,0.30)"
               : "1px solid rgba(139,128,255,0.13)",

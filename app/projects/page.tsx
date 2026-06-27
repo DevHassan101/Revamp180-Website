@@ -51,7 +51,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               borderRadius: "1rem",
               overflow: "hidden",
               cursor: "pointer",
-              height: "248px",
+              aspectRatio: "16 / 10",
               border: "1px solid rgba(139,128,255,0.13)",
               willChange: "transform",
               transition:
