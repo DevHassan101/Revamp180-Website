@@ -91,15 +91,17 @@ export default function Footer() {
           </div>
 
           {/* ── Center — Wordmark (3D floor perspective) ── */}
-          <div className="flex w-full flex-col items-center text-center order-1 lg:order-2 overflow-hidden">
+          <div className="flex w-full flex-col items-center text-center order-1 lg:order-2 overflow-x-clip pt-[10vw] sm:pt-[7vw] lg:pt-[5rem]">
             <Link href="/" aria-label="Revamp 180 home" className="block max-w-full">
               <h2
-                className="font-black leading-none select-none uppercase"
+                className="leading-none select-none uppercase"
                 style={{
-                  fontSize: "clamp(2.5rem, 12vw, 8rem)",
-                  letterSpacing: "-0.04em",
+                  fontFamily: "var(--font-anton), sans-serif",
+                  fontWeight: 400,
+                  fontSize: "clamp(3rem, 15vw, 11rem)",
+                  letterSpacing: "0.01em",
                   color: "#E8E8F5",
-                  transform: "perspective(1200px) rotateX(70deg) scaleY(2)",
+                  transform: "perspective(900px) rotateX(62deg) scaleY(4.2)",
                   transformOrigin: "bottom center",
                 }}
               >
@@ -183,7 +185,7 @@ export default function Footer() {
             </ul>
             
             {/* CTAs */}
-            <div className="flex flex-col items-center lg:items-end gap-3 mt-2">
+            {/* <div className="flex flex-col items-center lg:items-end gap-3 mt-2">
               
               <Link
               href="/consultation"
@@ -214,7 +216,7 @@ export default function Footer() {
               </div>
               <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 group-hover/btn:translate-x-full"></span>
             </Link>
-            </div>
+            </div> */}
           </div>
         </div>
 
