@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+html,
+body {
+  /* Prevent any single section from pushing the whole page into a
+     horizontal scroll (Navbar is position:fixed, so this is safe). */
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 body {
   background: radial-gradient(circle, #00004D 0%,rgba(0, 0, 0, 1) 100%);
   background-attachment: fixed;

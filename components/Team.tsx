@@ -2,8 +2,23 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
+
+// Detect small viewports so the "assemble" animation travels a shorter
+// distance on phones (avoids items flinging off-screen / horizontal scroll).
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 640px)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+  return isMobile;
+}
 
 type TeamMember = {
   label: string;
@@ -88,8 +103,9 @@ const BOX = 200; // common square viewBox for every member
 
 // ─── One member: portrait clipped into the exact SVG shape ────────────────────
 function TeamShape({ member, index }: { member: TeamMember; index: number }) {
+  const isMobile = useIsMobile();
   const dir = 2 - index; // direction/distance from the centre item
-  const CONVERGE = 200; // px each item travels toward centre when stacked
+  const CONVERGE = isMobile ? 70 : 200; // px each item travels toward centre when stacked
   const clipId = `team-shape-${index}`;
   const rectId = `team-rect-${index}`;
 
@@ -121,7 +137,7 @@ function TeamShape({ member, index }: { member: TeamMember; index: number }) {
     >
       <svg
         viewBox={`0 0 ${BOX} ${BOX}`}
-        className="block h-[150px] w-[150px] sm:h-[165px] sm:w-[165px] lg:h-[200px] lg:w-[200px]"
+        className="block h-[125px] w-[125px] sm:h-[165px] sm:w-[165px] lg:h-[200px] lg:w-[200px]"
         style={{ overflow: "visible" }}
         aria-hidden="true"
       >
@@ -178,7 +194,7 @@ function TeamShape({ member, index }: { member: TeamMember; index: number }) {
         />
       </svg>
 
-      <p className="max-w-[150px] whitespace-pre-line text-center text-sm font-semibold leading-tight text-white/80">
+      <p className="max-w-[125px] whitespace-pre-line text-center text-xs font-semibold leading-tight text-white/80 sm:max-w-[150px] sm:text-sm">
         {member.label}
       </p>
     </motion.div>
@@ -188,9 +204,9 @@ function TeamShape({ member, index }: { member: TeamMember; index: number }) {
 export default function Team() {
   return (
     // ═══ Let's assemble your team ═══
-    <section className="relative px-4 py-28">
+    <section className="relative overflow-hidden px-4 py-16 sm:py-20 lg:py-28">
       <div
-        className="pointer-events-none absolute left-1/2 top-1/2 h-[420px] w-[820px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[420px] w-[820px] max-w-full -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
         style={{
           background: "radial-gradient(circle, #1800C8 0%, transparent 70%)",
           opacity: 0.1,
@@ -198,7 +214,7 @@ export default function Team() {
       />
       <div className="relative z-10 mx-auto">
         {/* team row — assemble animation: stacked centre → spread → vibrant → pastel → gray */}
-        <div className="flex flex-wrap items-end justify-center gap-x-6 gap-y-10 sm:gap-x-10 lg:gap-x-12">
+        <div className="flex flex-wrap items-end justify-center gap-x-4 gap-y-8 sm:gap-x-10 sm:gap-y-10 lg:gap-x-12">
           {team.map((m, i) => (
             <TeamShape key={m.label} member={m} index={i} />
           ))}
@@ -210,7 +226,7 @@ export default function Team() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.6, ease: EASE }}
-          className="mt-16 flex flex-col items-center gap-6 text-center"
+          className="mt-10 flex flex-col items-center gap-5 text-center sm:mt-16 sm:gap-6"
         >
           <h2
             className="font-bold text-white"
