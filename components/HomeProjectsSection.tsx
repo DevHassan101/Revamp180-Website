@@ -91,6 +91,7 @@ function ProjectCard({
       }}
       className="group/card flex flex-col gap-3"
     >
+      <Link href={`/projects/${project.slug}`} className="flex flex-col gap-3">
       {/* ── Title row ── */}
       <div className="flex items-center justify-between">
         <div className="flex justify-center items-center w-full">
@@ -390,6 +391,7 @@ function ProjectCard({
           </span>
         ))}
       </div>
+      </Link>
     </motion.div>
   );
 }
