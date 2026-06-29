@@ -331,7 +331,7 @@ export const projects: Project[] = [
     overlay: "rgba(53,32,220,0.48)",
     tags: ["Food", "development"],
     images: [
-      `${BASE}/website-development/Velvetpour/Images/1.png`,
+      `${BASE}/website-development/Velvetpour/Images/1.jpg`,
       `${BASE}/website-development/Velvetpour/Images/2.jpg`,
       `${BASE}/website-development/Velvetpour/Images/3.jpg`,
     ],
