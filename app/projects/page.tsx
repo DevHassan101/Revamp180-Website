@@ -383,7 +383,7 @@ export default function ProjectPage() {
           {/* ── Projects grid ── */}
           <motion.div
             layout
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 gap-y-20"
           >
             <AnimatePresence mode="popLayout">
               {visible.map((project, index) => (

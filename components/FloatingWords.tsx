@@ -60,7 +60,7 @@ export default function FloatingWords() {
               className="absolute left-0 top-0 select-none whitespace-nowrap font-extrabold uppercase tracking-tight"
               style={{
                 fontSize: "clamp(2.2rem, 6vw, 4rem)",
-                color: "rgba(139,128,255,0.2)",
+                color: "rgba(139,128,255,0.1)",
               }}
               initial={{ x: xs[0], y: ys[0] }}
               animate={{ x: xs, y: ys }}

@@ -11,11 +11,10 @@ const navLinks = [
 ];
 
 const socials = [
-  { icon: "tabler:brand-instagram", href: "#", label: "Instagram" },
-  { icon: "tabler:brand-linkedin", href: "#", label: "LinkedIn" },
-  { icon: "tabler:brand-facebook", href: "#", label: "Facebook" },
-  { icon: "tabler:brand-x", href: "#", label: "X" },
   { icon: "tabler:brand-whatsapp", href: "#", label: "WhatsApp" },
+  { icon: "tabler:brand-linkedin", href: "#", label: "LinkedIn" },
+  { icon: "tabler:brand-instagram", href: "#", label: "Instagram" },
+  { icon: "tabler:brand-facebook", href: "#", label: "Facebook" },
 ];
 
 const contactDetails = [
@@ -57,7 +56,7 @@ export default function Footer() {
         }}
       />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 pb-8">
+      <div className="relative z-10 max-w-[95%]! mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 pb-8">
         {/* ── Main 3-column area ── */}
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] gap-10 sm:gap-12 lg:gap-8 items-center lg:items-start">
           {/* ── Left — Nav links ── */}
@@ -134,15 +133,15 @@ export default function Footer() {
           </div>
 
           {/* ── Right — Contact + CTA ── */}
-          <div className="flex flex-col items-center lg:items-end gap-5 order-3 lg:order-3">
+          <div className="flex flex-col items-center gap-5 order-3 lg:order-3">
             <p
               className="w-full text-center lg:text-left text-[10.5px] font-bold uppercase tracking-[0.22em]"
               style={{ color: "rgba(139,128,255,0.7)" }}
             >
-              Contact
+              Contact Info
             </p>
 
-            <ul className="flex flex-col items-center lg:items-end gap-4">
+            <ul className="flex flex-col items-center lg:items-end gap-4 w-full">
               {contactDetails.map((c) => {
                 const inner = (
                   <span className="flex items-center gap-3">
@@ -185,19 +184,19 @@ export default function Footer() {
             </ul>
             
             {/* CTAs */}
-            {/* <div className="flex flex-col items-center lg:items-end gap-3 mt-2">
+            <div className="flex flex-col items-center lg:items-end gap-3 mt-2">
               
               <Link
               href="/consultation"
-              className="group/btn relative inline-flex items-center gap-4 bg-[linear-gradient(135deg,#080B78,#00004D)] pl-1.5 pr-8 md:pr-10 py-1.5 rounded-full transition-all duration-700
+              className="group/btn relative inline-flex items-center gap-4 bg-[linear-gradient(135deg,#080B78,#00004D)] pl-1.5 pr-2 py-1.5 rounded-full transition-all duration-700
     shadow-[0_0_0_1px_rgba(53,32,220,0.25),0_4px_24px_rgba(53,32,220,0.25),0_2px_8px_rgba(0,0,0,0.4)]
     hover:shadow-[0_0_14px_rgba(180,190,255,0.50),0_0_17px_rgba(255,255,255,0.25)]
     cursor-pointer overflow-hidden"
             >
-              <div className="relative z-10 flex items-center gap-3">
-                <div className="bg-white w-10 h-10 md:w-12 md:h-12 rounded-full flex justify-center items-center shadow-lg">
+              <div className="relative z-10 flex items-center gap-1.5">
+                <div className="bg-white w-6 h-6 md:w-7 md:h-7 rounded-full flex justify-center items-center shadow-lg">
                   <svg
-                    className="w-5 h-5 md:w-5.5 md:h-5.5"
+                    className="w-4 h-4 md:w-4.5 md:h-4.5"
                     fill="none"
                     stroke="#080B78"
                     strokeWidth={2}
@@ -210,13 +209,13 @@ export default function Footer() {
                     />
                   </svg>
                 </div>
-                <span className="text-white font-semibold tracking-wide text-sm md:text-[17px] whitespace-nowrap drop-shadow-sm">
+                <span className="text-white font-medium tracking-wide text-sm md:text-[14px] whitespace-nowrap drop-shadow-sm">
                   Book Free Consultation
                 </span>
               </div>
               <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 group-hover/btn:translate-x-full"></span>
             </Link>
-            </div> */}
+            </div>
           </div>
         </div>
 
