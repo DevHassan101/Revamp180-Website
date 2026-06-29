@@ -129,7 +129,7 @@ export default function AboutPage() {
 
   return (
     <>
-      <div ref={containerRef} className="relative h-[350vh] xl:h-[600vh]">
+      <div ref={containerRef} className="relative !h-[350vh] xl:h-[600vh]">
         {/* ── Sticky viewport ── */}
         <div
           style={{
