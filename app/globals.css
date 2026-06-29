@@ -2,9 +2,12 @@
 
 html,
 body {
-  /* Prevent any single section from pushing the whole page into a
-     horizontal scroll (Navbar is position:fixed, so this is safe). */
-  overflow-x: hidden;
+  /* Prevent any single section from pushing the whole page into a horizontal
+     scroll. Use `clip` (not `hidden`): `overflow-x: hidden` forces overflow-y
+     to `auto`, turning html/body into scroll containers and breaking
+     `position: sticky` (e.g. the VisionMission scroll animation). `clip` blocks
+     the horizontal scroll without creating a scroll container. */
+  overflow-x: clip;
   max-width: 100%;
 }
 
