@@ -123,14 +123,18 @@ function TeamShape({ member, index }: { member: TeamMember; index: number }) {
   const imgX = (BOX - imgW) / 2;
 
   return (
+    // Animation is driven by the parent row's in-view state (via variants), not
+    // this item's own visibility — otherwise items that start translated
+    // off-screen never enter the viewport, so their "assemble" tween never fires.
     <motion.div
-      initial={{ x: dir * CONVERGE, scale: 1.35 }}
-      whileInView={{
-        x: [dir * CONVERGE, 0, dir * CONVERGE * 0.1],
-        scale: [1.35, 1, 1],
-        opacity: [0, 1, 1],
+      variants={{
+        hidden: { x: dir * CONVERGE, scale: 1.35, opacity: 0 },
+        visible: {
+          x: [dir * CONVERGE, 0, dir * CONVERGE * 0.1],
+          scale: [1.35, 1, 1],
+          opacity: [0, 1, 1],
+        },
       }}
-      viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 3.6, times: [0, 0.45, 0.72], ease: "easeInOut" }}
       style={{ zIndex: 5 - Math.abs(dir) }}
       className="flex flex-col items-center gap-3"
@@ -154,16 +158,17 @@ function TeamShape({ member, index }: { member: TeamMember; index: number }) {
         <motion.path
           d={member.path}
           transform={transform}
-          initial={{ fill: member.color }}
-          whileInView={{
-            fill: [
-              member.color,
-              member.color,
-              pastel(member.color),
-              grayed(member.color),
-            ],
+          variants={{
+            hidden: { fill: member.color },
+            visible: {
+              fill: [
+                member.color,
+                member.color,
+                pastel(member.color),
+                grayed(member.color),
+              ],
+            },
           }}
-          viewport={{ once: true, amount: 0.3 }}
           transition={{
             duration: 3.6,
             times: [0, 0.45, 0.72, 1],
@@ -213,12 +218,18 @@ export default function Team() {
         }}
       />
       <div className="relative z-10 mx-auto">
-        {/* team row — assemble animation: stacked centre → spread → vibrant → pastel → gray */}
-        <div className="flex flex-wrap items-end justify-center gap-x-4 gap-y-8 sm:gap-x-10 sm:gap-y-10 lg:gap-x-12">
+        {/* team row — assemble animation: stacked centre → spread → vibrant → pastel → gray.
+            The row (always in view) is the trigger; each child animates via variants. */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          className="flex flex-wrap items-end justify-center gap-x-4 gap-y-8 sm:gap-x-10 sm:gap-y-10 lg:gap-x-12"
+        >
           {team.map((m, i) => (
             <TeamShape key={m.label} member={m} index={i} />
           ))}
-        </div>
+        </motion.div>
 
         {/* heading + CTA */}
         <motion.div
