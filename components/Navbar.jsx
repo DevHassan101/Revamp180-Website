@@ -448,7 +448,7 @@ export default function Navbar() {
 
       {/* Mobile Drawer */}
       <div
-        className={`fixed top-0 left-0 h-full w-72 bg-[#01004C] rounded-r-3xl z-50 transform transition-transform duration-500 ease-out ${
+        className={`fixed top-0 left-0 h-full w-72 bg-[#00002d] rounded-r-3xl z-50 transform transition-transform duration-500 ease-out ${
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -474,7 +474,7 @@ export default function Navbar() {
                   REVAMP <span className="text-[#8B80FF]">180°</span>
                 </p>
                 <p className="text-[8px] font-medium tracking-[0.22em] text-white/40 uppercase">
-                  Digital Agency
+                  Refresh - Redesign - Relaunch
                 </p>
               </div>
             </Link>
@@ -509,7 +509,10 @@ export default function Navbar() {
                   isServicesActive ? "text-[#8B80FF]" : "text-white"
                 }`}
               >
+                <Link href={'/services'}
+                  onClick={() => setMobileOpen(false)}>
                 Services
+                </Link>
                 <motion.span
                   animate={{ rotate: mobileServicesOpen ? 180 : 0 }}
                   transition={{ duration: 0.25 }}

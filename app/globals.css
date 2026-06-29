@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "AC Compacta";
+  src: url("/fonts/CompactaBT.woff") format("woff"),
+    url("/fonts/CompactaBT.ttf") format("truetype");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 html,
 body {
   /* Prevent any single section from pushing the whole page into a horizontal
@@ -14,7 +23,15 @@ body {
 body {
   background: radial-gradient(circle, #00004D 0%,rgba(0, 0, 0, 1) 100%);
   background-attachment: fixed;
-  cursor: none !important;
+}
+
+/* Hide the native cursor only on devices that actually have a fine pointer
+   (mouse/trackpad) — the custom cursor replaces it there. Touch devices keep
+   their default behavior. */
+@media (hover: hover) and (pointer: fine) {
+  body {
+    cursor: none !important;
+  }
 }
 
 /* Chrome, Edge, Safari */

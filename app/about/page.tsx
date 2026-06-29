@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import AboutSection from "@/components/AboutSection";
+import Team from "@/components/Team";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -373,66 +374,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ═══ Let's assemble your team ═══ */}
-      <section className="relative px-4 py-28">
-        <div
-          className="pointer-events-none absolute left-1/2 top-1/2 h-[420px] w-[820px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
-          style={{
-            background: "radial-gradient(circle, #1800C8 0%, transparent 70%)",
-            opacity: 0.1,
-          }}
-        />
-        <div className="relative z-10 mx-auto">
-          {/* team row — assemble animation: stacked centre → spread → vibrant → pastel → gray */}
-          <div className="flex flex-wrap items-end justify-center gap-x-6 gap-y-10 sm:gap-x-10 lg:gap-x-12">
-            {team.map((m, i) => (
-              <TeamShape key={m.label} member={m} index={i} />
-            ))}
-          </div>
 
-          {/* heading + CTA */}
-          <motion.div
-            initial={{ opacity: 0, y: 22 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 0.6, ease: EASE }}
-            className="mt-16 flex flex-col items-center gap-6 text-center"
-          >
-            <h2
-              className="font-bold text-white"
-              style={{
-                fontSize: "clamp(1.8rem, 4vw, 2.8rem)",
-                letterSpacing: "-0.02em",
-              }}
-            >
-              Let&apos;s assemble your team.
-            </h2>
-            <Link
-              href="/consultation"
-              className="group/btn relative inline-flex items-center gap-4 bg-[linear-gradient(135deg,#080B78,#00004D)] pl-1.5 pr-8 md:pr-10 py-1.5 rounded-full transition-all duration-700
-    shadow-[0_0_0_1px_rgba(53,32,220,0.25),0_4px_24px_rgba(53,32,220,0.25),0_2px_8px_rgba(0,0,0,0.4)]
-    hover:shadow-[0_0_14px_rgba(180,190,255,0.50),0_0_17px_rgba(255,255,255,0.25)]
-    cursor-pointer overflow-hidden"
-            >
-              <div className="relative z-10 flex items-center gap-3">
-                <div className="bg-white w-10 h-10 md:w-12 md:h-12 rounded-full flex justify-center items-center transition-all duration-700 ease-out shadow-lg rotate-0 group-hover/btn:-rotate-40">
-                  <svg
-                    viewBox="0 0 24 24"
-                    className="w-5 h-5 md:w-5.5 md:h-5.5 fill-[#080B78] transition-all duration-700"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
-                  </svg>
-                </div>
-                <span className="text-white font-semibold tracking-wide text-sm md:text-[17px] whitespace-nowrap drop-shadow-sm">
-                  Schedule a Call
-                </span>
-              </div>
-              <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 group-hover/btn:translate-x-full"></span>
-            </Link>
-          </motion.div>
-        </div>
-      </section>
+      <Team/>
     </main>
   );
 }

@@ -22,7 +22,10 @@ export default function ParticlesCanvas() {
 
     let animId: number;
     let particles: Particle[] = [];
-    const COUNT = 250;
+    // Fewer/smaller dots on phones — 250 looks far too dense on a narrow canvas.
+    // Larger screens keep the original count and size.
+    const isMobile = window.innerWidth < 640;
+    const COUNT = isMobile ? 90 : 250;
     const MAX_DIST = 120;
     const MOUSE_DIST = 180;
     const REPEL_RADIUS = 110;
@@ -39,7 +42,7 @@ export default function ParticlesCanvas() {
         y: Math.random() * canvas.height,
         vx: (Math.random() - 0.5) * BASE_SPEED * 2,
         vy: (Math.random() - 0.5) * BASE_SPEED * 2,
-        radius: Math.random() * 1.4 + 1,
+        radius: isMobile ? Math.random() * 0.9 + 0.6 : Math.random() * 1.4 + 1,
       }));
     };
 

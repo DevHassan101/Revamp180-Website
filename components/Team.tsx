@@ -50,7 +50,7 @@ const team: TeamMember[] = [
     path: "M184.586 13.3233L13.9131 0L0.82349 167.678L171.496 181.002L184.586 13.3233Z",
   },
   {
-    label: "Founder",
+    label: "Founder\n& CEO",
     img: "/images/our-team/founder.png",
     color: "#F6A623",
     w: 171,
@@ -68,7 +68,7 @@ const team: TeamMember[] = [
     path: "M101.172 0.687866H202.318L151.755 89.7602L101.172 178.832L50.589 89.7602L0.00561523 0.687866H101.172Z",
   },
   {
-    label: "UX\nDesigners",
+    label: "UI/UX\nDesigners",
     img: "/images/our-team/ux-designer.png",
     color: "#8E7BEE",
     w: 178,

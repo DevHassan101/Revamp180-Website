@@ -5,6 +5,15 @@ const SPAN_COUNT = 15;
 
 export default function CursorTrail() {
   useEffect(() => {
+    // Skip the custom cursor on touch / coarse-pointer devices (phones, tablets) —
+    // there's no real cursor to replace there.
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(hover: none), (pointer: coarse)").matches
+    ) {
+      return;
+    }
+
     const startColor = { r: 139, g: 128, b: 255 };
     const endColor = { r: 30, g: 15, b: 120 };
     const spans = [];

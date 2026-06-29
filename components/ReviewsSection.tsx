@@ -6,44 +6,44 @@ import { motion } from "framer-motion";
 
 const reviews = [
   {
-    name: "Sarah Mitchell",
-    role: "CEO, NovaTech Solutions",
+    name: "Isabella Brown",
+    role: "Founder, Elevate",
     avatar: "https://randomuser.me/api/portraits/women/44.jpg",
     ringColor: "rgba(139,128,255,0.55)",
     rating: 5,
-    text: "Working with this team was a complete game-changer. They revamped our entire digital presence and we saw 3× more qualified leads within the first month.",
+    text: "Our online store went from basic to beautiful. Browsing is effortless, sales are up, and customers constantly compliment the new look.",
   },
   {
-    name: "James Thornton",
-    role: "Marketing Director, Bloom Agency",
-    avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+    name: "James Smith",
+    role: "Founder, Deep Code",
+    avatar: "",
     ringColor: "rgba(96,165,250,0.55)",
     rating: 5,
-    text: "The creative vision they brought exceeded every expectation. Our brand identity now feels genuinely premium — clients noticed the difference immediately.",
+    text: "They built us a sleek, modern website that perfectly captures our software brand. The whole process was smooth and the results spoke for themselves.",
   },
   {
-    name: "Priya Sharma",
-    role: "Founder, Orbis Digital",
-    avatar: "https://randomuser.me/api/portraits/women/68.jpg",
+    name: "Amelia Johnson",
+    role: "Founder, Pago",
+    avatar: "",
     ringColor: "rgba(52,211,153,0.55)",
     rating: 5,
-    text: "Fast, precise, and zero back-and-forth. They understood our vision from the very first call and delivered something beyond what we had imagined.",
+    text: "They brought our juice brand to life with vibrant, fresh visuals. Our packaging and campaigns finally feel as premium as the product itself.",
   },
   {
-    name: "Daniel Reeves",
-    role: "Product Lead, Stacklane",
+    name: "Samuel Young",
+    role: "Director, YONG Real Estate",
     avatar: "https://randomuser.me/api/portraits/men/52.jpg",
     ringColor: "rgba(251,191,36,0.55)",
     rating: 5,
-    text: "Our app went from feeling generic to genuinely premium. The UX improvements alone boosted user retention by 40%. These people think in outcomes.",
+    text: "Our social media finally looks professional and consistent. Engagement climbed fast and we're now getting real, qualified leads from it.",
   },
   {
-    name: "Leila Hassan",
-    role: "COO, Meridian Group",
-    avatar: "https://randomuser.me/api/portraits/women/26.jpg",
+    name: "Charlotte",
+    role: "Marketing Manager, Pulse Media",
+    avatar: "",
     ringColor: "rgba(251,113,133,0.55)",
     rating: 5,
-    text: "Professional, responsive, and brilliant at what they do. The social strategy they crafted tripled our engagement in just 60 days. Highly recommended.",
+    text: "They turned our raw footage into a cinematic property tour. The final video looked premium and helped our listings stand out instantly.",
   },
 ];
 
@@ -124,19 +124,34 @@ function ReviewCard({ review }: { review: (typeof reviews)[number] }) {
               background: `linear-gradient(135deg, ${review.ringColor}, rgba(139,128,255,0.2))`,
             }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={review.avatar}
-              alt={review.name}
-              width={44}
-              height={44}
-              className="rounded-full object-cover block"
-              style={{
-                width: "44px",
-                height: "44px",
-                border: "2px solid rgba(0,0,50,0.6)",
-              }}
-            />
+            {review.avatar ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={review.avatar}
+                alt={review.name}
+                width={44}
+                height={44}
+                className="rounded-full object-cover block"
+                style={{
+                  width: "44px",
+                  height: "44px",
+                  border: "2px solid rgba(0,0,50,0.6)",
+                }}
+              />
+            ) : (
+              <div
+                className="rounded-full flex items-center justify-center font-bold text-white select-none"
+                style={{
+                  width: "44px",
+                  height: "44px",
+                  fontSize: "17px",
+                  border: "2px solid rgba(0,0,50,0.6)",
+                  background: `linear-gradient(135deg, ${review.ringColor}, rgba(139,128,255,0.35))`,
+                }}
+              >
+                {review.name.charAt(0).toUpperCase()}
+              </div>
+            )}
           </div>
           <div className="min-w-0">
             <p
