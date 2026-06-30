@@ -58,19 +58,19 @@ export default function Footer() {
 
       <div className="relative z-10 max-w-[95%]! mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 pb-8">
         {/* ── Main 3-column area ── */}
-        <div className="flex flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] gap-10 sm:gap-12 lg:gap-8 items-center lg:items-start">
+        <div className="flex flex-col lg:grid lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] gap-10 sm:gap-12 lg:gap-0 items-center lg:items-start">
           {/* ── Center — Wordmark (3D floor perspective) ── */}
-          <div className="flex w-full flex-col items-center text-center lg:order-2 overflow-x-clip pt-[10vw] sm:pt-[7vw] lg:pt-[5rem]">
+          <div className="flex w-full flex-col items-center text-center lg:order-2 overflow-x-clip pt-4 sm:pt-6 lg:pt-8">
             <Link href="/" aria-label="Revamp 180 home" className="block max-w-full">
               <h2
                 className="leading-none select-none uppercase"
                 style={{
                   fontFamily: '"AC Compacta", var(--font-anton), sans-serif',
                   fontWeight: 400,
-                  fontSize: "clamp(3rem, 15vw, 11rem)",
+                  fontSize: "clamp(4rem, 15vw, 20rem)",
                   letterSpacing: "0.01em",
                   color: "#E8E8F5",
-                  transform: "perspective(900px) rotateX(62deg) scaleY(4.2)",
+                  transform: "perspective(1300px) rotateX(62deg) scaleY(4.2)",
                   transformOrigin: "bottom center",
                 }}
               >
@@ -106,7 +106,7 @@ export default function Footer() {
                On desktop the wrapper dissolves (lg:contents) so the 3-col grid is preserved. ── */}
           <div className="grid grid-cols-2 w-full lg:contents">
             {/* ── Left — Nav links ── */}
-            <div className="min-w-0 lg:order-1 flex flex-col items-center lg:items-start">
+            <div className="min-w-0 lg:order-1 flex flex-col items-start">
               <p
                 className="text-[10.5px] font-bold uppercase tracking-[0.18em] mb-5"
                 style={{ color: "rgba(139,128,255,0.7)" }}
@@ -137,7 +137,7 @@ export default function Footer() {
           {/* ── Right — Contact + CTA ── */}
           <div className="min-w-0 flex flex-col items-center gap-5 lg:order-3">
             <p
-              className="w-full text-center lg:text-left text-[10.5px] font-bold uppercase tracking-[0.22em]"
+              className="w-full text-[10.5px] font-bold uppercase tracking-[0.22em]"
               style={{ color: "rgba(139,128,255,0.7)" }}
             >
               Contact Info
@@ -161,7 +161,7 @@ export default function Footer() {
                       />
                     </span>
                     <span
-                      className="text-sm break-words min-w-0"
+                      className="text-xs sm:text-sm wrap-break-words min-w-0"
                       style={{ color: "rgba(255,255,255,0.55)" }}
                     >
                       {c.value}
@@ -186,7 +186,7 @@ export default function Footer() {
             </ul>
             
             {/* CTAs */}
-            <div className="flex flex-col items-center lg:items-end gap-3 mt-2">
+            <div className="flex flex-col items-center lg:items-start gap-3 mt-2">
               
               <Link
               href="/consultation"
@@ -211,7 +211,7 @@ export default function Footer() {
                     />
                   </svg>
                 </div>
-                <span className="text-white font-medium tracking-wide text-xs md:text-[14px] whitespace-normal text-center sm:whitespace-nowrap drop-shadow-sm">
+                <span className="text-white font-medium tracking-wide text-[10px] md:text-[14px] whitespace-normal text-center sm:whitespace-nowrap drop-shadow-sm">
                   Book Free Consultation
                 </span>
               </div>
