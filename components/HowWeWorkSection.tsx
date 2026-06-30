@@ -433,7 +433,7 @@ function StepDot({
         left: `${step.svgX}%`,
         top: `${step.svgY}%`,
         transform: "translate(-50%, -50%)",
-        zIndex: 100,
+        zIndex: 30,
       }}
       animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
       transition={{
