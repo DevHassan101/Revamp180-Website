@@ -5,7 +5,7 @@
 export const services = [
   "All",
   "Website Revamping",
-  "Website Development",
+  "Website Design & Development",
   "App Design & Development",
   "Branding & UI/UX Design",
   "Social Media Management",
@@ -48,7 +48,7 @@ export const projects: Project[] = [
     slug: "the-royal-seat",
     title: "The Royal Seat",
     category: "Website Development",
-    service: "Website Development",
+    service: "Website Design & Development",
     overlay: "rgba(12,0,64,0.55)",
     tags: ["Luxury", "design"],
     images: [
@@ -86,7 +86,7 @@ export const projects: Project[] = [
     slug: "simple-peptide",
     title: "Simple Peptide",
     category: "Website Development",
-    service: "Website Development",
+    service: "Website Design & Development",
     overlay: "rgba(0,80,160,0.52)",
     tags: ["Medical", "Design"],
     images: [
@@ -125,7 +125,7 @@ export const projects: Project[] = [
     slug: "velvet-pour",
     title: "Velvet Pour",
     category: "Website Development",
-    service: "Website Development",
+    service: "Website Design & Development",
     overlay: "rgba(53,32,220,0.48)",
     tags: ["Food", "development"],
     images: [
@@ -164,7 +164,7 @@ export const projects: Project[] = [
     slug: "elevate",
     title: "Elevate",
     category: "Website Development",
-    service: "Website Development",
+    service: "Website Design & Development",
     overlay: "rgba(24,0,200,0.52)",
     tags: ["shopify", "ecommerce"],
     images: [
@@ -200,7 +200,7 @@ export const projects: Project[] = [
     slug: "deep-code",
     title: "Deep Code",
     category: "Website Development",
-    service: "Website Development",
+    service: "Website Design & Development",
     overlay: "rgba(20,0,100,0.54)",
     tags: ["Node.Js", "UI/UX"],
     images: [

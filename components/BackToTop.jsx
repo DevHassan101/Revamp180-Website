@@ -36,7 +36,7 @@ export default function BackToTop() {
     <>
       {/* WhatsApp button */}
       <a
-        href="https://wa.me/923001234567"
+        href="https://wa.me/966502624196"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat on WhatsApp"
