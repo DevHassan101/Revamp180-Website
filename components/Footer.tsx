@@ -136,7 +136,7 @@ export default function Footer() {
             </div>
 
           {/* ── Right — Contact + CTA ── */}
-          <div className="min-w-0 flex flex-col items-center gap-5 lg:order-3">
+          <div className="min-w-0 flex flex-col items-start gap-5 lg:order-3">
             <p
               className="w-full text-[10.5px] font-bold uppercase tracking-[0.22em]"
               style={{ color: "rgba(139,128,255,0.7)" }}
