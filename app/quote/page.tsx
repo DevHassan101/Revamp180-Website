@@ -103,7 +103,9 @@ const initialForm = {
   features: "",
   budget: "",
   timeline: "",
-  company: "", // honeypot
+  // Honeypot — must stay empty. Do NOT name it "company"/"name"/etc. — browser
+  // autofill fills those into the hidden field and drops real users as bots.
+  hpField: "",
 };
 
 type Status = "idle" | "loading" | "success" | "error";
@@ -359,12 +361,13 @@ export default function QuotePage() {
                   </div>
 
                   <form onSubmit={handleSubmit} noValidate>
-                    {/* Honeypot — hidden from real users */}
+                    {/* Honeypot — hidden from real users. Odd name + autocomplete
+                        off so browser autofill won't populate it. */}
                     <input
                       type="text"
-                      name="company"
-                      value={form.company}
-                      onChange={update("company")}
+                      name="hp_field"
+                      value={form.hpField}
+                      onChange={update("hpField")}
                       tabIndex={-1}
                       autoComplete="off"
                       aria-hidden="true"

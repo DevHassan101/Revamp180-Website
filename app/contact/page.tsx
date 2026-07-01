@@ -91,7 +91,10 @@ const initialForm = {
   phone: "",
   subject: "",
   message: "",
-  company: "", // honeypot
+  // Honeypot — must stay empty. NOTE: do NOT name this "company"/"name"/"email"
+  // etc. — browsers autofill those into the hidden field and get real users
+  // silently dropped as bots. Use an odd name autofill won't recognise.
+  hpField: "",
 };
 
 type Status = "idle" | "loading" | "success" | "error";
@@ -267,12 +270,14 @@ export default function ContactPage() {
                   className="mt-6"
                   noValidate
                 >
-                  {/* Honeypot — hidden from real users */}
+                  {/* Honeypot — hidden from real users. Odd name + autocomplete
+                      off so browser autofill doesn't populate it (which would
+                      make the server drop the submission as a bot). */}
                   <input
                     type="text"
-                    name="company"
-                    value={form.company}
-                    onChange={update("company")}
+                    name="hp_field"
+                    value={form.hpField}
+                    onChange={update("hpField")}
                     tabIndex={-1}
                     autoComplete="off"
                     aria-hidden="true"

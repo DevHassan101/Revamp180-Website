@@ -580,7 +580,7 @@ export default function Navbar() {
             </li>
 
             {[
-              { name: "Portfolio", href: "/projects" },
+              { name: "Projects", href: "/projects" },
               { name: "Contact Us", href: "/contact" },
             ].map((item) => (
               <li key={item.name} className="border-b border-[#8B80FF]/20">

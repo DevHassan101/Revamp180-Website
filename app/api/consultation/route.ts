@@ -12,7 +12,7 @@ type ConsultationPayload = {
   time?: string;
   topic?: string;
   // Honeypot — should always be empty for real users.
-  company?: string;
+  hpField?: string;
 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -35,7 +35,7 @@ export async function POST(request: Request) {
   }
 
   // Bot trap: if the hidden field is filled, pretend success and drop it.
-  if (body.company) {
+  if (body.hpField) {
     return NextResponse.json({ ok: true });
   }
 

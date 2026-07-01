@@ -138,6 +138,16 @@ function ProjectCard({
         style={{
           position: "relative",
           borderRadius: "1rem",
+          // FIX: border + hover-lift live on THIS (unclipped) wrapper so the
+          // border is always crisp & perfectly rounded. The clipping happens on
+          // the inner element — keeping the two responsibilities separate avoids
+          // the border getting mangled by clip-path on iOS.
+          border: tall
+            ? "1px solid rgba(139,128,255,0.30)"
+            : "1px solid rgba(139,128,255,0.13)",
+          willChange: "transform",
+          transition:
+            "transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.4s ease, box-shadow 0.4s ease",
           // Tall card gets its shadow always; short card gets it on hover via CSS
           boxShadow: tall
             ? "0 0 0 1px rgba(139,128,255,0.16), 0 0 55px rgba(53,32,220,0.32)"
@@ -150,16 +160,15 @@ function ProjectCard({
             position: "relative",
             borderRadius: "1rem",
             overflow: "hidden",
+            // FIX (iOS Safari): overflow:hidden + border-radius fails to clip a
+            // child that has its own transform (.card-img zoom). clip-path IS
+            // honoured for transformed children on iOS, so it reliably rounds
+            // the corners. inset(0 round 1rem) matches the borderRadius above.
+            clipPath: "inset(0 round 1rem)",
+            WebkitClipPath: "inset(0 round 1rem)",
+            isolation: "isolate",
             cursor: "pointer",
             aspectRatio: "16 / 10",
-            border: tall
-              ? "1px solid rgba(139,128,255,0.30)"
-              : "1px solid rgba(139,128,255,0.13)",
-            // FIX: One unified transition string — no split between Tailwind and inline
-            // Using will-change: transform to promote to compositor
-            willChange: "transform",
-            transition:
-              "transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.4s ease, box-shadow 0.4s ease",
           }}
         >
           {project.video ? (
@@ -426,30 +435,40 @@ export default function ProjectsSection() {
         compositor. No JS event handlers = no layout thrashing = buttery smooth.
       */}
       <style>{`
-        /* Card lift + border glow + shadow on hover */
-        .project-image-card .card-inner:hover {
+        /* FIX (iOS Safari): promote the clipping container to its own
+           compositor layer (translateZ(0)). Without this, the transformed child
+           (.card-img) escapes the rounded clip and bleeds past the corners.
+           This element is static (no hover transform on it), so translateZ(0)
+           never conflicts with anything. */
+        .project-image-card .card-inner {
+          transform: translateZ(0);
+        }
+
+        /* Card lift + border glow + shadow on hover — on the OUTER wrapper so
+           the border (which lives here) lifts together with the image. */
+        .project-image-card:hover {
           transform: translateY(-7px);
           border-color: rgba(139, 128, 255, 0.58) !important;
-          box-shadow: 0 0 0 1px rgba(139,128,255,0.22), 0 20px 60px rgba(53,32,220,0.48);
+          box-shadow: 0 0 0 1px rgba(139,128,255,0.22), 0 20px 60px rgba(53,32,220,0.48) !important;
         }
 
         /* Image zoom on card hover */
-        .project-image-card .card-inner:hover .card-img {
+        .project-image-card:hover .card-img {
           transform: scale(1.06);
         }
 
         /* Shine sweep reveal */
-        .project-image-card .card-inner:hover .card-shine {
+        .project-image-card:hover .card-shine {
           opacity: 1;
         }
 
         /* Top accent line reveal */
-        .project-image-card .card-inner:hover .card-accent-line {
+        .project-image-card:hover .card-accent-line {
           opacity: 1;
         }
 
         /* Arrow button reveal */
-        .project-image-card .card-inner:hover .card-arrow-btn {
+        .project-image-card:hover .card-arrow-btn {
           opacity: 1;
           transform: translateY(0);
         }

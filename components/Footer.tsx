@@ -11,10 +11,10 @@ const navLinks = [
 ];
 
 const socials = [
-  { icon: "tabler:brand-whatsapp", href: "#", label: "WhatsApp" },
-  { icon: "tabler:brand-linkedin", href: "#", label: "LinkedIn" },
-  { icon: "tabler:brand-instagram", href: "#", label: "Instagram" },
-  { icon: "tabler:brand-facebook", href: "#", label: "Facebook" },
+  { icon: "tabler:brand-whatsapp", href: "https://wa.me/966502624196", label: "WhatsApp" },
+  { icon: "tabler:brand-linkedin", href: "https://www.linkedin.com/company/revamp180/", label: "LinkedIn" },
+  { icon: "tabler:brand-instagram", href: "https://www.instagram.com/revamp_180", label: "Instagram" },
+  { icon: "tabler:brand-facebook", href: "https://www.facebook.com/share/17pHi9o64j/?mibextid=wwXIfr", label: "Facebook" },
 ];
 
 const contactDetails = [
@@ -86,6 +86,7 @@ export default function Footer() {
                   key={s.label}
                   href={s.href}
                   aria-label={s.label}
+                  target="_blank"
                   className="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 hover:scale-110 hover:bg-[rgba(139,128,255,0.18)]"
                   style={{
                     background: "rgba(139,128,255,0.08)",

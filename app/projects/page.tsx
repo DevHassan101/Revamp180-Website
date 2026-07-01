@@ -42,7 +42,18 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         {/* ── Image card ── */}
         <div
           className="project-image-card"
-          style={{ position: "relative", borderRadius: "1rem" }}
+          style={{
+            position: "relative",
+            borderRadius: "1rem",
+            // FIX: border + hover-lift live on THIS (unclipped) wrapper so the
+            // border stays crisp & perfectly rounded. Clipping happens on the
+            // inner element — separating the two avoids clip-path mangling the
+            // border on iOS.
+            border: "1px solid rgba(139,128,255,0.13)",
+            willChange: "transform",
+            transition:
+              "transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.4s ease, box-shadow 0.4s ease",
+          }}
         >
           <div
             className="card-inner"
@@ -50,12 +61,14 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               position: "relative",
               borderRadius: "1rem",
               overflow: "hidden",
+              // FIX (iOS Safari): overflow:hidden + border-radius fails to clip a
+              // transformed child (.card-img zoom). clip-path + translateZ(0)
+              // (see <style> block) reliably rounds the corners on iOS.
+              clipPath: "inset(0 round 1rem)",
+              WebkitClipPath: "inset(0 round 1rem)",
+              isolation: "isolate",
               cursor: "pointer",
               aspectRatio: "16 / 10",
-              border: "1px solid rgba(139,128,255,0.13)",
-              willChange: "transform",
-              transition:
-                "transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.4s ease, box-shadow 0.4s ease",
             }}
           >
             {project.video ? (
@@ -276,21 +289,29 @@ export default function ProjectPage() {
     <main>
       <section className="relative w-full py-28 px-4 overflow-hidden">
         <style>{`
-        .project-image-card .card-inner:hover {
+        /* FIX (iOS Safari): promote the clipping container to its own compositor
+           layer so the transformed child (.card-img) doesn't escape the rounded
+           clip. This element is static, so translateZ(0) conflicts with nothing. */
+        .project-image-card .card-inner {
+          transform: translateZ(0);
+        }
+        /* Card lift + border glow on hover — on the OUTER wrapper so the border
+           (which lives there) lifts together with the image. */
+        .project-image-card:hover {
           transform: translateY(-7px);
           border-color: rgba(139, 128, 255, 0.58) !important;
-          box-shadow: 0 0 0 1px rgba(139,128,255,0.22), 0 20px 60px rgba(53,32,220,0.48);
+          box-shadow: 0 0 0 1px rgba(139,128,255,0.22), 0 20px 60px rgba(53,32,220,0.48) !important;
         }
-        .project-image-card .card-inner:hover .card-img {
+        .project-image-card:hover .card-img {
           transform: scale(1.06);
         }
-        .project-image-card .card-inner:hover .card-shine {
+        .project-image-card:hover .card-shine {
           opacity: 1;
         }
-        .project-image-card .card-inner:hover .card-accent-line {
+        .project-image-card:hover .card-accent-line {
           opacity: 1;
         }
-        .project-image-card .card-inner:hover .card-arrow-btn {
+        .project-image-card:hover .card-arrow-btn {
           opacity: 1;
           transform: translateY(0);
         }
