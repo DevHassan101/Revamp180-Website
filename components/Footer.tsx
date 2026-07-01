@@ -79,19 +79,18 @@ export default function Footer() {
               </h2>
             </Link>
 
-            {/* Social icons */}
-            <div className="mt-7 flex items-center gap-3">
+            {/* Social icons.
+                relative z-20 lifts these above the 3D-transformed wordmark <h2>
+                (scaleY(4.2) makes its hit-area overlap this row from the top/
+                right, otherwise swallowing hovers that don't approach from below). */}
+            <div className="relative z-20 mt-7 flex items-center gap-3">
               {socials.map((s) => (
                 <a
                   key={s.label}
                   href={s.href}
                   aria-label={s.label}
                   target="_blank"
-                  className="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 hover:scale-110 hover:bg-[rgba(139,128,255,0.18)]"
-                  style={{
-                    background: "rgba(139,128,255,0.08)",
-                    border: "1px solid rgba(139,128,255,0.18)",
-                  }}
+                  className="w-10 h-10 rounded-xl flex items-center justify-center border bg-[rgba(139,128,255,0.08)] border-[rgba(139,128,255,0.18)] transition-all duration-200 hover:scale-110 hover:bg-[rgba(139,128,255,0.18)] hover:border-[rgba(139,128,255,0.45)] hover:shadow-[0_0_16px_rgba(139,128,255,0.55),0_6px_20px_rgba(53,32,220,0.40)]"
                 >
                   <Icon
                     icon={s.icon}
