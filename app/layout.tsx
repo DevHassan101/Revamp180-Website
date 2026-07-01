@@ -33,6 +33,18 @@ export default function RootLayout({
     <html lang="en" className={`${poppins.variable} ${anton.variable} h-full antialiased`}>
       <head>
         <link rel="icon" type="image/png" href="/favicon_io/icon-blue.png" />
+        {/* Take scroll handling away from the browser. On slow mobile loads the
+            browser's automatic scroll restoration fires late (after the load
+            event) and yanks the user back to the top even after they've
+            scrolled down. 'manual' stops that jump; Next.js still manages scroll
+            for in-app link navigations itself. Runs inline before first paint so
+            it beats any scheduled restoration. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "if('scrollRestoration' in history){history.scrollRestoration='manual';}",
+          }}
+        />
       </head>
       <body className="suppressHydrationWarning min-h-full flex flex-col font-[family-name:var(--font-poppins)]">
         <Navbar />
