@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useLayoutEffect } from "react";
+import { useState, useLayoutEffect, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
@@ -74,6 +74,23 @@ function ProjectCard({
 }) {
   const delay = isMobile ? 0 : colIndex === 1 ? 0 : 0.18;
   const duration = isMobile ? 0.65 : colIndex === 1 ? 0.9 : 1.1;
+
+  // Video cards play only while on screen — with preload="none" the file is
+  // only fetched once the card scrolls into view, not on initial page load.
+  const videoRef = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) el.play().catch(() => {});
+        else el.pause();
+      },
+      { threshold: 0.3 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   return (
     <motion.div
@@ -176,7 +193,9 @@ function ProjectCard({
             /* preload="none" + no autoPlay: don't pull the heavy (up to 57 MB)
                video on the homepage — it plays on the project detail page. */
             <video
+              ref={videoRef}
               src={project.video}
+              poster={project.video.replace(/\.mp4$/, "-poster.jpg")}
               className="card-img"
               muted
               loop

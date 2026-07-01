@@ -294,6 +294,7 @@ export default function ProjectDetailPage() {
                   downloads once the visitor actually presses play. */}
               <video
                 src={project.video}
+                poster={project.video.replace(/\.mp4$/, "-poster.jpg")}
                 controls
                 muted
                 loop

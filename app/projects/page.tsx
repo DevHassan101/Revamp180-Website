@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
@@ -12,6 +12,25 @@ const FAN_EASE = [0, 0, 0.2, 1] as const;
 
 // ─── Project Card ─────────────────────────────────────────────────────────────
 function ProjectCard({ project, index }: { project: Project; index: number }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Video cards play only while on screen — and, with preload="none", only
+  // fetch the file when they scroll into view. The listing never pulls every
+  // video at once, but the card still shows motion (poster covers the gap).
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) el.play().catch(() => {});
+        else el.pause();
+      },
+      { threshold: 0.3 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
     <motion.div
       layout
@@ -76,7 +95,9 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               /* preload="none" + no autoPlay so the heavy video isn't fetched
                  on the listing — it only plays on the detail page. */
               <video
+                ref={videoRef}
                 src={project.video}
+                poster={project.video.replace(/\.mp4$/, "-poster.jpg")}
                 className="card-img"
                 muted
                 loop
