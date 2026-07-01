@@ -20,9 +20,29 @@ body {
   max-width: 100%;
 }
 
+/* Solid black on the root element guarantees no white ever shows through —
+   even for a single frame during fast scrolling. */
+html {
+  background: #000006;
+}
+
 body {
-  background: radial-gradient(circle, #00004D 0%,rgba(0, 0, 0, 1) 100%);
-  background-attachment: fixed;
+  background: transparent;
+}
+
+/* The page's radial-gradient backdrop.
+   IMPORTANT: this used to be `background-attachment: fixed` on <body>, which
+   forces the browser to REPAINT the whole fixed background on every scroll
+   frame. During fast scrolling (especially on mobile) that repaint falls behind
+   and flashes WHITE. A fixed-position layer paints once and simply stays put —
+   same look, no per-frame repaint, no white flash. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(circle, #00004D 0%, rgba(0, 0, 0, 1) 100%);
 }
 
 /* Hide the native cursor only on devices that actually have a fine pointer
