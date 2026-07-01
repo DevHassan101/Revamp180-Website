@@ -538,12 +538,13 @@ function VisionMissionMobile() {
       smooth.current += (target.current - smooth.current) * 0.1;
       const p = smooth.current;
 
-      // Globe: fade + scale in early, then a gentle upward drift; stays visible.
-      const gIn = easeInOutCubic(range(p, 0, 0.14));
+      // Globe: visible immediately the moment the section is reached (no scroll
+      // fade-in — that left the screen blank until you'd scrolled in). Just a
+      // gentle upward drift + slight scale as the text rises over it.
       const gDrift = easeInOutCubic(range(p, 0.14, 1));
       if (globeRef.current) {
-        globeRef.current.style.opacity = `${gIn}`;
-        globeRef.current.style.transform = `translate(-50%, calc(-50% - ${gDrift * 7}vh)) scale(${0.86 + gIn * 0.14})`;
+        globeRef.current.style.opacity = "1";
+        globeRef.current.style.transform = `translate(-50%, calc(-50% - ${gDrift * 7}vh)) scale(${0.98 + gDrift * 0.04})`;
       }
 
       // Text 1 (Vision): rises from below, holds, then exits upward.
@@ -594,7 +595,6 @@ function VisionMissionMobile() {
           top: 0,
           height: "100vh",
           overflow: "hidden",
-          background: "linear-gradient(180deg, #00010a 0%, #000006 100%)",
         }}
       >
         {/* Star field */}
