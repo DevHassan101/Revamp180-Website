@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams, notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence, type PanInfo } from "framer-motion";
 import { Icon } from "@iconify/react";
 import { getProject, type Project } from "@/data/projects";
@@ -57,10 +58,8 @@ function ProjectSlider({ images, title }: { images: string[]; title: string }) {
         }}
       >
         <AnimatePresence custom={dir} initial={false} mode="popLayout">
-          <motion.img
+          <motion.div
             key={current}
-            src={images[current]}
-            alt={`${title} — slide ${current + 1}`}
             custom={dir}
             variants={variants}
             initial="enter"
@@ -75,9 +74,20 @@ function ProjectSlider({ images, title }: { images: string[]; title: string }) {
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={0.18}
             onDragEnd={onDragEnd}
-            className="absolute inset-0 h-full w-full cursor-grab object-cover active:cursor-grabbing"
-            draggable={true}
-          />
+            className="absolute inset-0 cursor-grab active:cursor-grabbing"
+          >
+            {/* next/image: resized + WebP/AVIF via Vercel; first slide is
+                priority (LCP), the rest lazy-load. */}
+            <Image
+              src={images[current]}
+              alt={`${title} — slide ${current + 1}`}
+              fill
+              sizes="(max-width: 1024px) 100vw, 1024px"
+              priority={current === 0}
+              draggable={false}
+              className="object-cover"
+            />
+          </motion.div>
         </AnimatePresence>
 
         {/* gradient for control contrast */}
@@ -280,14 +290,15 @@ export default function ProjectDetailPage() {
                 background: "rgba(8,11,30,0.6)",
               }}
             >
+              {/* preload="none" + no autoPlay: the (40–57 MB) video only
+                  downloads once the visitor actually presses play. */}
               <video
                 src={project.video}
                 controls
-                autoPlay
                 muted
                 loop
                 playsInline
-                preload="metadata"
+                preload="none"
                 className="absolute inset-0 h-full w-full object-cover"
               />
             </div>

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
+import Image from "next/image";
 import { projects, services, type Project, type Service } from "@/data/projects";
 
 // ─── Easing curves ────────────────────────────────────────────────────────────
@@ -72,14 +73,15 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             }}
           >
             {project.video ? (
+              /* preload="none" + no autoPlay so the heavy video isn't fetched
+                 on the listing — it only plays on the detail page. */
               <video
                 src={project.video}
                 className="card-img"
                 muted
                 loop
                 playsInline
-                autoPlay
-                preload="metadata"
+                preload="none"
                 style={{
                   position: "absolute",
                   inset: 0,
@@ -92,16 +94,15 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                 }}
               />
             ) : (
-              /* eslint-disable-next-line @next/next/no-img-element */
-              <img
+              /* next/image: Vercel serves a resized WebP/AVIF and lazy-loads
+                 off-screen cards instead of shipping the full-size JPG. */
+              <Image
                 src={project.images[0]}
                 alt={project.title}
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 className="card-img"
                 style={{
-                  position: "absolute",
-                  inset: 0,
-                  width: "100%",
-                  height: "100%",
                   objectFit: "cover",
                   willChange: "transform",
                   transition:

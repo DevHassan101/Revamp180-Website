@@ -4,6 +4,7 @@ import { useState, useLayoutEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
+import Image from "next/image";
 import { getProject } from "@/data/projects";
 
 // ─── Easing curves ────────────────────────────────────────────────────────────
@@ -172,14 +173,15 @@ function ProjectCard({
           }}
         >
           {project.video ? (
+            /* preload="none" + no autoPlay: don't pull the heavy (up to 57 MB)
+               video on the homepage — it plays on the project detail page. */
             <video
               src={project.video}
               className="card-img"
               muted
               loop
               playsInline
-              autoPlay
-              preload="metadata"
+              preload="none"
               style={{
                 position: "absolute",
                 inset: 0,
@@ -192,16 +194,14 @@ function ProjectCard({
               }}
             />
           ) : (
-            /* eslint-disable-next-line @next/next/no-img-element */
-            <img
-              src={project.image}
+            /* next/image: resized WebP/AVIF + lazy-loading instead of the raw JPG. */
+            <Image
+              src={project.image!}
               alt={project.title}
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               className="card-img"
               style={{
-                position: "absolute",
-                inset: 0,
-                width: "100%",
-                height: "100%",
                 objectFit: "cover",
                 willChange: "transform",
                 // FIX: longer duration + ease-out for silky image zoom
