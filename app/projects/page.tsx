@@ -1,10 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import Image from "next/image";
 import { projects, services, type Project, type Service } from "@/data/projects";
+import { useNavLoader } from "@/components/NavigationLoader";
 
 // ─── Easing curves ────────────────────────────────────────────────────────────
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -12,13 +13,25 @@ const FAN_EASE = [0, 0, 0.2, 1] as const;
 
 // ─── Project Card ─────────────────────────────────────────────────────────────
 function ProjectCard({ project, index }: { project: Project; index: number }) {
-  // The listing shows a lightweight poster image for every card — video
-  // projects use their -poster.jpg. The heavy .mp4 is NEVER fetched here; it
-  // only loads on the detail page. This keeps the connection free so clicking
-  // a video card opens its detail page instantly (no bandwidth contention).
-  const cover = project.video
-    ? project.video.replace(/\.mp4$/, "-poster.jpg")
-    : project.images[0];
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const startNav = useNavLoader();
+
+  // Video cards play only while on screen — and, with preload="none", only
+  // fetch the file when they scroll into view. The listing never pulls every
+  // video at once, but the card still shows motion (poster covers the gap).
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) el.play().catch(() => {});
+        else el.pause();
+      },
+      { threshold: 0.3 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   return (
     <motion.div
@@ -33,7 +46,11 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       }}
       className="group/card flex flex-col gap-3"
     >
-      <Link href={`/projects/${project.slug}`} className="flex flex-col gap-3">
+      <Link
+        href={`/projects/${project.slug}`}
+        onClick={startNav}
+        className="flex flex-col gap-3"
+      >
         {/* ── Title row ── */}
         <div className="flex justify-center items-center w-full">
           <h3
@@ -80,55 +97,45 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               aspectRatio: "16 / 10",
             }}
           >
-            {/* next/image: resized WebP/AVIF, lazy-loaded off-screen. For video
-                projects this is the poster still — the .mp4 stays on the detail
-                page so the listing never ships heavy video bytes. */}
-            <Image
-              src={cover}
-              alt={project.title}
-              fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              className="card-img"
-              style={{
-                objectFit: "cover",
-                willChange: "transform",
-                transition:
-                  "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-              }}
-            />
-
-            {/* Play badge so video projects still read as "video" on the listing */}
-            {project.video && (
-              <div
+            {project.video ? (
+              /* preload="none" + no autoPlay so the heavy video isn't fetched
+                 on the listing — it only plays on the detail page. */
+              <video
+                ref={videoRef}
+                src={project.video}
+                poster={project.video.replace(/\.mp4$/, "-poster.jpg")}
+                className="card-img"
+                muted
+                loop
+                playsInline
+                preload="none"
                 style={{
                   position: "absolute",
                   inset: 0,
-                  zIndex: 10,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  pointerEvents: "none",
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  willChange: "transform",
+                  transition:
+                    "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
                 }}
-              >
-                <span
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: "3.25rem",
-                    height: "3.25rem",
-                    borderRadius: "50%",
-                    background: "rgba(0,0,18,0.5)",
-                    border: "1px solid rgba(139,128,255,0.45)",
-                    backdropFilter: "blur(6px)",
-                  }}
-                >
-                  <Icon
-                    icon="tabler:player-play-filled"
-                    className="w-5 h-5 text-white"
-                  />
-                </span>
-              </div>
+              />
+            ) : (
+              /* next/image: Vercel serves a resized WebP/AVIF and lazy-loads
+                 off-screen cards instead of shipping the full-size JPG. */
+              <Image
+                src={project.images[0]}
+                alt={project.title}
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="card-img"
+                style={{
+                  objectFit: "cover",
+                  willChange: "transform",
+                  transition:
+                    "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                }}
+              />
             )}
 
             {/* Brand colour multiply */}
