@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useLayoutEffect, useRef, useEffect } from "react";
+import { useState, useLayoutEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
@@ -75,22 +75,12 @@ function ProjectCard({
   const delay = isMobile ? 0 : colIndex === 1 ? 0 : 0.18;
   const duration = isMobile ? 0.65 : colIndex === 1 ? 0.9 : 1.1;
 
-  // Video cards play only while on screen — with preload="none" the file is
-  // only fetched once the card scrolls into view, not on initial page load.
-  const videoRef = useRef<HTMLVideoElement>(null);
-  useEffect(() => {
-    const el = videoRef.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) el.play().catch(() => {});
-        else el.pause();
-      },
-      { threshold: 0.3 },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
+  // Show a lightweight poster still for video projects — the heavy .mp4 is never
+  // fetched on the homepage, only on the detail page. This keeps navigation to a
+  // video project's detail page instant (no bandwidth contention).
+  const cover = project.video
+    ? project.video.replace(/\.mp4$/, "-poster.jpg")
+    : project.image!;
 
   return (
     <motion.div
@@ -189,44 +179,54 @@ function ProjectCard({
             aspectRatio: "16 / 10",
           }}
         >
-          {project.video ? (
-            /* preload="none" + no autoPlay: don't pull the heavy (up to 57 MB)
-               video on the homepage — it plays on the project detail page. */
-            <video
-              ref={videoRef}
-              src={project.video}
-              poster={project.video.replace(/\.mp4$/, "-poster.jpg")}
-              className="card-img"
-              muted
-              loop
-              playsInline
-              preload="none"
+          {/* next/image: resized WebP/AVIF + lazy-loading. For video projects
+              this is the poster still — the .mp4 loads only on the detail page. */}
+          <Image
+            src={cover}
+            alt={project.title}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="card-img"
+            style={{
+              objectFit: "cover",
+              willChange: "transform",
+              // FIX: longer duration + ease-out for silky image zoom
+              transition: "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+            }}
+          />
+
+          {/* Play badge so video projects still read as "video" */}
+          {project.video && (
+            <div
               style={{
                 position: "absolute",
                 inset: 0,
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                willChange: "transform",
-                transition:
-                  "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                zIndex: 10,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                pointerEvents: "none",
               }}
-            />
-          ) : (
-            /* next/image: resized WebP/AVIF + lazy-loading instead of the raw JPG. */
-            <Image
-              src={project.image!}
-              alt={project.title}
-              fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              className="card-img"
-              style={{
-                objectFit: "cover",
-                willChange: "transform",
-                // FIX: longer duration + ease-out for silky image zoom
-                transition: "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-              }}
-            />
+            >
+              <span
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "3.25rem",
+                  height: "3.25rem",
+                  borderRadius: "50%",
+                  background: "rgba(0,0,18,0.5)",
+                  border: "1px solid rgba(139,128,255,0.45)",
+                  backdropFilter: "blur(6px)",
+                }}
+              >
+                <Icon
+                  icon="tabler:player-play-filled"
+                  className="w-5 h-5 text-white"
+                />
+              </span>
+            </div>
           )}
 
           {/* Brand colour multiply */}

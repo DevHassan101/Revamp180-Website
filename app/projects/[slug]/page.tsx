@@ -151,6 +151,68 @@ function ProjectSlider({ images, title }: { images: string[]; title: string }) {
   );
 }
 
+// ─── Project video ────────────────────────────────────────────────────────────
+// The page paints first; the (large) video only starts downloading on the next
+// frame — so navigation feels instant. A poster + spinner fill the frame while
+// the file streams in the background, and the spinner clears once it can play.
+function ProjectVideo({ src, poster }: { src: string; poster: string }) {
+  const [load, setLoad] = useState(false);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    // Defer the src (and thus the download) until after the first paint.
+    const id = requestAnimationFrame(() => setLoad(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
+
+  return (
+    <div
+      className="relative w-full overflow-hidden rounded-2xl"
+      style={{
+        aspectRatio: "16 / 10",
+        border: "1px solid rgba(139,128,255,0.20)",
+        boxShadow:
+          "0 0 0 1px rgba(139,128,255,0.10), 0 30px 80px rgba(53,32,220,0.30)",
+        background: "rgba(8,11,30,0.6)",
+      }}
+    >
+      <video
+        src={load ? src : undefined}
+        poster={poster}
+        controls
+        muted
+        loop
+        playsInline
+        preload="auto"
+        onCanPlay={() => setReady(true)}
+        onLoadedData={() => setReady(true)}
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+
+      {/* Loading overlay — sits over the poster until the video can play */}
+      <AnimatePresence>
+        {!ready && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+            className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-3"
+            style={{ background: "rgba(3,5,22,0.55)", backdropFilter: "blur(2px)" }}
+          >
+            <Icon
+              icon="tabler:loader-2"
+              className="h-9 w-9 animate-spin text-[#C0BAFF]"
+            />
+            <span className="text-sm font-medium tracking-wide text-white/70">
+              Loading video…
+            </span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 // ─── Case study list block ────────────────────────────────────────────────────
 function StudyBlock({
   icon,
@@ -280,29 +342,10 @@ export default function ProjectDetailPage() {
           className="mb-16"
         >
           {project.video ? (
-            <div
-              className="relative w-full overflow-hidden rounded-2xl"
-              style={{
-                aspectRatio: "16 / 10",
-                border: "1px solid rgba(139,128,255,0.20)",
-                boxShadow:
-                  "0 0 0 1px rgba(139,128,255,0.10), 0 30px 80px rgba(53,32,220,0.30)",
-                background: "rgba(8,11,30,0.6)",
-              }}
-            >
-              {/* preload="none" + no autoPlay: the (40–57 MB) video only
-                  downloads once the visitor actually presses play. */}
-              <video
-                src={project.video}
-                poster={project.video.replace(/\.mp4$/, "-poster.jpg")}
-                controls
-                muted
-                loop
-                playsInline
-                preload="none"
-                className="absolute inset-0 h-full w-full object-cover"
-              />
-            </div>
+            <ProjectVideo
+              src={project.video}
+              poster={project.video.replace(/\.mp4$/, "-poster.jpg")}
+            />
           ) : (
             <ProjectSlider images={project.images} title={project.title} />
           )}
