@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CursorTrail from "@/components/CursorTrail";
 import BackToTop from "@/components/BackToTop";
+import NavigationLoader from "@/components/NavigationLoader";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -47,13 +48,15 @@ export default function RootLayout({
         />
       </head>
       <body className="suppressHydrationWarning min-h-full flex flex-col font-[family-name:var(--font-poppins)]">
-        <Navbar />
-        <CursorTrail />
-        <main className="flex-1">
-          {children}
-        </main>
-        <Footer />
-        <BackToTop />
+        <NavigationLoader>
+          <Navbar />
+          <CursorTrail />
+          <main className="flex-1">
+            {children}
+          </main>
+          <Footer />
+          <BackToTop />
+        </NavigationLoader>
       </body>
     </html>
   );
